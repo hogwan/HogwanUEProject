@@ -5,12 +5,16 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AHunter::AHunter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 800.f, 0.f);
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -50,6 +54,8 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AHunter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AHunter::Look);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &AHunter::Run);
+		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &AHunter::Dodge);
 	}
 
 }
@@ -74,4 +80,21 @@ void AHunter::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(MouseVector.X);
 	AddControllerPitchInput(-MouseVector.Y);
+}
+
+void AHunter::Run(const FInputActionValue& Value)
+{
+	bIsRun = true;
+   	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+}
+
+void AHunter::Dodge(const FInputActionValue& Value)
+{
+	if (!bIsRun)
+	{
+
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = 400.f;
+	bIsRun = false;
 }

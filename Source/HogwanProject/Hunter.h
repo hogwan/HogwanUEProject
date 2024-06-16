@@ -19,11 +19,23 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//Input
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* MoveAction;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* RunAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* DodgeAction;
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE bool GetIsLockOn() { return bLockOn; }
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetIsLockOn(bool LockOn) { bLockOn = LockOn; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,5 +50,9 @@ private:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Run(const FInputActionValue& Value);
+	void Dodge(const FInputActionValue& Value);
 
+	bool bIsRun = false;
+	bool bLockOn = false;
 };
