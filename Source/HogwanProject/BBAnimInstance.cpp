@@ -23,7 +23,7 @@ void UBBAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	if (HunterMovement)
 	{
-		MoveVector = HunterMovement->Velocity;
-		GroundSpeed = UKismetMathLibrary::VSizeXY(MoveVector);
+		GroundSpeed = UKismetMathLibrary::VSizeXY(HunterMovement->Velocity);
+		MoveRotDegree = Hunter->MoveRotDegree;
 	}
 }

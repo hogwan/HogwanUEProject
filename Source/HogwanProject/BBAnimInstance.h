@@ -25,7 +25,7 @@ public:
 	class UCharacterMovementComponent* HunterMovement;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
-	FVector MoveVector;
+	float MoveRotDegree;
 
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	float GroundSpeed;
