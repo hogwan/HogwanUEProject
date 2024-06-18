@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "Hunter/Hunter.h"
 #include "BBGameInstance.generated.h"
 
 /**
@@ -16,8 +15,10 @@ class HOGWANPROJECT_API UBBGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	FORCEINLINE AHunter* GetPlayer() { return Player; }
+	FORCEINLINE class AHunter* GetPlayer() { return Player; }
+	FORCEINLINE class UInventory* GetInvectory() { return Inventory; }
 
 private:
-	AHunter* Player;
+	class AHunter* Player;
+	class UInventory* Inventory;
 };

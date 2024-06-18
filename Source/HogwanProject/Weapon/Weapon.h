@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WeaponEnumType.h"
 #include "Weapon.generated.h"
 
 UCLASS()
@@ -21,4 +22,5 @@ protected:
 
 private:
 	class UStaticMeshComponent* WeaponMesh;
+
 };

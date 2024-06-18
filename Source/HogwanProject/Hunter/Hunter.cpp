@@ -60,6 +60,8 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &AHunter::Run);
 		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &AHunter::Dodge);
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Started, this, &AHunter::LockOn);
+		EnhancedInputComponent->BindAction(AttackAction,
+			ETriggerEvent::Started, this, &AHunter::Attack);
 		
 	}
 
@@ -67,6 +69,8 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AHunter::Move(const FInputActionValue& Value)
 {
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
 	FVector InputMoveVector = FVector(Value.Get<FVector2D>().X, Value.Get<FVector2D>().Y, 0.f);
 
 	FRotator Rotation = GetControlRotation();
@@ -166,6 +170,31 @@ void AHunter::LockOn(const FInputActionValue& Value)
 
 	LockOnTarget = OutHit.GetActor();
 	bIsLockOn = true;
+}
+
+void AHunter::Attack(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && AttackMontage)
+		{
+			CurActionState = ECharacterActionState::ECAS_Attacking;
+			AnimInstance->Montage_Play(AttackMontage);
+			AnimInstance->Montage_JumpToSection("Attack1");
+		}
+		return;
+	}
+
+	if (CurActionState == ECharacterActionState::ECAS_Attacking
+		&& NextAttackChance == true)
+	{
+		GoNextAttack = true;
+		return;
+	}
+
+	
 }
 
 void AHunter::TraceLockOnTarget(float DeltaTime)

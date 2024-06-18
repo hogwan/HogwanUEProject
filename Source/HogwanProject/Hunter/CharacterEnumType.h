@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum class ECharacterWeaponState
+enum class ECharacterWeaponState : uint8
 {
 	ECWS_Unoccupied,
 	ECWS_OnehandedWeapon,
@@ -11,14 +11,14 @@ enum class ECharacterWeaponState
 };
 
 UENUM(BlueprintType)
-enum class ECharacterGunState
+enum class ECharacterGunState : uint8
 {
 	ECGS_Unoccupied,
 	ECGS_Equiped,
 };
 
 UENUM(BlueprintType)
-enum class ECharacterActionState
+enum class ECharacterActionState : uint8
 {
 	ECAS_Unoccupied,
 	ECAS_Hit,

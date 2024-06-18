@@ -35,6 +35,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* LockOnAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* AttackAction;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* AttackMontage;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float MoveRotDegree;
 
@@ -44,12 +50,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetIsLockOn(bool LockOn) { bIsLockOn = LockOn; }
 
-	
+	FORCEINLINE int GetAttackCount() { return AttackCount; }
+	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
+	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
+	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void Run(const FInputActionValue& Value);
+	void Dodge(const FInputActionValue& Value);
+	void LockOn(const FInputActionValue& Value);
+	void Attack(const FInputActionValue& Value);
+
+	void TraceLockOnTarget(float DeltaTime);
+
 	//  Components
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* ViewCamera;
@@ -59,14 +77,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class AActor* LockOnTarget;
-
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void Run(const FInputActionValue& Value);
-	void Dodge(const FInputActionValue& Value);
-	void LockOn(const FInputActionValue& Value);
-
-	void TraceLockOnTarget(float DeltaTime);
 
 	bool bIsRun = false;
 	bool bIsLockOn = false;
@@ -82,4 +92,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
 	ECharacterGunState CurGunState = ECharacterGunState::ECGS_Unoccupied;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int AttackCount = 0;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	bool NextAttackChance = false;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	bool GoNextAttack = false;
 };

@@ -31,5 +31,6 @@ void AWeapon::Equip(UMeshComponent* Mesh, FName SocketName)
 {
 	FAttachmentTransformRules Rule(EAttachmentRule::SnapToTarget, false);
 	AttachToComponent(Mesh, Rule, SocketName);
+
 }
 
