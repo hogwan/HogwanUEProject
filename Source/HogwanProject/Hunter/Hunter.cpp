@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Item/Weapon/Weapon.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -62,6 +63,8 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Started, this, &AHunter::LockOn);
 		EnhancedInputComponent->BindAction(AttackAction,
 			ETriggerEvent::Started, this, &AHunter::Attack);
+		EnhancedInputComponent->BindAction(InteractAction,
+			ETriggerEvent::Started, this, &AHunter::Interact);
 		
 	}
 
@@ -195,6 +198,18 @@ void AHunter::Attack(const FInputActionValue& Value)
 	}
 
 	
+}
+
+void AHunter::Interact(const FInputActionValue& Value)
+{
+	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
+	if (OverlappingWeapon)
+	{
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+		OverlappingItem = nullptr;
+		RightHandWeapon = OverlappingWeapon;
+	}
 }
 
 void AHunter::TraceLockOnTarget(float DeltaTime)

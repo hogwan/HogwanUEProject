@@ -38,6 +38,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* AttackAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* InteractAction;
+
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* AttackMontage;
 
@@ -65,6 +68,7 @@ private:
 	void Dodge(const FInputActionValue& Value);
 	void LockOn(const FInputActionValue& Value);
 	void Attack(const FInputActionValue& Value);
+	void Interact(const FInputActionValue& Value);
 
 	void TraceLockOnTarget(float DeltaTime);
 
@@ -101,4 +105,12 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool GoNextAttack = false;
+
+	UPROPERTY(VisibleInstanceOnly)
+	class AItem* OverlappingItem;
+
+public:
+	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
+	class AItem* GetOverlappingItem() { return OverlappingItem; }
+	ECharacterWeaponState GetCharacterWeaponState() const { return CurWeaponState; }
 };
