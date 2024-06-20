@@ -121,7 +121,7 @@ void AHunter::Dodge(const FInputActionValue& Value)
 {
 	if (!bIsRun)
 	{
-
+		
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
@@ -197,8 +197,6 @@ void AHunter::Attack(const FInputActionValue& Value)
 		GoNextAttack = true;
 		return;
 	}
-
-	
 }
 
 void AHunter::Interact(const FInputActionValue& Value)
