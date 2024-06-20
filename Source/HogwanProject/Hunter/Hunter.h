@@ -20,6 +20,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//Input
+#pragma region Input
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* MoveAction;
 
@@ -41,8 +42,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* ShootAction;
+
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* ShootMontage;
+#pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float MoveRotDegree;
@@ -69,6 +77,7 @@ private:
 	void LockOn(const FInputActionValue& Value);
 	void Attack(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
+	void Shoot(const FInputActionValue& Value);
 
 	void TraceLockOnTarget(float DeltaTime);
 

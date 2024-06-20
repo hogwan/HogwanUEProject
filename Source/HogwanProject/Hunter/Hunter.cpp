@@ -65,6 +65,7 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 			ETriggerEvent::Started, this, &AHunter::Attack);
 		EnhancedInputComponent->BindAction(InteractAction,
 			ETriggerEvent::Started, this, &AHunter::Interact);
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AHunter::Shoot);
 		
 	}
 
@@ -205,10 +206,37 @@ void AHunter::Interact(const FInputActionValue& Value)
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
-		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
-		OverlappingItem = nullptr;
-		RightHandWeapon = OverlappingWeapon;
+		EEquipHand EquipHand = OverlappingWeapon->EquipHand;
+
+		if (EquipHand == EEquipHand::EEH_RightHand)
+		{
+			OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+			CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+			OverlappingItem = nullptr;
+			RightHandWeapon = OverlappingWeapon;
+		}
+		else if (EquipHand == EEquipHand::EEH_LeftHand)
+		{
+			OverlappingWeapon->Equip(GetMesh(), FName("LeftHandSocket"));
+			CurGunState = ECharacterGunState::ECGS_Equiped;
+			OverlappingItem = nullptr;
+			LeftHandWeapon = OverlappingWeapon;
+		}
+
+	}
+}
+
+void AHunter::Shoot(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && ShootMontage)
+		{
+			CurActionState = ECharacterActionState::ECAS_Attacking;
+			AnimInstance->Montage_Play(ShootMontage);
+		}
 	}
 }
 

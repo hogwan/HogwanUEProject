@@ -26,10 +26,7 @@ void UAN_GoNextAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 			NextCount = 1;
 			break;
 		case 1:
-			NextCount = 2;
-			break;
-		case 2:
-			NextCount = 1;
+			NextCount = 0;
 			break;
 		default:
 			break;
