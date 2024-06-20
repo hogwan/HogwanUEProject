@@ -46,7 +46,7 @@ void AItem::Equip(USceneComponent* InParent, FName InSocketName)
 void AItem::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName)
 {
 	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
-	Mesh->AttachToComponent(InParent, TransformRules, InSocketName);
+	AttachToComponent(InParent, TransformRules, InSocketName);
 }
 
 void AItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

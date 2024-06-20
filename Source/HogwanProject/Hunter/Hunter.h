@@ -66,6 +66,18 @@ public:
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE class AWeapon* GetRightHandWeapon()
+	{
+		return RightHandWeapon;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE class AWeapon* GetLeftHandWeapon()
+	{
+		return LeftHandWeapon;
+	}
+
 protected:
 	virtual void BeginPlay() override;
 

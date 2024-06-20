@@ -55,9 +55,10 @@ public:
 	UFUNCTION()
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	FORCEINLINE void SetOwner(AActor* _Owner) { Owner = _Owner; }
 protected:
 	virtual void BeginPlay() override;
+	AActor* Owner = nullptr;
 
 private:
-
 };

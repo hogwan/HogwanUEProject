@@ -222,7 +222,7 @@ void AHunter::Interact(const FInputActionValue& Value)
 			OverlappingItem = nullptr;
 			LeftHandWeapon = OverlappingWeapon;
 		}
-
+		OverlappingWeapon->SetOwner(this);
 	}
 }
 
