@@ -50,6 +50,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* ShootMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* DodgeMontage;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -83,6 +86,7 @@ protected:
 
 private:
 	void Move(const FInputActionValue& Value);
+	void MoveEnd(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Run(const FInputActionValue& Value);
 	void Dodge(const FInputActionValue& Value);
@@ -129,6 +133,9 @@ private:
 
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FVector InputVector = FVector::Zero();
 
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }

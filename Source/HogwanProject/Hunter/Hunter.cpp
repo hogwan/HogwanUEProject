@@ -57,6 +57,7 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
 
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AHunter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AHunter::MoveEnd);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AHunter::Look);
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &AHunter::Run);
 		EnhancedInputComponent->BindAction(DodgeAction, ETriggerEvent::Triggered, this, &AHunter::Dodge);
@@ -73,9 +74,9 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AHunter::Move(const FInputActionValue& Value)
 {
-	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+	InputVector = FVector(Value.Get<FVector2D>().X, Value.Get<FVector2D>().Y, 0.f);
 
-	FVector InputMoveVector = FVector(Value.Get<FVector2D>().X, Value.Get<FVector2D>().Y, 0.f);
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
 
 	FRotator Rotation = GetControlRotation();
 	FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -83,15 +84,15 @@ void AHunter::Move(const FInputActionValue& Value)
 	FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	AddMovementInput(ForwardDirection, InputMoveVector.Y);
-	AddMovementInput(RightDirection, InputMoveVector.X);
+	AddMovementInput(ForwardDirection, InputVector.Y);
+	AddMovementInput(RightDirection, InputVector.X);
 
-	FVector MoveVector = GetActorForwardVector() * InputMoveVector.Y + GetActorRightVector() * InputMoveVector.X;
+	FVector MoveVector = GetActorForwardVector() * InputVector.Y + GetActorRightVector() * InputVector.X;
 	ForwardDirection.Normalize();
 	MoveVector.Normalize();
 	float Degree = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(ForwardDirection, MoveVector)));
 
-	if (InputMoveVector.X < 0.f)
+	if (InputVector.X < 0.f)
 	{
 		MoveRotDegree = -Degree;
 	}
@@ -99,6 +100,11 @@ void AHunter::Move(const FInputActionValue& Value)
 	{
 		MoveRotDegree = Degree;
 	}
+}
+
+void AHunter::MoveEnd(const FInputActionValue& Value)
+{
+	InputVector = FVector::Zero();
 }
 
 void AHunter::Look(const FInputActionValue& Value)
@@ -121,7 +127,63 @@ void AHunter::Dodge(const FInputActionValue& Value)
 {
 	if (!bIsRun)
 	{
-		
+		if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+		{
+			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+			if (AnimInstance && DodgeMontage)
+			{
+				AnimInstance->Montage_Play(DodgeMontage);
+				CurActionState = ECharacterActionState::ECAS_Dodging;
+
+				FRotator Rotation = GetControlRotation();
+				FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+
+				FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+				FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+				FVector DirectionVector = ForwardDirection * InputVector.Y + RightDirection * InputVector.X;
+
+				if (InputVector.IsNearlyZero() == false)
+				{
+					FRotator OriginalRot = GetActorRotation();
+					FRotator SettingRot = FRotator(OriginalRot.Pitch, Rotation.Yaw, OriginalRot.Roll);
+					SetActorRotation(SettingRot);
+				}
+
+				DirectionVector.Normalize();
+				ForwardDirection.Normalize();
+				float Degree = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(ForwardDirection, DirectionVector)));
+
+				if (InputVector.X < 0.f)
+				{
+					Degree *= -1.f;
+				}
+
+
+				FName Section = FName("DodgeBack");
+
+				if (InputVector.IsNearlyZero() == false)
+				{
+					if (Degree >= 45.f && Degree <= 135.f)
+					{
+						Section = FName("DodgeRight");
+					}
+					else if (Degree > -45.f && Degree < 45.f)
+					{
+						Section = FName("DodgeForward");
+					}
+					else if (Degree >= -135.f && Degree <= -45.f)
+					{
+						Section = FName("DodgeLeft");
+					}
+				}
+
+				AnimInstance->Montage_JumpToSection(Section, DodgeMontage);
+
+			}
+		}
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
