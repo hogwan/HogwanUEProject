@@ -22,7 +22,6 @@ void AMeleeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	HitBox->OnComponentBeginOverlap.AddDynamic(this, &AMeleeWeapon::OnBoxBeginOverlap);
-	HitBox->OnComponentEndOverlap.AddDynamic(this, &AMeleeWeapon::OnBoxEndOverlap);
 	HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	EquipHand = EEquipHand::EEH_RightHand;
@@ -30,9 +29,6 @@ void AMeleeWeapon::BeginPlay()
 
 void AMeleeWeapon::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	IgnoreArray.AddUnique(this);
-	IgnoreArray.AddUnique(Owner);
-
 	FHitResult HitResult;
 
 	UKismetSystemLibrary::BoxTraceSingle(
@@ -63,17 +59,15 @@ void AMeleeWeapon::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 }
 
-void AMeleeWeapon::OnBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	IgnoreArray.Empty();
-}
-
 void AMeleeWeapon::HitBoxOn()
 {
+	IgnoreArray.AddUnique(this);
+	IgnoreArray.AddUnique(Owner);
 	HitBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void AMeleeWeapon::HitBoxOff()
 {
+	IgnoreArray.Empty();
 	HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
