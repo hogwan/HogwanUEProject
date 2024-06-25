@@ -2,21 +2,11 @@
 
 
 #include "Monster/Monster.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/ArrowComponent.h"
-#include "Components/SkeletalMeshComponent.h"
+
 AMonster::AMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
-	SetRootComponent(Capsule);
-
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
-
-	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
-	Arrow->SetupAttachment(GetRootComponent());
 }
 
 void AMonster::BeginPlay()

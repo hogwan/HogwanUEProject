@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "Interface/HitInterface.h"
 #include "Monster.generated.h"
 
 UCLASS()
-class HOGWANPROJECT_API AMonster : public APawn, public IHitInterface
+class HOGWANPROJECT_API AMonster : public ACharacter, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -20,15 +20,7 @@ public:
 	
 	void GetHit() override;
 
-	FORCEINLINE class USkeletalMeshComponent* GetMesh() { return Mesh; }
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	class UCapsuleComponent* Capsule;
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	class USkeletalMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	class UArrowComponent* Arrow;
 };
