@@ -8,7 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Item/Weapon/Weapon.h"
+#include "Global/BBGameInstance.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -30,14 +30,13 @@ AHunter::AHunter()
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
-
 }
 
 // Called when the game starts or when spawned
 void AHunter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 
@@ -263,27 +262,7 @@ void AHunter::Attack(const FInputActionValue& Value)
 
 void AHunter::Interact(const FInputActionValue& Value)
 {
-	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
-	if (OverlappingWeapon)
-	{
-		EEquipHand EquipHand = OverlappingWeapon->EquipHand;
 
-		if (EquipHand == EEquipHand::EEH_RightHand)
-		{
-			OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
-			CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
-			OverlappingItem = nullptr;
-			RightHandWeapon = OverlappingWeapon;
-		}
-		else if (EquipHand == EEquipHand::EEH_LeftHand)
-		{
-			OverlappingWeapon->Equip(GetMesh(), FName("LeftHandSocket"));
-			CurGunState = ECharacterGunState::ECGS_Equiped;
-			OverlappingItem = nullptr;
-			LeftHandWeapon = OverlappingWeapon;
-		}
-		OverlappingWeapon->SetOwner(this);
-	}
 }
 
 void AHunter::Shoot(const FInputActionValue& Value)

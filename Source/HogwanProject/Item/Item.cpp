@@ -36,19 +36,6 @@ void AItem::Tick(float DeltaTime)
 
 }
 
-void AItem::Equip(USceneComponent* InParent, FName InSocketName)
-{
-	AttachMeshToSocket(InParent, InSocketName);
-	ItemState = EItemState::EIS_Equipped;
-}
-
-
-void AItem::AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName)
-{
-	FAttachmentTransformRules TransformRules(EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
-	AttachToComponent(InParent, TransformRules, InSocketName);
-}
-
 void AItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (GEngine)

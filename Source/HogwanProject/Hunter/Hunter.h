@@ -68,19 +68,6 @@ public:
 	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE class AWeapon* GetRightHandWeapon()
-	{
-		return RightHandWeapon;
-	}
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE class AWeapon* GetLeftHandWeapon()
-	{
-		return LeftHandWeapon;
-	}
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -116,12 +103,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
 	ECharacterActionState CurActionState = ECharacterActionState::ECAS_Unoccupied;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
-	ECharacterWeaponState CurWeaponState = ECharacterWeaponState::ECWS_Unoccupied;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
-	ECharacterGunState CurGunState = ECharacterGunState::ECGS_Unoccupied;
-
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int AttackCount = 0;
 
@@ -140,5 +121,15 @@ private:
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
-	ECharacterWeaponState GetCharacterWeaponState() const { return CurWeaponState; }
+	
+	UPROPERTY()
+	int EquipedWeaponSlot = 0;
+	UPROPERTY()
+	int EquipedGunSlot = 0;
+
+	UPROPERTY(EditAnywhere)
+	TArray<class AMeleeWeapon*> EquipedMeleeWeapons;
+
+	UPROPERTY(EditAnywhere)
+	TArray<class ARangedWeapon*> EquippedRangedWeapons;
 };
