@@ -130,7 +130,7 @@ void AHunter::Dodge(const FInputActionValue& Value)
 		{
 			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-			if (AnimInstance && DodgeMontage)
+			if (bIsLockOn && AnimInstance && DodgeMontage)
 			{
 				AnimInstance->Montage_Play(DodgeMontage);
 				CurActionState = ECharacterActionState::ECAS_Dodging;
@@ -181,6 +181,11 @@ void AHunter::Dodge(const FInputActionValue& Value)
 
 				AnimInstance->Montage_JumpToSection(Section, DodgeMontage);
 
+			}
+			else
+			{
+				AnimInstance->Montage_Play(RollMontage);
+				CurActionState = ECharacterActionState::ECAS_Dodging;
 			}
 		}
 	}
