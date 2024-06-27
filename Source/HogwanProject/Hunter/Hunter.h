@@ -71,6 +71,7 @@ public:
 	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
+	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
 protected:
 	virtual void BeginPlay() override;
 
@@ -87,6 +88,9 @@ private:
 
 	void TraceLockOnTarget(float DeltaTime);
 
+	void ReleaseLockOn();
+	void SetLockOn(class AMonster* Target);
+
 	//  Components
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* ViewCamera;
@@ -95,13 +99,13 @@ private:
 	class USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UAttributeComponent* Attribute;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class AActor* LockOnTarget;
 
 	bool bIsRun = false;
 	bool bIsLockOn = false;
-
-	class AWeapon* RightHandWeapon = nullptr;
-	class AWeapon* LeftHandWeapon = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
 	ECharacterActionState CurActionState = ECharacterActionState::ECAS_Unoccupied;
@@ -125,14 +129,14 @@ public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
 	
-	UPROPERTY()
-	int EquipedWeaponSlot = 0;
-	UPROPERTY()
-	int EquipedGunSlot = 0;
+	UPROPERTY(BlueprintReadWrite)
+	int CurWeaponSlot = 0;
+	UPROPERTY(BlueprintReadWrite)
+	int CurGunSlot = 0;
 
-	UPROPERTY(EditAnywhere)
-	TArray<class AMeleeWeapon*> EquipedMeleeWeapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AMeleeWeapon* EquipedMeleeWeapons;
 
-	UPROPERTY(EditAnywhere)
-	TArray<class ARangedWeapon*> EquippedRangedWeapons;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ARangedWeapon* EquippedRangedWeapons;
 };

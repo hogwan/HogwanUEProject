@@ -18,6 +18,12 @@ public:
 	AMeleeWeapon();
 	void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
+	void HitBoxOn();
+
+	UFUNCTION(BlueprintCallable)
+	void HitBoxOff();
+
 protected:
 	void BeginPlay() override;
 

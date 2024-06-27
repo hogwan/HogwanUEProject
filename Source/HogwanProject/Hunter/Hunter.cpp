@@ -9,6 +9,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Global/BBGameInstance.h"
+#include "ActorComponent/AttributeComponent.h"
+#include "Monster/Monster.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -30,6 +32,8 @@ AHunter::AHunter()
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
+
+	Attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +41,8 @@ void AHunter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
+	//GameInstance->Hunter = this;
 }
 
 
@@ -198,12 +204,7 @@ void AHunter::LockOn(const FInputActionValue& Value)
 {
 	if (bIsLockOn)
 	{
-		bIsLockOn = false;
-		if (LockOnTarget)
-		{
-			LockOnTarget = nullptr;
-		}
-
+		ReleaseLockOn();
 		return;
 	}
 
@@ -238,8 +239,18 @@ void AHunter::LockOn(const FInputActionValue& Value)
 		return;
 	}
 
-	LockOnTarget = OutHit.GetActor();
-	bIsLockOn = true;
+	AMonster* Monster = Cast<AMonster>(OutHit.GetActor());
+	if (Monster)
+	{
+		if (Monster->GetAttribute()->GetIsDeath())
+		{
+			return;
+		}
+
+
+		SetLockOn(Monster);
+	}
+
 }
 
 void AHunter::Attack(const FInputActionValue& Value)
@@ -288,6 +299,12 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 {
 	if (LockOnTarget)
 	{
+		AMonster* Monster = Cast<AMonster>(LockOnTarget);
+		if (Monster->GetAttribute()->GetIsDeath())
+		{
+			ReleaseLockOn();
+		}
+
 		FVector Start = GetActorLocation();
 		FVector Target = LockOnTarget->GetActorLocation();
 
@@ -310,5 +327,34 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 	else
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+}
+
+void AHunter::ReleaseLockOn()
+{
+	bIsLockOn = false;
+	if (LockOnTarget)
+	{
+		LockOnTarget = nullptr;
+	}
+
+	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
+
+	if (GameInstance)
+	{
+		GameInstance->LockOnTarget = nullptr;
+	}
+}
+
+void AHunter::SetLockOn(AMonster* Target)
+{
+	bIsLockOn = true;
+	LockOnTarget = Target;
+
+	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
+
+	if (GameInstance)
+	{
+		GameInstance->LockOnTarget = Target;
 	}
 }

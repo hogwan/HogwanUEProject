@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Interface/HitInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -24,16 +25,30 @@ void AMeleeWeapon::Tick(float DeltaTime)
 
 }
 
+void AMeleeWeapon::HitBoxOn()
+{
+	HitBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AMeleeWeapon::HitBoxOff()
+{
+	HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	IgnoreArray.Empty();
+}
+
 void AMeleeWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
 	HitBox->OnComponentBeginOverlap.AddDynamic(this, &AMeleeWeapon::HitBoxBeginOverlap);
+	HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	FHitResult HitResult;
+
+	IgnoreArray.AddUnique(this);
 
 	UKismetSystemLibrary::BoxTraceSingle(
 		this,
@@ -49,13 +64,20 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		true
 	);
 
-
 	if (HitResult.GetActor())
 	{
+		UGameplayStatics::ApplyDamage(
+			HitResult.GetActor(),
+			20.f,
+			GetOwner()->GetInstigatorController(),
+			this,
+			UDamageType::StaticClass());
+
+		IgnoreArray.AddUnique(HitResult.GetActor());
 		IHitInterface* Hit = Cast<IHitInterface>(HitResult.GetActor());
 		if (Hit)
 		{
-			Hit->GetHit();
+			Hit->GetHit(HitResult.ImpactPoint);
 		}
 	}
 

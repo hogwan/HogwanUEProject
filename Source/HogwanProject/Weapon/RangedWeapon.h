@@ -17,11 +17,17 @@ class HOGWANPROJECT_API ARangedWeapon : public AWeapon
 public:
 	ARangedWeapon();
 	void Tick(float DeltaTime) override;
-
+	
+	UFUNCTION(BlueprintCallable)
+	void SpawnBullet();
 protected:
 	void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* BulletSpawnPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ABullet> BP_Bullet = nullptr;
+
 };

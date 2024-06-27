@@ -2,6 +2,9 @@
 
 
 #include "Weapon/RangedWeapon.h"
+#include "Weapon/Bullet.h"
+#include "Hunter/Hunter.h"
+#include "Global/BBGameInstance.h"
 
 ARangedWeapon::ARangedWeapon()
 {
@@ -12,6 +15,34 @@ ARangedWeapon::ARangedWeapon()
 void ARangedWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ARangedWeapon::SpawnBullet()
+{
+	FTransform SpawnTrans;
+	SpawnTrans.SetLocation(BulletSpawnPoint->GetComponentLocation());
+
+	UWorld* World = GetWorld();
+
+	ABullet* NewBullet = World->SpawnActor<ABullet>(BP_Bullet, SpawnTrans);
+
+	if (nullptr == NewBullet) return;
+
+	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
+	
+	if (GameInstance && GameInstance->LockOnTarget)
+	{
+		FVector Dir = GameInstance->LockOnTarget->GetActorLocation() - SpawnTrans.GetLocation();
+
+		Dir.Normalize();
+
+		NewBullet->SetDir(Dir);
+	}
+	else
+	{
+		NewBullet->SetDir(GetActorForwardVector());
+	}
+
 }
 
 void ARangedWeapon::BeginPlay()

@@ -3,9 +3,9 @@
 
 #include "Monster/WomanZombie.h"
 
-void AWomanZombie::GetHit()
+void AWomanZombie::GetHit(FVector ImpactPoint)
 {
-	Super::GetHit();
+	Super::GetHit(ImpactPoint);
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 

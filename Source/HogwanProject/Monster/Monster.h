@@ -18,13 +18,18 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	void GetHit() override;
+	void GetHit(FVector ImpactPoint) override;
+	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UAttributeComponent* Attribute;
 
 };

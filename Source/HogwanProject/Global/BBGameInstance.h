@@ -15,5 +15,10 @@ class HOGWANPROJECT_API UBBGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AActor* LockOnTarget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AHunter* Hunter;
 
 };

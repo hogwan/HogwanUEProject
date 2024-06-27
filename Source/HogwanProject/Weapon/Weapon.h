@@ -21,5 +21,4 @@ protected:
 	class UStaticMeshComponent* Mesh;
 public:	
 	virtual void Tick(float DeltaTime) override;
-
 };
