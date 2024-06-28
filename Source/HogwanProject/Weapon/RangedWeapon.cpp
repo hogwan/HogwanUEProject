@@ -19,8 +19,7 @@ void ARangedWeapon::Tick(float DeltaTime)
 
 void ARangedWeapon::SpawnBullet()
 {
-	FTransform SpawnTrans;
-	SpawnTrans.SetLocation(BulletSpawnPoint->GetComponentLocation());
+	FTransform SpawnTrans = BulletSpawnPoint->GetComponentTransform();
 
 	UWorld* World = GetWorld();
 
@@ -40,7 +39,10 @@ void ARangedWeapon::SpawnBullet()
 	}
 	else
 	{
-		NewBullet->SetDir(GetActorForwardVector());
+		if (GetOwner())
+		{
+			NewBullet->SetDir(GetOwner()->GetActorForwardVector());
+		}
 	}
 
 }

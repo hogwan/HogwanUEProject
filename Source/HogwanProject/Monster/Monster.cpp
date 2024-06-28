@@ -13,6 +13,9 @@ AMonster::AMonster()
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
+	LockOnTargetWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnTarget"));
+	LockOnTargetWidget->SetupAttachment(GetRootComponent());
+
 	Attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 }
 
@@ -23,6 +26,11 @@ void AMonster::BeginPlay()
 	if (HealthBarWidget)
 	{
 		HealthBarWidget->SetHealthPercent(1.f);
+	}
+
+	if (LockOnTargetWidget)
+	{
+		LockOnTargetWidget->SetVisibility(false);
 	}
 
 }

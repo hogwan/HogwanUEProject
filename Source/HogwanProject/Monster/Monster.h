@@ -22,12 +22,17 @@ public:
 	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
+
+	FORCEINLINE class UWidgetComponent* GetLockOnWidget() { return LockOnTargetWidget; }
 protected:
 	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* LockOnTargetWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UAttributeComponent* Attribute;

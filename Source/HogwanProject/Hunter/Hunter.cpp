@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Global/BBGameInstance.h"
 #include "ActorComponent/AttributeComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Monster/Monster.h"
 
 // Sets default values
@@ -312,12 +313,14 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 		FRotator StartRotation = GetController()->GetControlRotation();
 		FRotator Result = UKismetMathLibrary::RInterpTo(StartRotation, TargetRotation, DeltaTime, 5.f);
 
-		GetController()->SetControlRotation(Result);
+		FRotator CameraRotation = FRotator(-25.f, Result.Yaw, 0.f);
+
+		GetController()->SetControlRotation(CameraRotation);
 		
 		if (!bIsRun)
 		{
 			GetCharacterMovement()->bOrientRotationToMovement = false;
-			SetActorRotation(Result);
+			SetActorRotation(FRotator(0.f, Result.Yaw, 0.f));
 		}
 		else
 		{
@@ -340,8 +343,15 @@ void AHunter::ReleaseLockOn()
 
 	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
 
-	if (GameInstance)
+	if (GameInstance && GameInstance->LockOnTarget)
 	{
+		AMonster* Monster = Cast<AMonster>(GameInstance->LockOnTarget);
+
+		if (Monster)
+		{
+			Monster->GetLockOnWidget()->SetVisibility(false);
+		}
+
 		GameInstance->LockOnTarget = nullptr;
 	}
 }
@@ -350,6 +360,8 @@ void AHunter::SetLockOn(AMonster* Target)
 {
 	bIsLockOn = true;
 	LockOnTarget = Target;
+
+	Target->GetLockOnWidget()->SetVisibility(true);
 
 	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
 
