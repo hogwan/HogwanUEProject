@@ -15,8 +15,4 @@ class HOGWANPROJECT_API AWomanZombie : public AMonster
 	GENERATED_BODY()
 	
 public:
-	void GetHit(FVector ImpactPoint) override;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* HitMontage;
 };

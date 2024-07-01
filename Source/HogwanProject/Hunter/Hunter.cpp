@@ -33,8 +33,6 @@ AHunter::AHunter()
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
-
-	Attribute = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 }
 
 // Called when the game starts or when spawned

@@ -2,15 +2,3 @@
 
 
 #include "Monster/WomanZombie.h"
-
-void AWomanZombie::GetHit(FVector ImpactPoint)
-{
-	Super::GetHit(ImpactPoint);
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	if (AnimInstance && HitMontage)
-	{
-		AnimInstance->Montage_Play(HitMontage);
-	}
-}

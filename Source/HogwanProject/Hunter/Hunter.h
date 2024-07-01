@@ -71,7 +71,7 @@ public:
 	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
-	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -97,9 +97,6 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* SpringArm;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	class UAttributeComponent* Attribute;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class AActor* LockOnTarget;
@@ -128,11 +125,6 @@ private:
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
-	
-	UPROPERTY(BlueprintReadWrite)
-	int CurWeaponSlot = 0;
-	UPROPERTY(BlueprintReadWrite)
-	int CurGunSlot = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AMeleeWeapon* EquipedMeleeWeapons;

@@ -64,8 +64,11 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		true
 	);
 
+
 	if (HitResult.GetActor())
 	{
+		IgnoreArray.AddUnique(HitResult.GetActor());
+
 		UGameplayStatics::ApplyDamage(
 			HitResult.GetActor(),
 			20.f,
