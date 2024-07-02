@@ -2,7 +2,7 @@
 
 
 #include "Notify/AN_GoNextAttack.h"
-#include "Hunter/Hunter.h"
+#include "Character/Hunter/Hunter.h"
 
 void UAN_GoNextAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

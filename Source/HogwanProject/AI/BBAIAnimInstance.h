@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Hunter/BBAnimInstance.h"
+#include "Global/BBAnimInstance.h"
 #include "BBAIAnimInstance.generated.h"
 
 /**

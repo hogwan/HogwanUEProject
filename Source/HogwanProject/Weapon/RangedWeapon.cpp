@@ -3,7 +3,7 @@
 
 #include "Weapon/RangedWeapon.h"
 #include "Weapon/Bullet.h"
-#include "Hunter/Hunter.h"
+#include "Character/Hunter/Hunter.h"
 #include "Global/BBGameInstance.h"
 
 ARangedWeapon::ARangedWeapon()

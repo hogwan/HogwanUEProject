@@ -4,7 +4,7 @@
 #include "Weapon/Bullet.h"
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "Monster/Monster.h"
+#include "Character/Monster/Monster.h"
 #include "Interface/HitInterface.h"
 
 // Sets default values

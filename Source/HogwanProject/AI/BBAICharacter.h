@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseCharacter.h"
-#include "BBAIAnimInstance.h"
+#include "Character/BaseCharacter.h"
+#include "AI/BBAIAnimInstance.h"
 #include "BBAICharacter.generated.h"
 
 /**

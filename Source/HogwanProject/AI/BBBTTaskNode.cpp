@@ -3,8 +3,8 @@
 
 #include "AI/BBBTTaskNode.h"
 #include "Kismet/GameplayStatics.h"
-#include "Global/BBPlayerController.h"
-#include "Hunter/Hunter.h"
+#include "Character/Hunter/BBPlayerController.h"
+#include "Character/Hunter/Hunter.h"
 
 UBBBTTaskNode::UBBBTTaskNode()
 {
