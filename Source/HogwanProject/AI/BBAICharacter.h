@@ -29,7 +29,18 @@ public:
 	{
 		return AnimInst;
 	}
+
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	class ABBAIController* GetBBAIController();
 	
+	float IdleTime = 3.f;
+	float IdleAcc = IdleTime;
+
+	UPROPERTY(EditInstanceOnly)
+	TArray<FVector> PatrolPoints;
+
+	int PatrolNum = 0;
+
 protected:
 	void BeginPlay() override;
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AI/BBAICharacter.h"
 #include "Interface/HitInterface.h"
+#include "Global/BBEnum.h"
 #include "Monster.generated.h"
 
 UCLASS()
@@ -18,13 +19,11 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-
 	FORCEINLINE class UWidgetComponent* GetLockOnWidget() { return LockOnTargetWidget; }
 protected:
 	virtual void BeginPlay() override;
 
 private:
-
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* LockOnTargetWidget;
 

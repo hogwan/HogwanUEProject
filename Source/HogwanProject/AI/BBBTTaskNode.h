@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "AI/BBAICharacter.h"
+#include "Global/BBEnum.h"
+#include "Character/Hunter/Hunter.h"
+#include "Character/Monster/Monster.h"
 #include "BBBTTaskNode.generated.h"
 
 /**
@@ -42,21 +46,7 @@ public:
 
 	uint8 GetCurState(UBehaviorTreeComponent& _OwnerComp);
 
-	template<typename EnumType>
-	AActor* GetTarget(UBehaviorTreeComponent& _OwnerComp, float _Range, EnumType _Target, bool _ZIgnore = true)
-	{
-		return GetTarget(_OwnerComp, _Range, static_cast<uint8>(_Target), _ZIgnore);
-	}
-
-	AActor* GetTarget(UBehaviorTreeComponent& _OwnerComp, float _Range, uint8 Target, bool _ZIgnore = true);
-
-	template<typename EnumType>
-	AActor* CheckTarget(UBehaviorTreeComponent& _OwnerComp, float _Range, EnumType Target, bool _ZIgnore = true)
-	{
-		return CheckTarget(_OwnerComp, _Range, static_cast<uint8>(Target), _ZIgnore);
-	}
-
-	AActor* CheckTarget(UBehaviorTreeComponent& _OwnerComp, float _Range, uint8 Target, bool _ZIgnore = true);
+	class AHunter* GetHunter();
 
 	template<typename EnumType>
 	void ChangeState(UBehaviorTreeComponent& _OwnerComp, EnumType _StateChange)
@@ -81,4 +71,12 @@ public:
 	{
 		_OwnerComp.GetBlackboardComponent()->SetValueAsObject(_Name, _Value);
 	}
+
+	bool PerceiveInRange(UBehaviorTreeComponent& _OwnerComp, float PerceiveRange);
+
+	float BetweenAngleToDegree(UBehaviorTreeComponent& _OwnerComp);
+
+	bool DecideRotationDirection(UBehaviorTreeComponent& _OwnerComp);
+
+	void TimeReset(UBehaviorTreeComponent& _OwnerComp);
 };
