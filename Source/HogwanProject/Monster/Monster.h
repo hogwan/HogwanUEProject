@@ -4,12 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "BaseCharacter.h"
+#include "AI/BBAICharacter.h"
 #include "Interface/HitInterface.h"
 #include "Monster.generated.h"
 
 UCLASS()
-class HOGWANPROJECT_API AMonster : public ABaseCharacter
+class HOGWANPROJECT_API AMonster : public ABBAICharacter
 {
 	GENERATED_BODY()
 

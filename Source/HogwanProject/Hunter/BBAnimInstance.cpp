@@ -2,28 +2,4 @@
 
 
 #include "BBAnimInstance.h"
-#include "Hunter.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/KismetMathLibrary.h"
 
-void UBBAnimInstance::NativeInitializeAnimation()
-{
-	Super::NativeInitializeAnimation();
-
-	Hunter = Cast<AHunter>(TryGetPawnOwner());
-	if (Hunter)
-	{
-		HunterMovement = Hunter->GetCharacterMovement();
-	}
-}
-
-void UBBAnimInstance::NativeUpdateAnimation(float DeltaTime)
-{
-	Super::NativeUpdateAnimation(DeltaTime);
-
-	if (HunterMovement)
-	{
-		GroundSpeed = UKismetMathLibrary::VSizeXY(HunterMovement->Velocity);
-		MoveRotDegree = Hunter->MoveRotDegree;
-	}
-}
