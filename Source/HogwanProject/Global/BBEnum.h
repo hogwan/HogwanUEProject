@@ -18,8 +18,7 @@ enum class EMonsterAnimation : uint8
 {
 	EMA_Idle,
 	EMA_Walk,
-	EMA_Turn_Right,
-	EMA_Turn_Left,
+	EMA_Turn,
 	EMA_Perceive,
 	EMA_Run,
 	EMA_Attack0,

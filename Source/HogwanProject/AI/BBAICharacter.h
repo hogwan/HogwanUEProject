@@ -35,11 +35,23 @@ public:
 	
 	float IdleTime = 3.f;
 	float IdleAcc = IdleTime;
+	float PerceiveRange = 300.f;
+	float AttackRange = 80.f;
+
+	int PatrolNum = 0;
+	bool PerceiveHunter = false;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool TurnEnd = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool AttackEnd = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool HitEnd = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool PerceiveEnd = false;
 
 	UPROPERTY(EditInstanceOnly)
 	TArray<FVector> PatrolPoints;
-
-	int PatrolNum = 0;
 
 protected:
 	void BeginPlay() override;

@@ -9,6 +9,7 @@
 #include "Global/BBEnum.h"
 #include "Character/Hunter/Hunter.h"
 #include "Character/Monster/Monster.h"
+#include "AI/BBAIController.h"
 #include "BBBTTaskNode.generated.h"
 
 /**
@@ -78,5 +79,5 @@ public:
 
 	bool DecideRotationDirection(UBehaviorTreeComponent& _OwnerComp);
 
-	void TimeReset(UBehaviorTreeComponent& _OwnerComp);
+	void StatusReset(UBehaviorTreeComponent& _OwnerComp);
 };

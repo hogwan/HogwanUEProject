@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using UnrealBuildTool.Rules;
 
 public class HogwanProject : ModuleRules
 {
@@ -10,7 +11,7 @@ public class HogwanProject : ModuleRules
 
         PublicIncludePaths.Add(System.IO.Path.Combine(ModuleDirectory, ""));
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput"});
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

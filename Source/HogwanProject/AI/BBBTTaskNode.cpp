@@ -36,6 +36,7 @@ AHunter* UBBBTTaskNode::GetHunter()
 
 void UBBBTTaskNode::ChangeState(UBehaviorTreeComponent& _OwnerComp, uint8 _StateChange)
 {
+	StatusReset(_OwnerComp);
 	_OwnerComp.GetBlackboardComponent()->SetValueAsEnum(TEXT("StateValue"), _StateChange);
 	FinishLatentTask(_OwnerComp, EBTNodeResult::Failed);
 }
@@ -103,12 +104,13 @@ bool UBBBTTaskNode::DecideRotationDirection(UBehaviorTreeComponent& _OwnerComp)
 	else return false;
 }
 
-void UBBBTTaskNode::TimeReset(UBehaviorTreeComponent& _OwnerComp)
+void UBBBTTaskNode::StatusReset(UBehaviorTreeComponent& _OwnerComp)
 {
 	ABBAICharacter* Monster = GetActor<ABBAICharacter>(_OwnerComp);
 	if (Monster)
 	{
 		Monster->IdleAcc = Monster->IdleTime;
+		Monster->PatrolNum = 0;
 	}
 }
 

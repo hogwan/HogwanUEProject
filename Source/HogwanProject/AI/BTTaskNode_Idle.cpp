@@ -2,6 +2,7 @@
 
 
 #include "AI/BTTaskNode_Idle.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -22,6 +23,7 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& _Owner
 	}
 
 	Character->ChangeAnimation(EMonsterAnimation::EMA_Idle);
+	Character->GetCharacterMovement()->MaxWalkSpeed = 0.f;
 
 	return EBTNodeResult::InProgress;
 }
@@ -37,23 +39,28 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 
 	if (Monster->IdleAcc < 0.f)
 	{
-		TimeReset(_OwnerComp);
 		ChangeState(_OwnerComp,EMonsterState::EMS_Patrol);
 		return;
 	}
 
-	if (PerceiveInRange(_OwnerComp, 300.f))
+	if (Monster->PerceiveHunter || PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
 	{
 		if (BetweenAngleToDegree(_OwnerComp) > 60.f)
 		{
-			TimeReset(_OwnerComp);
 			ChangeState(_OwnerComp, EMonsterState::EMS_Turn);
 			return;
 		}
 
-		TimeReset(_OwnerComp);
-		ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
-		return;
-	}
+		if (Monster->PerceiveHunter)
+		{
+			ChangeState(_OwnerComp, EMonsterState::EMS_Run);
+			return;
+		}
+		else
+		{
+			ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
+			return;
+		}
 
+	}
 }
