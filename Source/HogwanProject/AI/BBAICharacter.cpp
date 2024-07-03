@@ -8,6 +8,7 @@
 #include "AI/BBAIAnimInstance.h"
 #include "ActorComponent/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 ABBAIController* ABBAICharacter::GetBBAIController()
@@ -17,39 +18,53 @@ ABBAIController* ABBAICharacter::GetBBAIController()
 	return Cast<ABBAIController>(GetController());
 }
 
-void ABBAICharacter::GetHit(const FVector& ImpactPoint)
+void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
 {
-	Super::GetHit(ImpactPoint);
+	Super::GetHit(ImpactPoint, Hitter, HitType);
 
 	ABBAIController* Con = Cast<ABBAIController>(GetController());
-	int StateValue = 10;
 	
-	if (Con && StateValue)
+	if (Con && AnimInst)
 	{
 		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
 		if (BlackBoard)
 		{
 			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
-			StateValue = static_cast<int>(BlackBoard->GetValueAsEnum(TEXT("StateValue")));
 		}
-	}
 
-	if (AnimInst)
-	{
-		AnimInst->Montage_Play(AnimInst->HitMontage);
-
-		int Random = FMath::RandRange(0, 1);
-
-		switch (Random)
+		if (HitType == EHitType::EHT_Light)
 		{
-		case 0:
+			AnimInst->Montage_Play(AnimInst->HitMontage);
 			AnimInst->Montage_JumpToSection(TEXT("Hit1"));
-			break;
-		case 1:
+		}
+		else if (HitType == EHitType::EHT_Heavy)
+		{
+			AnimInst->Montage_Play(AnimInst->HitMontage);
 			AnimInst->Montage_JumpToSection(TEXT("Hit2"));
-			break;
-		default:
-			break;
+		}
+		else if (HitType == EHitType::EHT_Charge)
+		{
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_Play(AnimInst->StunMontage);
+			}
+			else
+			{
+				AnimInst->Montage_Play(AnimInst->HitMontage);
+				AnimInst->Montage_JumpToSection(TEXT("Hit2"));
+			}
+		}
+		else if (HitType == EHitType::EHT_Bullet)
+		{
+			if (Parriable)
+			{
+				AnimInst->Montage_Play(AnimInst->StunMontage);
+			}
+			else
+			{
+				AnimInst->Montage_Play(AnimInst->HitMontage);
+				AnimInst->Montage_JumpToSection(TEXT("Hit1"));
+			}
 		}
 	}
 }
@@ -69,4 +84,29 @@ void ABBAICharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AnimInst = Cast<UBBAIAnimInstance>(GetMesh()->GetAnimInstance());
+}
+
+bool ABBAICharacter::BackHit(AActor* Hitter)
+{
+	FVector Forward = GetActorForwardVector();
+	Forward.Z = 0.f;
+
+	FVector Target = Hitter->GetActorLocation() - GetActorLocation();
+	Target.Z = 0.f;
+
+	Forward.Normalize();
+	Target.Normalize();
+
+	float DotScala = UKismetMathLibrary::Dot_VectorVector(Forward, Target);
+
+	float RadianAngle = UKismetMathLibrary::Acos(DotScala);
+
+	float DegreeAngle = FMath::RadiansToDegrees(RadianAngle);
+
+	if (DegreeAngle > 120.f)
+	{
+		return true;
+	}
+
+	return false;
 }

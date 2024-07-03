@@ -40,6 +40,9 @@ public:
 	class UInputAction* AttackAction;
 
 	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* ChargeAttackAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* InteractAction;
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -47,6 +50,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* ChargeAttackMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* ShootMontage;
@@ -83,6 +89,7 @@ private:
 	void Dodge(const FInputActionValue& Value);
 	void LockOn(const FInputActionValue& Value);
 	void Attack(const FInputActionValue& Value);
+	void ChargeAttack(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
 	void Shoot(const FInputActionValue& Value);
 

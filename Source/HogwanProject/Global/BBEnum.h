@@ -15,14 +15,10 @@ enum class EMonsterState : uint8
 };
 
 UENUM(BlueprintType)
-enum class EMonsterAnimation : uint8
+enum class EHitType : uint8
 {
-	EMA_Idle,
-	EMA_Walk,
-	EMA_Turn,
-	EMA_Perceive,
-	EMA_Run,
-	EMA_Attack0,
-	EMA_Attack1,
-	EMA_Attack2,
+	EHT_Light,
+	EHT_Heavy,
+	EHT_Charge,
+	EHT_Bullet,
 };

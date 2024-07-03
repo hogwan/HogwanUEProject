@@ -32,7 +32,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 }
 
-void ABaseCharacter::GetHit(const FVector& ImpactPoint)
+void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 

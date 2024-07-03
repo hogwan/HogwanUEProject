@@ -34,19 +34,12 @@ void ABullet::BeginPlay()
 
 void ABullet::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AMonster* Monster = Cast<AMonster>(OtherActor);
-	if (Monster)
-	{
-		//만약 몬스터의 상태가 공격중이라면 스턴 , ApplyDamage
-	}
-
 	IHitInterface* Hit = Cast<IHitInterface>(OtherActor);
 	if (Hit)
 	{
-		Hit->GetHit(GetActorLocation());
+		Hit->GetHit(GetActorLocation(),this, EHitType::EHT_Bullet);
+		Destroy();
 	}
-
-	//Destroy();
 }
 
 // Called every frame

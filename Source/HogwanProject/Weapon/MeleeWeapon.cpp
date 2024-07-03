@@ -80,7 +80,7 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		IHitInterface* Hit = Cast<IHitInterface>(HitResult.GetActor());
 		if (Hit)
 		{
-			Hit->GetHit(HitResult.ImpactPoint);
+			Hit->GetHit(HitResult.ImpactPoint, GetOwner(), HitType);
 		}
 	}
 

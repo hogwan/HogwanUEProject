@@ -16,7 +16,7 @@ public:
 	ABaseCharacter();
 	virtual void Tick(float DeltaTime) override;
 
-	void GetHit(const FVector& ImpactPoint) override;
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }

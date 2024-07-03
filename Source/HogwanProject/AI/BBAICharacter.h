@@ -34,6 +34,8 @@ public:
 	bool PerceiveHunter = false;
 
 	UPROPERTY(BlueprintReadWrite)
+	bool Parriable = false;
+	UPROPERTY(BlueprintReadWrite)
 	bool TurnEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool AttackEnd = false;
@@ -46,14 +48,14 @@ public:
 	TArray<FVector> PatrolPoints;
 
 
-	void GetHit(const FVector& ImpactPoint) override;
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 	
 	float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 protected:
 	void BeginPlay() override;
 
-
+	bool BackHit(AActor* Hitter);
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UBBAIAnimInstance* AnimInst;

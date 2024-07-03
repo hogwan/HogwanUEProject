@@ -36,4 +36,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* RunMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* StunMontage;
 };

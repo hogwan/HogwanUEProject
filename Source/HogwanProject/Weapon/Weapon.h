@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Global/BBEnum.h"
 #include "Weapon.generated.h"
 
 UCLASS()
@@ -13,6 +14,9 @@ class HOGWANPROJECT_API AWeapon : public AActor
 	
 public:	
 	AWeapon();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EHitType HitType = EHitType::EHT_Light;
 
 protected:
 	virtual void BeginPlay() override;

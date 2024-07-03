@@ -12,6 +12,7 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Character/Monster/Monster.h"
+#include "Weapon/MeleeWeapon.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -61,6 +62,8 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Started, this, &AHunter::LockOn);
 		EnhancedInputComponent->BindAction(AttackAction,
 			ETriggerEvent::Started, this, &AHunter::Attack);
+		EnhancedInputComponent->BindAction(ChargeAttackAction,
+			ETriggerEvent::Started, this, &AHunter::ChargeAttack);
 		EnhancedInputComponent->BindAction(InteractAction,
 			ETriggerEvent::Started, this, &AHunter::Interact);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AHunter::Shoot);
@@ -250,8 +253,9 @@ void AHunter::Attack(const FInputActionValue& Value)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-		if (AnimInstance && AttackMontage)
+		if (AnimInstance && AttackMontage && EquipedMeleeWeapons)
 		{
+			EquipedMeleeWeapons->HitType = EHitType::EHT_Light;
 			CurActionState = ECharacterActionState::ECAS_Attacking;
 			AnimInstance->Montage_Play(AttackMontage);
 			AnimInstance->Montage_JumpToSection("Attack1");
@@ -263,6 +267,22 @@ void AHunter::Attack(const FInputActionValue& Value)
 		&& NextAttackChance == true)
 	{
 		GoNextAttack = true;
+		return;
+	}
+}
+
+void AHunter::ChargeAttack(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && AttackMontage && EquipedMeleeWeapons)
+		{
+			EquipedMeleeWeapons->HitType = EHitType::EHT_Charge;
+			CurActionState = ECharacterActionState::ECAS_Attacking;
+			AnimInstance->Montage_Play(ChargeAttackMontage);
+		}
 		return;
 	}
 }
