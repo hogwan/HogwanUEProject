@@ -23,6 +23,8 @@ class HOGWANPROJECT_API UBBBTTaskNode : public UBTTaskNode
 public:
 	UBBBTTaskNode();
 
+	void TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds) override;
+
 	template<typename OwnerType>
 	OwnerType* GetController(UBehaviorTreeComponent& _OwnerComp)
 	{
@@ -80,4 +82,8 @@ public:
 	bool DecideRotationDirection(UBehaviorTreeComponent& _OwnerComp);
 
 	void StatusReset(UBehaviorTreeComponent& _OwnerComp);
+
+	bool MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange = 50.f);
+
+	bool MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange = 50.f);
 };

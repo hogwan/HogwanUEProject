@@ -23,9 +23,9 @@ EBTNodeResult::Type UBTTaskNode_Run::ExecuteTask(UBehaviorTreeComponent& _OwnerC
 		return EBTNodeResult::Aborted;
 	}
 
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Run);
-
 	Character->GetCharacterMovement()->MaxWalkSpeed = 400.f;
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
+
 
 	return EBTNodeResult::InProgress;
 }
@@ -34,14 +34,10 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNode
 {
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 
-	ABBAIController* MonsterController = GetController<ABBAIController>(_OwnerComp);
-
-	MonsterController->MoveToActor(GetHunter());
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	if (PerceiveInRange(_OwnerComp,Character->AttackRange))
+	if (MoveToHunter(_OwnerComp, 80.f))
 	{
-		MonsterController->StopMovement();
 		ChangeState(_OwnerComp, EMonsterState::EMS_Attack);
 		return;
 	}

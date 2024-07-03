@@ -22,8 +22,8 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& _Owner
 		return EBTNodeResult::Aborted;
 	}
 
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Idle);
-	Character->GetCharacterMovement()->MaxWalkSpeed = 0.f;
+	ABBAIController* MonsterController = GetController<ABBAIController>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->IdleMontage);
 
 	return EBTNodeResult::InProgress;
 }
@@ -45,7 +45,7 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 
 	if (Monster->PerceiveHunter || PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
 	{
-		if (BetweenAngleToDegree(_OwnerComp) > 60.f)
+		if (BetweenAngleToDegree(_OwnerComp) > 90.f)
 		{
 			ChangeState(_OwnerComp, EMonsterState::EMS_Turn);
 			return;

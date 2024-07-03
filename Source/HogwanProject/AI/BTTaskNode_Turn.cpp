@@ -4,6 +4,7 @@
 #include "AI/BTTaskNode_Turn.h"
 #include "AI/BBAIAnimInstance.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "AI/BBAIController.h"
 
 EBTNodeResult::Type UBTTaskNode_Turn::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -22,8 +23,6 @@ EBTNodeResult::Type UBTTaskNode_Turn::ExecuteTask(UBehaviorTreeComponent& _Owner
 	{
 		return EBTNodeResult::Aborted;
 	}
-
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Turn);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->TurnMontage);
 
 	if (DecideRotationDirection(_OwnerComp))
@@ -49,8 +48,28 @@ void UBTTaskNode_Turn::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 		{
 			Character->TurnEnd = false;
 
+			/*FVector ActorPos = Character->GetActorLocation();
+			ActorPos.Z = 0.f;
+			
+			FVector TargetPos = GetHunter()->GetActorLocation();
+			TargetPos.Z = 0.f;
+			
+			FRotator FindRotator = UKismetMathLibrary::FindLookAtRotation(ActorPos, TargetPos);
+			Character->SetActorRotation(FindRotator);*/
+
+			if (DecideRotationDirection(_OwnerComp))
+			{
+				Character->AddActorWorldRotation(FRotator(0.f, 120.f, 0.f));
+			}
+			else
+			{
+				Character->AddActorWorldRotation(FRotator(0.f, -120.f, 0.f));
+			}
+
+
 			if (Character->PerceiveHunter)
 			{
+				Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
 				ChangeState(_OwnerComp, EMonsterState::EMS_Run);
 				return;
 			}

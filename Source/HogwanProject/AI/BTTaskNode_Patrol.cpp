@@ -22,10 +22,9 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _Own
 		return EBTNodeResult::Aborted;
 	}
 
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Walk);
-
 	Character->PatrolPoints.Add(Character->GetActorLocation());
 	Character->GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->WalkMontage);
 
 	return EBTNodeResult::InProgress;
 }
@@ -50,33 +49,25 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pN
 
 	if (PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
 	{
-		if (BetweenAngleToDegree(_OwnerComp) > 60.f)
+		if (BetweenAngleToDegree(_OwnerComp) > 90.f)
 		{
 			Monster->PatrolPoints.Pop();
+			Monster->PatrolNum = 0;
 			ChangeState(_OwnerComp, EMonsterState::EMS_Turn);
-			MonsterController->StopMovement();
 			return;
 		}
 
 		Monster->PatrolPoints.Pop();
+		Monster->PatrolNum = 0;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
-		MonsterController->StopMovement();
 		return;
 	}
+	
 
-	FVector TargetPoint = Monster->PatrolPoints[Monster->PatrolNum % PatrolSize];
-	TargetPoint.Z = 0.f;
-
-	FVector ActorPos = Monster->GetActorLocation();
-	ActorPos.Z = 0.f;
-
-
-	MonsterController->MoveToLocation(TargetPoint);
-
-	float DistancePostoTarget = (TargetPoint - ActorPos).Size();
-
-	if (DistancePostoTarget <= 50.f)
+	if (MoveToPoint(_OwnerComp, Monster->PatrolPoints[Monster->PatrolNum % PatrolSize]))
 	{
- 		Monster->PatrolNum++;
+		Monster->PatrolNum++;
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
+		return;
 	}
 }

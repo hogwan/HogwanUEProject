@@ -5,6 +5,7 @@
 UENUM(BlueprintType)
 enum class EMonsterState : uint8
 {
+	EMS_Unable,
 	EMS_Idle,
 	EMS_Patrol,
 	EMS_Turn,

@@ -20,8 +20,6 @@ EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _Own
 	{
 		return EBTNodeResult::Aborted;
 	}
-
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Attack0);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
 	int Random = FMath::RandRange(1, 3);

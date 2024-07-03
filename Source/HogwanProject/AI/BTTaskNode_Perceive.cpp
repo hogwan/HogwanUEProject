@@ -23,16 +23,6 @@ EBTNodeResult::Type UBTTaskNode_Perceive::ExecuteTask(UBehaviorTreeComponent& _O
 		return EBTNodeResult::Aborted;
 	}
 
-	Character->ChangeAnimation(EMonsterAnimation::EMA_Perceive);
-
-	FVector ActorPos = Character->GetActorLocation();
-	ActorPos.Z = 0.f;
-
-	FVector TargetPos = GetHunter()->GetActorLocation();
-	TargetPos.Z = 0.f;
-
-	FRotator FindRotator = UKismetMathLibrary::FindLookAtRotation(ActorPos, TargetPos);
-	Character->SetActorRotation(FindRotator);
 	Character->PerceiveHunter = true;
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->PerceiveMontage);
 

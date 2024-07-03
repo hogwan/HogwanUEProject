@@ -17,14 +17,6 @@ class HOGWANPROJECT_API ABBAICharacter : public ABaseCharacter
 	
 
 public:
-	void ChangeAnimation(uint8 _Type);
-
-	template<typename EnumType>
-	void ChangeAnimation(EnumType _Type)
-	{
-		ChangeAnimation(static_cast<uint8>(_Type));
-	}
-
 	FORCEINLINE UBBAIAnimInstance* GetBBAIAnimInstance()
 	{
 		return AnimInst;
@@ -46,21 +38,23 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool AttackEnd = false;
 	UPROPERTY(BlueprintReadWrite)
-	bool HitEnd = false;
+	bool UnableEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool PerceiveEnd = false;
 
 	UPROPERTY(EditInstanceOnly)
 	TArray<FVector> PatrolPoints;
 
+
+	void GetHit(const FVector& ImpactPoint) override;
+	
+	float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
 	void BeginPlay() override;
 
 
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	uint8 AniValue;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UBBAIAnimInstance* AnimInst;
 };

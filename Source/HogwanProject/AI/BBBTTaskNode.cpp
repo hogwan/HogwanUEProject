@@ -12,6 +12,17 @@ UBBBTTaskNode::UBBBTTaskNode()
 	bNotifyTick = true;
 }
 
+void UBBBTTaskNode::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds)
+{
+	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
+
+	if (EMonsterState::EMS_Unable == GetCurState<EMonsterState>(_OwnerComp))
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Unable);
+		return;
+	}
+}
+
 AActor* UBBBTTaskNode::GetActor(UBehaviorTreeComponent& _OwnerComp)
 {
 	UObject* Object = _OwnerComp.GetBlackboardComponent()->GetValueAsObject(TEXT("SelfActor"));
@@ -110,8 +121,56 @@ void UBBBTTaskNode::StatusReset(UBehaviorTreeComponent& _OwnerComp)
 	if (Monster)
 	{
 		Monster->IdleAcc = Monster->IdleTime;
-		Monster->PatrolNum = 0;
 	}
+}
+
+bool UBBBTTaskNode::MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+
+	FVector ActorPos = Character->GetActorLocation();
+	ActorPos.Z = 0.f;
+
+	FVector TargetPos = GetHunter()->GetActorLocation();
+	TargetPos.Z = 0.f;
+
+	FVector Dir = TargetPos - ActorPos;
+	Dir.Normalize();
+	Character->AddMovementInput(Dir);
+
+	float Distance = (ActorPos - TargetPos).Size();
+
+	if (Distance < SuccessRange)
+	{
+		return true;
+	}
+
+	return false;
+
+}
+
+bool UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+
+	FVector ActorPos = Character->GetActorLocation();
+	ActorPos.Z = 0.f;
+
+	TargetLocation.Z = 0.f;
+
+	FVector Dir = TargetLocation - ActorPos;
+	Dir.Normalize();
+	Character->AddMovementInput(Dir);
+
+	float Distance = (ActorPos - TargetLocation).Size();
+
+	if (Distance < SuccessRange)
+	{
+		return true;
+	}
+
+
+	return false;
 }
 
 AController* UBBBTTaskNode::GetController(UBehaviorTreeComponent& _OwnerComp)

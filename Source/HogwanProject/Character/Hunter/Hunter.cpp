@@ -205,8 +205,7 @@ void AHunter::LockOn(const FInputActionValue& Value)
 	FVector TargetPos = CurPos + CameraForwardVector * 800.f;
 
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesArray;
-	ObjectTypesArray.Reserve(1);
-	ObjectTypesArray.Emplace(ECollisionChannel::ECC_Pawn);
+	ObjectTypesArray.Emplace(EObjectTypeQuery::ObjectTypeQuery8);
 
 	TArray<AActor*, FDefaultAllocator> IgnoredActors;
 	IgnoredActors.Emplace(this);

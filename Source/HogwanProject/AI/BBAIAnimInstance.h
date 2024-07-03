@@ -27,4 +27,13 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* PerceiveMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* IdleMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* WalkMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* RunMontage;
 };
