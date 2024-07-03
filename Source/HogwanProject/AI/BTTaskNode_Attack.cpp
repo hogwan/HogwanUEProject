@@ -22,7 +22,7 @@ EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _Own
 	}
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
-	int Random = FMath::RandRange(1, 3);
+	int Random = FMath::RandRange(1, 2);
 
 	switch (Random)
 	{

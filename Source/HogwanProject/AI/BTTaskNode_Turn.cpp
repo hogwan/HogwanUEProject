@@ -47,26 +47,6 @@ void UBTTaskNode_Turn::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 		if (Character->TurnEnd)
 		{
 			Character->TurnEnd = false;
-
-			/*FVector ActorPos = Character->GetActorLocation();
-			ActorPos.Z = 0.f;
-			
-			FVector TargetPos = GetHunter()->GetActorLocation();
-			TargetPos.Z = 0.f;
-			
-			FRotator FindRotator = UKismetMathLibrary::FindLookAtRotation(ActorPos, TargetPos);
-			Character->SetActorRotation(FindRotator);*/
-
-			if (DecideRotationDirection(_OwnerComp))
-			{
-				Character->AddActorWorldRotation(FRotator(0.f, 120.f, 0.f));
-			}
-			else
-			{
-				Character->AddActorWorldRotation(FRotator(0.f, -120.f, 0.f));
-			}
-
-
 			if (Character->PerceiveHunter)
 			{
 				Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
