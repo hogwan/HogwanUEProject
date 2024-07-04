@@ -9,7 +9,17 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/BoxComponent.h"
+#include "Character/Hunter/Hunter.h"
 
+ABBAICharacter::ABBAICharacter()
+{
+	FrontTakeDownBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FrontTakeDownBox"));
+	FrontTakeDownBox->SetupAttachment(GetRootComponent());
+
+	BackTakeDownBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BackTakeDownBox"));
+	BackTakeDownBox->SetupAttachment(GetRootComponent());
+}
 
 ABBAIController* ABBAICharacter::GetBBAIController()
 {
@@ -84,6 +94,12 @@ void ABBAICharacter::BeginPlay()
 	Super::BeginPlay();
 
 	AnimInst = Cast<UBBAIAnimInstance>(GetMesh()->GetAnimInstance());
+
+	FrontTakeDownBox->OnComponentBeginOverlap.AddDynamic(this, &ABBAICharacter::FrontTakeDownBoxBeginOverlap);
+	FrontTakeDownBox->OnComponentEndOverlap.AddDynamic(this, &ABBAICharacter::FrontTakeDownBoxEndOverlap);
+
+	BackTakeDownBox->OnComponentBeginOverlap.AddDynamic(this, &ABBAICharacter::BackTakeDownBoxBeginOverlap);
+	BackTakeDownBox->OnComponentEndOverlap.AddDynamic(this, &ABBAICharacter::BackTakeDownBoxEndOverlap);
 }
 
 bool ABBAICharacter::BackHit(AActor* Hitter)
@@ -109,4 +125,62 @@ bool ABBAICharacter::BackHit(AActor* Hitter)
 	}
 
 	return false;
+}
+
+void ABBAICharacter::FrontTakeDownBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AHunter* Hunter = Cast<AHunter>(OtherActor);
+
+	if (Hunter)
+	{
+		FVector HunterLocation = Hunter->GetActorLocation();
+		HunterLocation.Z = 0.f;
+
+		FVector ActorLocation = GetActorLocation();
+		ActorLocation.Z = 0.f;
+
+		FRotator FindRotation = UKismetMathLibrary::FindLookAtRotation(HunterLocation, ActorLocation);
+
+		Hunter->SetTakeDownInfo(this, FrontTakeDownBox->GetComponentLocation(), FindRotation);
+		Hunter->bCanTakeDown = true;
+	}
+}
+
+void ABBAICharacter::FrontTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	AHunter* Hunter = Cast<AHunter>(OtherActor);
+
+	if (Hunter)
+	{
+		Hunter->bCanTakeDown = false;
+	}
+}
+
+void ABBAICharacter::BackTakeDownBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AHunter* Hunter = Cast<AHunter>(OtherActor);
+
+	if (Hunter)
+	{
+		FVector HunterLocation = Hunter->GetActorLocation();
+		HunterLocation.Z = 0.f;
+
+		FVector ActorLocation = GetActorLocation();
+		ActorLocation.Z = 0.f;
+
+		FRotator FindRotation = UKismetMathLibrary::FindLookAtRotation(HunterLocation, ActorLocation);
+
+		Hunter->SetTakeDownInfo(this, BackTakeDownBox->GetComponentLocation(), FindRotation);
+		Hunter->bCanTakeDown = true;
+	}
+}
+
+void ABBAICharacter::BackTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	AHunter* Hunter = Cast<AHunter>(OtherActor);
+
+	if (Hunter)
+	{
+		Hunter->bCanTakeDown = false;
+	}
 }

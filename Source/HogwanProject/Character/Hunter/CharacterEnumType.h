@@ -25,4 +25,5 @@ enum class ECharacterActionState : uint8
 	ECAS_Attacking,
 	ECAS_Dodging,
 	ECAS_WeaponSwaping,
+	ECAS_TakeDown,
 };

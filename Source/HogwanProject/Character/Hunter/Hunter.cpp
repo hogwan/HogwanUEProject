@@ -253,14 +253,25 @@ void AHunter::Attack(const FInputActionValue& Value)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
+		if (AnimInstance && AttackMontage && EquipedMeleeWeapons && bCanTakeDown)
+		{
+			SetActorLocation(TakeDownPos);
+
+			SetActorRotation(TakeDownRot);
+
+			CurActionState = ECharacterActionState::ECAS_TakeDown;
+			AnimInstance->Montage_Play(TakeDownMontage);
+			return;
+		}
+
 		if (AnimInstance && AttackMontage && EquipedMeleeWeapons)
 		{
 			EquipedMeleeWeapons->HitType = EHitType::EHT_Light;
 			CurActionState = ECharacterActionState::ECAS_Attacking;
 			AnimInstance->Montage_Play(AttackMontage);
 			AnimInstance->Montage_JumpToSection("Attack1");
+			return;
 		}
-		return;
 	}
 
 	if (CurActionState == ECharacterActionState::ECAS_Attacking
@@ -379,4 +390,11 @@ void AHunter::SetLockOn(AMonster* Target)
 	{
 		GameInstance->LockOnTarget = Target;
 	}
+}
+
+void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator& Rot)
+{
+	TakeDownTarget = Target;
+	TakeDownPos = Pos;
+	TakeDownRot = Rot;
 }

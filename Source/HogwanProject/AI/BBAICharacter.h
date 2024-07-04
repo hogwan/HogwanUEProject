@@ -17,6 +17,8 @@ class HOGWANPROJECT_API ABBAICharacter : public ABaseCharacter
 	
 
 public:
+	ABBAICharacter();
+
 	FORCEINLINE UBBAIAnimInstance* GetBBAIAnimInstance()
 	{
 		return AnimInst;
@@ -56,7 +58,28 @@ protected:
 	void BeginPlay() override;
 
 	bool BackHit(AActor* Hitter);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* FrontTakeDownBox;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* BackTakeDownBox;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UBBAIAnimInstance* AnimInst;
+	UBBAIAnimInstance* AnimInst = nullptr;
+
+	UFUNCTION()
+	void FrontTakeDownBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void FrontTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void BackTakeDownBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void BackTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+
 };

@@ -62,6 +62,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* RollMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* TakeDownMontage;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -126,12 +129,24 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TakeDown", meta = (AllowPrivateAccess = "true"))
+	class AActor* TakeDownTarget;
+
+	UPROPERTY(VisibleInstanceOnly, Category = "TakeDown")
+	FVector TakeDownPos;
+
+	UPROPERTY(VisibleInstanceOnly, Category = "TakeDown")
+	FRotator TakeDownRot;
+
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FVector InputVector = FVector::Zero();
 
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
+	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
+
+	bool bCanTakeDown = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AMeleeWeapon* EquipedMeleeWeapons;
