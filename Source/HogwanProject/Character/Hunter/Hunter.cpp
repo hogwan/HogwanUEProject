@@ -12,6 +12,8 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Character/Monster/Monster.h"
+#include "AI/BBAICharacter.h"
+#include "AI/BBAIAnimInstance.h"
 #include "Weapon/MeleeWeapon.h"
 
 // Sets default values
@@ -261,6 +263,43 @@ void AHunter::Attack(const FInputActionValue& Value)
 
 			CurActionState = ECharacterActionState::ECAS_TakeDown;
 			AnimInstance->Montage_Play(TakeDownMontage);
+
+			ABBAICharacter* Monster = Cast<ABBAICharacter>(TakeDownTarget);
+
+			if (Monster)
+			{
+				UBBAIAnimInstance* MonsterAnim = Monster->GetBBAIAnimInstance();
+
+				if (MonsterAnim)
+				{
+					FVector MonsterForward = Monster->GetActorForwardVector();
+					MonsterForward.Z = 0.f;
+
+					FVector MonsterToPlayer = GetActorLocation() - Monster->GetActorLocation();
+					MonsterToPlayer.Z = 0.f;
+
+					MonsterForward.Normalize();
+					MonsterToPlayer.Normalize();
+
+					float DotScala = UKismetMathLibrary::Dot_VectorVector(MonsterForward, MonsterToPlayer);
+
+					float RadianAngle = UKismetMathLibrary::Acos(DotScala);
+
+					float DegreeAngle = FMath::RadiansToDegrees(RadianAngle);
+					
+					if (DegreeAngle > 90.f)
+					{
+						MonsterAnim->Montage_Play(MonsterAnim->TakeDownFront);
+					}
+					else
+					{
+						MonsterAnim->Montage_Play(MonsterAnim->TakeDownBack);
+					}
+
+				}
+			}
+
+
 			return;
 		}
 

@@ -39,4 +39,10 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* StunMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* TakeDownBack;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* TakeDownFront;
 };

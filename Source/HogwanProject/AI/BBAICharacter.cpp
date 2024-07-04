@@ -100,6 +100,9 @@ void ABBAICharacter::BeginPlay()
 
 	BackTakeDownBox->OnComponentBeginOverlap.AddDynamic(this, &ABBAICharacter::BackTakeDownBoxBeginOverlap);
 	BackTakeDownBox->OnComponentEndOverlap.AddDynamic(this, &ABBAICharacter::BackTakeDownBoxEndOverlap);
+
+	FrontTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BackTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 bool ABBAICharacter::BackHit(AActor* Hitter)
