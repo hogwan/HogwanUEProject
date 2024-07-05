@@ -80,6 +80,8 @@ public:
 	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
+	FORCEINLINE bool GetCanTakeDown() { return bCanTakeDown; }
+	FORCEINLINE void SetCanTakeDown(bool _TakeDown) { bCanTakeDown = _TakeDown; }
 	
 protected:
 	virtual void BeginPlay() override;
@@ -113,6 +115,7 @@ private:
 
 	bool bIsRun = false;
 	bool bIsLockOn = false;
+	bool bCanTakeDown = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
 	ECharacterActionState CurActionState = ECharacterActionState::ECAS_Unoccupied;
@@ -144,9 +147,12 @@ private:
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
+
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
 
-	bool bCanTakeDown = false;
+	
+	UFUNCTION(BlueprintCallable)
+	void Reset();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AMeleeWeapon* EquipedMeleeWeapons;

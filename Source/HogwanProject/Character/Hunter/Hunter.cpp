@@ -364,6 +364,7 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 		if (Monster->GetAttribute()->GetIsDeath())
 		{
 			ReleaseLockOn();
+			return;
 		}
 
 		FVector Start = GetActorLocation();
@@ -436,4 +437,15 @@ void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator
 	TakeDownTarget = Target;
 	TakeDownPos = Pos;
 	TakeDownRot = Rot;
+}
+
+void AHunter::Reset()
+{
+	bIsRun = false;
+	bCanTakeDown = false;
+
+	NextAttackChance = false;
+	GoNextAttack = false;
+
+	AttackCount = 0;
 }

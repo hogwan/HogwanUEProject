@@ -11,6 +11,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Character/Hunter/Hunter.h"
+#include "Components/CapsuleComponent.h"
 
 ABBAICharacter::ABBAICharacter()
 {
@@ -79,14 +80,24 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 	}
 }
 
-float ABBAICharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+void ABBAICharacter::DeathCheck()
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (GetAttribute()->GetIsDeath())
+	{
+		ABBAIController* Con = Cast<ABBAIController>(GetController());
+		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
+		if (BlackBoard)
+		{
+			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Dead));
+		}
 
-	GetAttribute()->ReceiveDamage(DamageAmount);
-	HealthBarWidget->SetHealthPercent(GetAttribute()->GetHealthPercent());
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		FrontTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		BackTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		HealthBarWidget->SetHiddenInGame(true);
+		GetMesh()->SetSimulatePhysics(true);
 
-	return DamageAmount;
+	}
 }
 
 void ABBAICharacter::BeginPlay()
@@ -145,7 +156,7 @@ void ABBAICharacter::FrontTakeDownBoxBeginOverlap(UPrimitiveComponent* Overlappe
 		FRotator FindRotation = UKismetMathLibrary::FindLookAtRotation(HunterLocation, ActorLocation);
 
 		Hunter->SetTakeDownInfo(this, FrontTakeDownBox->GetComponentLocation(), FindRotation);
-		Hunter->bCanTakeDown = true;
+		Hunter->SetCanTakeDown(true);
 	}
 }
 
@@ -155,7 +166,7 @@ void ABBAICharacter::FrontTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedC
 
 	if (Hunter)
 	{
-		Hunter->bCanTakeDown = false;
+		Hunter->SetCanTakeDown(false);
 	}
 }
 
@@ -174,7 +185,7 @@ void ABBAICharacter::BackTakeDownBoxBeginOverlap(UPrimitiveComponent* Overlapped
 		FRotator FindRotation = UKismetMathLibrary::FindLookAtRotation(HunterLocation, ActorLocation);
 
 		Hunter->SetTakeDownInfo(this, BackTakeDownBox->GetComponentLocation(), FindRotation);
-		Hunter->bCanTakeDown = true;
+		Hunter->SetCanTakeDown(true);
 	}
 }
 
@@ -184,6 +195,6 @@ void ABBAICharacter::BackTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedCo
 
 	if (Hunter)
 	{
-		Hunter->bCanTakeDown = false;
+		Hunter->SetCanTakeDown(false);
 	}
 }

@@ -23,10 +23,7 @@ public:
 	void ReceiveDamage(float DamageAmount);
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool GetIsDeath() { return IsDeath; }
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void Die() { IsDeath = true; }
+	bool GetIsDeath();
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

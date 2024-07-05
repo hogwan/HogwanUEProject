@@ -12,6 +12,7 @@ enum class EMonsterState : uint8
 	EMS_Perceive,
 	EMS_Run,
 	EMS_Attack, 
+	EMS_Dead,
 };
 
 UENUM(BlueprintType)

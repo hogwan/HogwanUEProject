@@ -21,6 +21,11 @@ void UAttributeComponent::ReceiveDamage(float DamageAmount)
 	Hp = FMath::Clamp(Hp - DamageAmount, 0.f, MaxHp);
 }
 
+bool UAttributeComponent::GetIsDeath()
+{
+	return FMath::IsNearlyZero(Hp);
+}
+
 
 void UAttributeComponent::BeginPlay()
 {

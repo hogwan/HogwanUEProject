@@ -31,6 +31,7 @@ public:
 	float IdleAcc = IdleTime;
 	float PerceiveRange = 300.f;
 	float AttackRange = 80.f;
+	float DestroyTime = 20.f;
 
 	int PatrolNum = 0;
 	bool PerceiveHunter = false;
@@ -51,8 +52,9 @@ public:
 
 
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
-	
-	float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintCallable)
+	void DeathCheck();
 
 protected:
 	void BeginPlay() override;
