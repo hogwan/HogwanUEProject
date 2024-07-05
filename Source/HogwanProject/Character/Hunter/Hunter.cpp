@@ -12,8 +12,8 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Character/Monster/Monster.h"
-#include "AI/BBAICharacter.h"
-#include "AI/BBAIAnimInstance.h"
+#include "Character/Monster/BBAICharacter.h"
+#include "Character/Monster/BBAIAnimInstance.h"
 #include "Weapon/MeleeWeapon.h"
 
 // Sets default values

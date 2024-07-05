@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/BaseCharacter.h"
-#include "AI/BBAIAnimInstance.h"
+#include "Character/Monster/BBAIAnimInstance.h"
 #include "BBAICharacter.generated.h"
 
 /**

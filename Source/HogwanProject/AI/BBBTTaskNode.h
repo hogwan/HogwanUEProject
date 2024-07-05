@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "AI/BBAICharacter.h"
+#include "Character/Monster/BBAICharacter.h"
 #include "Global/BBEnum.h"
 #include "Character/Hunter/Hunter.h"
 #include "Character/Monster/Monster.h"

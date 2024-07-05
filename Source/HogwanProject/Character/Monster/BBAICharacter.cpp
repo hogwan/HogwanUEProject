@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BBAICharacter.h"
+#include "Character/Monster/BBAICharacter.h"
 #include "AI/BBAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Global/BBEnum.h"
-#include "AI/BBAIAnimInstance.h"
+#include "Character/Monster/BBAIAnimInstance.h"
 #include "ActorComponent/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "Kismet/KismetMathLibrary.h"

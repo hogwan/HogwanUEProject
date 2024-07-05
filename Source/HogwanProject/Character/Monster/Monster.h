@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "AI/BBAICharacter.h"
+#include "Character/Monster/BBAICharacter.h"
 #include "Interface/HitInterface.h"
 #include "Global/BBEnum.h"
 #include "Monster.generated.h"
