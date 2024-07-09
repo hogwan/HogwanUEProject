@@ -23,3 +23,12 @@ enum class EHitType : uint8
 	EHT_Charge,
 	EHT_Bullet,
 };
+
+UENUM(BlueprintType)
+enum class EWeaponType : uint8
+{
+	None,
+	EWT_RightHand,
+	EWT_LeftHand,
+	EWT_TwoHand,
+};

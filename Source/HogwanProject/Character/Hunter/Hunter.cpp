@@ -15,6 +15,7 @@
 #include "Character/Monster/BBAICharacter.h"
 #include "Character/Monster/BBAIAnimInstance.h"
 #include "Weapon/MeleeWeapon.h"
+#include "Weapon/RangedWeapon.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -42,6 +43,8 @@ void AHunter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	EquipWeapon(EWeaponType::EWT_RightHand, CurMeleeListNum);
+	EquipWeapon(EWeaponType::EWT_LeftHand, CurRangedListNum);
 }
 
 void AHunter::Tick(float DeltaTime)
@@ -255,7 +258,7 @@ void AHunter::Attack(const FInputActionValue& Value)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-		if (AnimInstance && AttackMontage && EquipedMeleeWeapons && bCanTakeDown)
+		if (AnimInstance && AttackMontage && EquippedMeleeWeapon && bCanTakeDown)
 		{
 			SetActorLocation(TakeDownPos);
 
@@ -303,9 +306,9 @@ void AHunter::Attack(const FInputActionValue& Value)
 			return;
 		}
 
-		if (AnimInstance && AttackMontage && EquipedMeleeWeapons)
+		if (AnimInstance && AttackMontage && EquippedMeleeWeapon)
 		{
-			EquipedMeleeWeapons->HitType = EHitType::EHT_Light;
+			EquippedMeleeWeapon->HitType = EHitType::EHT_Light;
 			CurActionState = ECharacterActionState::ECAS_Attacking;
 			AnimInstance->Montage_Play(AttackMontage);
 			AnimInstance->Montage_JumpToSection("Attack1");
@@ -327,9 +330,9 @@ void AHunter::ChargeAttack(const FInputActionValue& Value)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-		if (AnimInstance && AttackMontage && EquipedMeleeWeapons)
+		if (AnimInstance && AttackMontage && EquippedMeleeWeapon)
 		{
-			EquipedMeleeWeapons->HitType = EHitType::EHT_Charge;
+			EquippedMeleeWeapon->HitType = EHitType::EHT_Charge;
 			CurActionState = ECharacterActionState::ECAS_Attacking;
 			AnimInstance->Montage_Play(ChargeAttackMontage);
 		}
@@ -448,4 +451,75 @@ void AHunter::Reset()
 	GoNextAttack = false;
 
 	AttackCount = 0;
+}
+
+void AHunter::EquipWeapon(EWeaponType WeaponType, int32 ListNum)
+{
+	if (ListNum >= MaxListNum) return;
+
+	FTransform SpawnTrans;
+	SpawnTrans.SetLocation(GetActorLocation() + FVector::DownVector * 10000.f);
+
+	AWeapon* SpawnWeapon = nullptr;
+
+	FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget,EAttachmentRule::KeepWorld,false);
+
+	switch (WeaponType)
+	{
+	case EWeaponType::EWT_RightHand:
+	{
+		if (EquippedMeleeWeapon)
+		{
+			EquippedMeleeWeapon->Destroy();
+			EquippedMeleeWeapon = nullptr;
+		}
+
+		SpawnWeapon = GetWorld()->SpawnActor<AMeleeWeapon>(MeleeWeaponList[ListNum], SpawnTrans);
+		
+		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
+		
+		EquippedMeleeWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		CurMeleeListNum = ListNum;
+		break;
+	}
+	case EWeaponType::EWT_LeftHand:
+	{
+		if (EquippedRangedWeapon)
+		{
+			EquippedRangedWeapon->Destroy();
+			EquippedRangedWeapon = nullptr;
+		}
+
+		SpawnWeapon = GetWorld()->SpawnActor<ARangedWeapon>(RangedWeaponList[ListNum], SpawnTrans);
+		
+		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("LeftHandSocket"));
+
+		EquippedRangedWeapon = Cast<ARangedWeapon>(SpawnWeapon);
+		CurRangedListNum = ListNum;
+		break;
+	}
+	case EWeaponType::EWT_TwoHand:
+	{
+		if (EquippedMeleeWeapon)
+		{
+			EquippedMeleeWeapon->Destroy();
+			EquippedMeleeWeapon = nullptr;
+		}
+
+		if (EquippedRangedWeapon)
+		{
+			EquippedRangedWeapon->Destroy();
+			EquippedRangedWeapon = nullptr;
+		}
+		SpawnWeapon = GetWorld()->SpawnActor<AMeleeWeapon>(MeleeWeaponList[ListNum], SpawnTrans);
+		
+		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
+
+		EquippedMeleeWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		CurMeleeListNum = ListNum;
+		break;
+	}
+	default:
+		break;
+	}
 }

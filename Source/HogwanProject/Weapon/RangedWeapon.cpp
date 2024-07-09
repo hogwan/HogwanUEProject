@@ -50,4 +50,6 @@ void ARangedWeapon::SpawnBullet()
 void ARangedWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	WeaponType = EWeaponType::EWT_LeftHand;
 }

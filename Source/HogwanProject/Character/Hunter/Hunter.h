@@ -150,13 +150,27 @@ public:
 
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
 
-	
 	UFUNCTION(BlueprintCallable)
 	void Reset();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class AMeleeWeapon* EquipedMeleeWeapons;
+	UFUNCTION(BlueprintCallable)
+	void EquipWeapon(EWeaponType WeaponType, int32 ListNum);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class ARangedWeapon* EquippedRangedWeapons;
+	class AMeleeWeapon* EquippedMeleeWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ARangedWeapon* EquippedRangedWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<class AMeleeWeapon>> MeleeWeaponList;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<class ARangedWeapon>> RangedWeaponList;
+
+	int32 CurMeleeListNum = 0;
+	int32 CurRangedListNum = 0;
+
+	int32 MaxListNum = 3;
+	
 };

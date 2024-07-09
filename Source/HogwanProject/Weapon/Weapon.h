@@ -18,6 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EHitType HitType = EHitType::EHT_Light;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EWeaponType WeaponType = EWeaponType::None;
+
 protected:
 	virtual void BeginPlay() override;
 
