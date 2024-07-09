@@ -48,6 +48,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* ShootAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* MeleeWeaponSwapAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* RangedWeaponSwapAction;
+
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* AttackMontage;
 
@@ -65,6 +71,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* TakeDownMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* MeleeWeaponSwapMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* RangedWeaponSwapMontage;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -97,6 +109,8 @@ private:
 	void ChargeAttack(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
 	void Shoot(const FInputActionValue& Value);
+	void MeleeWeaponSwap(const FInputActionValue& Value);
+	void RangedWeaponSwap(const FInputActionValue& Value);
 
 	void TraceLockOnTarget(float DeltaTime);
 
@@ -168,9 +182,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<class ARangedWeapon>> RangedWeaponList;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int32 CurMeleeListNum = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int32 CurRangedListNum = 0;
 
+	UPROPERTY()
 	int32 MaxListNum = 3;
 	
 };

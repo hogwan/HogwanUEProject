@@ -72,7 +72,9 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(InteractAction,
 			ETriggerEvent::Started, this, &AHunter::Interact);
 		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AHunter::Shoot);
-		
+		EnhancedInputComponent->BindAction(MeleeWeaponSwapAction,
+			ETriggerEvent::Started, this, &AHunter::MeleeWeaponSwap);
+		EnhancedInputComponent->BindAction(RangedWeaponSwapAction, ETriggerEvent::Started, this, &AHunter::RangedWeaponSwap);
 	}
 
 }
@@ -347,6 +349,8 @@ void AHunter::Interact(const FInputActionValue& Value)
 
 void AHunter::Shoot(const FInputActionValue& Value)
 {
+	if (EquippedRangedWeapon->WeaponType == EWeaponType::None) return;
+
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -357,6 +361,36 @@ void AHunter::Shoot(const FInputActionValue& Value)
 			AnimInstance->Montage_Play(ShootMontage);
 		}
 	}
+}
+
+void AHunter::MeleeWeaponSwap(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && MeleeWeaponSwapMontage)
+		{
+			CurActionState = ECharacterActionState::ECAS_WeaponSwaping;
+			AnimInstance->Montage_Play(MeleeWeaponSwapMontage);
+		}
+	}
+
+}
+
+void AHunter::RangedWeaponSwap(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && RangedWeaponSwapMontage)
+		{
+			CurActionState = ECharacterActionState::ECAS_WeaponSwaping;
+			AnimInstance->Montage_Play(RangedWeaponSwapMontage);
+		}
+	}
+
 }
 
 void AHunter::TraceLockOnTarget(float DeltaTime)
@@ -455,7 +489,8 @@ void AHunter::Reset()
 
 void AHunter::EquipWeapon(EWeaponType WeaponType, int32 ListNum)
 {
-	if (ListNum >= MaxListNum) return;
+	if (ListNum > MaxListNum) return;
+	if (ListNum == MaxListNum) ListNum = 0;
 
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(GetActorLocation() + FVector::DownVector * 10000.f);
@@ -479,6 +514,7 @@ void AHunter::EquipWeapon(EWeaponType WeaponType, int32 ListNum)
 		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 		
 		EquippedMeleeWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		EquippedMeleeWeapon->SetOwner(this);
 		CurMeleeListNum = ListNum;
 		break;
 	}
@@ -495,6 +531,7 @@ void AHunter::EquipWeapon(EWeaponType WeaponType, int32 ListNum)
 		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("LeftHandSocket"));
 
 		EquippedRangedWeapon = Cast<ARangedWeapon>(SpawnWeapon);
+		EquippedRangedWeapon->SetOwner(this);
 		CurRangedListNum = ListNum;
 		break;
 	}
@@ -516,6 +553,7 @@ void AHunter::EquipWeapon(EWeaponType WeaponType, int32 ListNum)
 		SpawnWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 
 		EquippedMeleeWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		EquippedMeleeWeapon->SetOwner(this);
 		CurMeleeListNum = ListNum;
 		break;
 	}

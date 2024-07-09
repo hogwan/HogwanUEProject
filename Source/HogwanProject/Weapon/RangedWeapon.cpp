@@ -49,7 +49,8 @@ void ARangedWeapon::SpawnBullet()
 
 void ARangedWeapon::BeginPlay()
 {
-	Super::BeginPlay();
-
+	//블루프린트의 비긴플레이가 먼저 실행되서 위로 올림
 	WeaponType = EWeaponType::EWT_LeftHand;
+	
+	Super::BeginPlay();
 }
