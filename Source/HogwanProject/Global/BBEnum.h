@@ -32,3 +32,20 @@ enum class EWeaponType : uint8
 	EWT_LeftHand,
 	EWT_TwoHand,
 };
+
+UENUM(BlueprintType)
+enum class EWeapon : uint8
+{
+	None,
+	EW_LeftFist,
+	EW_RightFist,
+	EW_SawCleaver,
+	EW_SawCleaver_Deformed,
+	EW_GreatSword,
+	EW_GreatSword_Deformed,
+	EW_GreatSword_Sheath,
+	EW_Katana,
+	EW_Katana_Deformed,
+	EW_Katana_Sheath,
+	EW_HunterPistol,
+};

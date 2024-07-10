@@ -21,6 +21,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EWeaponType WeaponType = EWeaponType::None;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString WeaponName = TEXT("None");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EWeapon Weapon = EWeapon::None;
+
+	UFUNCTION(BlueprintCallable)
+	void SetActive(bool Check);
+
+	UFUNCTION(BlueprintCallable)
+	FString GetName()
+	{
+		return WeaponName + "_";
+	}
+
 protected:
 	virtual void BeginPlay() override;
 

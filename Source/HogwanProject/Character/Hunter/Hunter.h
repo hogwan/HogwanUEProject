@@ -6,7 +6,9 @@
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
 #include "CharacterEnumType.h"
+#include "Animation/AnimMontage.h"
 #include "Hunter.generated.h"
+
 
 UCLASS()
 class HOGWANPROJECT_API AHunter : public ACharacter
@@ -53,30 +55,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* RangedWeaponSwapAction;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* AttackMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* ChargeAttackMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* ShootMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* DodgeMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* RollMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* TakeDownMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* MeleeWeaponSwapMontage;
-
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* RangedWeaponSwapMontage;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -134,6 +112,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
 	ECharacterActionState CurActionState = ECharacterActionState::ECAS_Unoccupied;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"), category = "CharacterState")
+	ECharacterWeaponState CurWeaponState = ECharacterWeaponState::ECWS_Unoccupied;
+
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int AttackCount = 0;
 
@@ -168,7 +149,13 @@ public:
 	void Reset();
 
 	UFUNCTION(BlueprintCallable)
-	void EquipWeapon(EWeaponType WeaponType, int32 ListNum);
+	void EquipWeapon(EWeapon Weapon);
+
+	UFUNCTION(BlueprintCallable)
+	void SwapWeapon(EWeaponType WeaponType, int32 ListNum);
+
+	UFUNCTION(BlueprintCallable)
+	FString GetWeaponStateToString(ECharacterWeaponState _WeaponState);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AMeleeWeapon* EquippedMeleeWeapon;
@@ -177,10 +164,19 @@ public:
 	class ARangedWeapon* EquippedRangedWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<class AMeleeWeapon>> MeleeWeaponList;
+	class AWeapon* EquippedWeaponSheath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, UAnimMontage*> MontageMap;
+
+	UPROPERTY(EditAnywhere)
+	TArray<EWeapon> MeleeWeaponsInPocket;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<class ARangedWeapon>> RangedWeaponList;
+	TArray<EWeapon> RangedWeaponsInPocket;
+
+	UPROPERTY(EditAnywhere)
+	TMap<EWeapon, TSubclassOf<class AWeapon>> WeaponList;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int32 CurMeleeListNum = 0;
@@ -189,5 +185,4 @@ public:
 
 	UPROPERTY()
 	int32 MaxListNum = 3;
-	
 };
