@@ -76,6 +76,7 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(MeleeWeaponSwapAction,
 			ETriggerEvent::Started, this, &AHunter::MeleeWeaponSwap);
 		EnhancedInputComponent->BindAction(RangedWeaponSwapAction, ETriggerEvent::Started, this, &AHunter::RangedWeaponSwap);
+		EnhancedInputComponent->BindAction(DeformWeaponAction, ETriggerEvent::Started, this, &AHunter::DeformWeapon);
 	}
 
 }
@@ -436,6 +437,64 @@ void AHunter::RangedWeaponSwap(const FInputActionValue& Value)
 
 }
 
+void AHunter::DeformWeapon(const FInputActionValue& Value)
+{
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
+	{
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		FString MontageName = GetDeformMontageName();
+
+		if (EquippedMeleeWeapon->Weapon == EWeapon::EW_Katana)
+		{
+			Deform();
+		}
+		else if (EquippedMeleeWeapon->Weapon == EWeapon::EW_Katana_Deformed)
+		{
+			Deform();
+		}
+		else if (AnimInstance && MontageMap[MontageName])
+		{
+			CurActionState = ECharacterActionState::ECAS_Deform;
+			AnimInstance->Montage_Play(MontageMap[MontageName]);
+		}
+	}
+}
+
+FString AHunter::GetDeformMontageName()
+{
+	FString MontageName = FString("None");
+
+	if (EquippedMeleeWeapon)
+	{
+		switch (EquippedMeleeWeapon->Weapon)
+		{
+		case EWeapon::EW_SawCleaver:
+			MontageName = FString("SawCleaver_Deform");
+			break;
+		case EWeapon::EW_SawCleaver_Deformed:
+			MontageName = FString("SawCleaver_UnDeform");
+			break;
+		case EWeapon::EW_GreatSword:
+			MontageName = FString("GreatSword_Deform");
+			break;
+		case EWeapon::EW_GreatSword_Deformed:
+			MontageName = FString("GreatSword_UnDeform");
+			break;
+		case EWeapon::EW_Katana:
+			MontageName = FString("Katana_Deform");
+			break;
+		case EWeapon::EW_Katana_Deformed:
+			MontageName = FString("Katana_UnDeform");
+			break;
+		default:
+			break;
+		}
+	}
+
+	return MontageName;
+}
+
 void AHunter::TraceLockOnTarget(float DeltaTime)
 {
 	if (LockOnTarget)
@@ -512,6 +571,36 @@ void AHunter::SetLockOn(AMonster* Target)
 	}
 }
 
+void AHunter::Deform()
+{
+	if (EquippedMeleeWeapon)
+	{
+		switch (EquippedMeleeWeapon->Weapon)
+		{
+		case EWeapon::EW_SawCleaver:
+			EquipWeapon(EWeapon::EW_SawCleaver_Deformed);
+			break;
+		case EWeapon::EW_SawCleaver_Deformed:
+			EquipWeapon(EWeapon::EW_SawCleaver);
+			break;
+		case EWeapon::EW_GreatSword:
+			EquipWeapon(EWeapon::EW_GreatSword_Deformed);
+			break;
+		case EWeapon::EW_GreatSword_Deformed:
+			EquipWeapon(EWeapon::EW_GreatSword);
+			break;
+		case EWeapon::EW_Katana:
+			EquipWeapon(EWeapon::EW_Katana_Deformed);
+			break;
+		case EWeapon::EW_Katana_Deformed:
+			EquipWeapon(EWeapon::EW_Katana);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator& Rot)
 {
 	TakeDownTarget = Target;
@@ -539,13 +628,6 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 	AWeapon* SpawnWeaponSheath = nullptr;
 	FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget,EAttachmentRule::SnapToTarget,EAttachmentRule::KeepWorld,false);
 
-	if (EquippedWeaponSheath)
-	{
-		EquippedWeaponSheath->Destroy();
-		EquippedWeaponSheath = nullptr;
-	}
-
-
 	switch (Weapon)
 	{
 	case EWeapon::EW_LeftFist:
@@ -564,6 +646,12 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		break;
 	case EWeapon::EW_RightFist:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
+
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(true);
@@ -585,6 +673,12 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		break;
 	case EWeapon::EW_SawCleaver:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
+
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(true);
@@ -606,6 +700,11 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		break;
 	case EWeapon::EW_SawCleaver_Deformed:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(true);
@@ -627,6 +726,11 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		break;
 	case EWeapon::EW_GreatSword:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(true);
@@ -646,11 +750,19 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		SpawnWeaponSheath = GetWorld()->SpawnActor<AWeapon>(WeaponList[EWeapon::EW_GreatSword_Sheath], SpawnTrans);
 		SpawnWeaponSheath->AttachToComponent(GetMesh(), AttachRules, TEXT("GreatSwordSheathSocket"));
 
+		EquippedWeaponSheath = SpawnWeaponSheath;
+
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
 	}
 		break;
 	case EWeapon::EW_GreatSword_Deformed:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
+
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(false);
@@ -672,6 +784,11 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 	break;
 	case EWeapon::EW_Katana:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(true);
@@ -691,11 +808,19 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		SpawnWeaponSheath = GetWorld()->SpawnActor<AWeapon>(WeaponList[EWeapon::EW_Katana_Sheath], SpawnTrans);
 		SpawnWeaponSheath->AttachToComponent(GetMesh(), AttachRules, TEXT("KatanaSheathSocket"));
 
+		EquippedWeaponSheath = SpawnWeaponSheath;
+
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
 	}
 	break;
 	case EWeapon::EW_Katana_Deformed:
 	{
+		if (EquippedWeaponSheath)
+		{
+			EquippedWeaponSheath->Destroy();
+			EquippedWeaponSheath = nullptr;
+		}
+
 		if (EquippedRangedWeapon)
 		{
 			EquippedRangedWeapon->SetActive(false);

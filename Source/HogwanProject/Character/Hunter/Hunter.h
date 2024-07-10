@@ -55,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* RangedWeaponSwapAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* DeformWeaponAction;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -89,11 +92,17 @@ private:
 	void Shoot(const FInputActionValue& Value);
 	void MeleeWeaponSwap(const FInputActionValue& Value);
 	void RangedWeaponSwap(const FInputActionValue& Value);
+	void DeformWeapon(const FInputActionValue& Value);
 
 	void TraceLockOnTarget(float DeltaTime);
 
 	void ReleaseLockOn();
 	void SetLockOn(class AMonster* Target);
+
+	UFUNCTION(BlueprintCallable)
+	void Deform();
+
+	FString GetDeformMontageName();
 
 	//  Components
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
