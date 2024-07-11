@@ -23,6 +23,9 @@ public:
 	class UAnimMontage* AttackMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* DashAttackMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* HitMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")

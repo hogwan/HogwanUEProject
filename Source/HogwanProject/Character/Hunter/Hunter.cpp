@@ -393,6 +393,8 @@ void AHunter::Interact(const FInputActionValue& Value)
 
 void AHunter::Shoot(const FInputActionValue& Value)
 {
+	if (CurWeaponState == ECharacterWeaponState::ECWS_TwohandedWeapon) return;
+
 	if (EquippedRangedWeapon->WeaponType == EWeaponType::None) return;
 
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
@@ -424,6 +426,8 @@ void AHunter::MeleeWeaponSwap(const FInputActionValue& Value)
 
 void AHunter::RangedWeaponSwap(const FInputActionValue& Value)
 {
+	if (CurWeaponState == ECharacterWeaponState::ECWS_TwohandedWeapon) return;
+
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();

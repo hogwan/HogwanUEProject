@@ -46,4 +46,14 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNode
 		ChangeState(_OwnerComp, EMonsterState::EMS_Attack);
 		return;
 	}
+
+	float Range = GetDistanceToHunter(_OwnerComp);
+
+	float DashDistance = 500.f;
+
+	if (abs(Range - DashDistance) < 50.f)
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_DashAttack);
+		return;
+	}
 }

@@ -19,6 +19,8 @@ class HOGWANPROJECT_API ABBAICharacter : public ABaseCharacter
 public:
 	ABBAICharacter();
 
+	void Tick(float DeltaTime) override;
+
 	FORCEINLINE UBBAIAnimInstance* GetBBAIAnimInstance()
 	{
 		return AnimInst;
@@ -46,6 +48,9 @@ public:
 	bool UnableEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool PerceiveEnd = false;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	EToughness Toughness = EToughness::None;
 
 	UPROPERTY(EditInstanceOnly)
 	TArray<FVector> PatrolPoints;
@@ -83,5 +88,6 @@ private:
 	UFUNCTION()
 	void BackTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-
+	UPROPERTY()
+	bool IsDeath = false;
 };

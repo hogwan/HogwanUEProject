@@ -22,6 +22,13 @@ ABBAICharacter::ABBAICharacter()
 	BackTakeDownBox->SetupAttachment(GetRootComponent());
 }
 
+void ABBAICharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	DeathCheck();
+}
+
 ABBAIController* ABBAICharacter::GetBBAIController()
 {
 	AController* Con = GetController();
@@ -38,51 +45,54 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 	if (Con && AnimInst)
 	{
 		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
-		if (BlackBoard)
+		if (!BlackBoard)
 		{
-			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+			return;
 		}
 
-		if (HitType == EHitType::EHT_Light)
-		{
-			AnimInst->Montage_Play(AnimInst->HitMontage);
-			AnimInst->Montage_JumpToSection(TEXT("Hit1"));
-		}
-		else if (HitType == EHitType::EHT_Heavy)
-		{
-			AnimInst->Montage_Play(AnimInst->HitMontage);
-			AnimInst->Montage_JumpToSection(TEXT("Hit2"));
-		}
-		else if (HitType == EHitType::EHT_Charge)
+		int32 ToughnessDegree = static_cast<int32>(Toughness);
+		int32 HittypeDegree = static_cast<int32>(HitType);
+
+		if (HitType == EHitType::EHT_Charge)
 		{
 			if (BackHit(Hitter))
 			{
 				AnimInst->Montage_Play(AnimInst->StunMontage);
-			}
-			else
-			{
-				AnimInst->Montage_Play(AnimInst->HitMontage);
-				AnimInst->Montage_JumpToSection(TEXT("Hit2"));
+				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+				return;
 			}
 		}
-		else if (HitType == EHitType::EHT_Bullet)
+
+		if (HitType == EHitType::EHT_Bullet)
 		{
 			if (Parriable)
 			{
 				AnimInst->Montage_Play(AnimInst->StunMontage);
+				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+				return;
 			}
-			else
-			{
-				AnimInst->Montage_Play(AnimInst->HitMontage);
-				AnimInst->Montage_JumpToSection(TEXT("Hit1"));
-			}
+		}
+
+		if (HittypeDegree >= ToughnessDegree && HittypeDegree <= (ToughnessDegree + 1))
+		{
+			AnimInst->Montage_Play(AnimInst->HitMontage);
+			AnimInst->Montage_JumpToSection(TEXT("Hit1"));
+			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+			return;
+		}
+		else if (HittypeDegree >= ToughnessDegree + 2)
+		{
+			AnimInst->Montage_Play(AnimInst->HitMontage);
+			AnimInst->Montage_JumpToSection(TEXT("Hit2"));
+			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+			return;
 		}
 	}
 }
 
 void ABBAICharacter::DeathCheck()
 {
-	if (GetAttribute()->GetIsDeath())
+	if (!IsDeath && GetAttribute()->GetIsDeath())
 	{
 		ABBAIController* Con = Cast<ABBAIController>(GetController());
 		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
@@ -97,6 +107,7 @@ void ABBAICharacter::DeathCheck()
 		HealthBarWidget->SetHiddenInGame(true);
 		GetMesh()->SetSimulatePhysics(true);
 
+		IsDeath = true;
 	}
 }
 

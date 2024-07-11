@@ -173,6 +173,24 @@ bool UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector Targ
 	return false;
 }
 
+float UBBBTTaskNode::GetDistanceToHunter(UBehaviorTreeComponent& _OwnerComp)
+{
+	AHunter* Hunter = GetHunter();
+	AActor* Self = GetActor<AActor>(_OwnerComp);
+
+	if (!Hunter || !Self) return false;
+
+	FVector TargetPosition = Hunter->GetActorLocation();
+	TargetPosition.Z = 0.f;
+
+	FVector CurPosition = Self->GetActorLocation();
+	CurPosition.Z = 0.f;
+
+	float Range = (TargetPosition - CurPosition).Size();
+
+	return Range;
+}
+
 EMonster UBBBTTaskNode::GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp)
 {
 	AMonster* Monster = GetActor<AMonster>(_OwnerComp);

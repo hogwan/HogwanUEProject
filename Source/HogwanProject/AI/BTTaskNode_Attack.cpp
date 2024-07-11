@@ -84,6 +84,24 @@ void UBTTaskNode_Attack::ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerCom
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
+	int Random = FMath::RandRange(1, 4);
 
+	switch (Random)
+	{
+	case 1:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack1"));
+		break;
+	case 2:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack2"));
+		break;
+	case 3:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack3"));
+		break;
+	case 4:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack4"));
+		break;
+	default:
+		break;
+	}
 }
 
