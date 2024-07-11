@@ -332,6 +332,12 @@ void AHunter::Attack(const FInputActionValue& Value)
 		if (AnimInstance && EquippedMeleeWeapon)
 		{
 			EquippedMeleeWeapon->HitType = EHitType::EHT_Light;
+
+			if (EquippedMeleeWeapon->Weapon == EWeapon::EW_GreatSword_Deformed)
+			{
+				EquippedMeleeWeapon->HitType = EHitType::EHT_Heavy;
+			}
+
 			CurActionState = ECharacterActionState::ECAS_Attacking;
 			
 			FString MontageName;
