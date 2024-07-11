@@ -20,6 +20,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FORCEINLINE class UWidgetComponent* GetLockOnWidget() { return LockOnTargetWidget; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EMonster MonsterEnum;
+
 protected:
 	virtual void BeginPlay() override;
 

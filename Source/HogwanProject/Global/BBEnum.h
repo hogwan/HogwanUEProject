@@ -49,3 +49,11 @@ enum class EWeapon : uint8
 	EW_Katana_Sheath,
 	EW_HunterPistol,
 };
+
+UENUM(BlueprintType)
+enum class EMonster : uint8
+{
+	None,
+	EM_Zombie,
+	EM_Parasite,
+};

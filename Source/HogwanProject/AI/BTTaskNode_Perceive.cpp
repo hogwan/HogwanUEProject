@@ -22,8 +22,13 @@ EBTNodeResult::Type UBTTaskNode_Perceive::ExecuteTask(UBehaviorTreeComponent& _O
 	{
 		return EBTNodeResult::Aborted;
 	}
-
 	Character->PerceiveHunter = true;
+
+	if (Character->GetBBAIAnimInstance()->PerceiveMontage == nullptr)
+	{
+		return EBTNodeResult::Type::Failed;
+	}
+
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->PerceiveMontage);
 
 	return EBTNodeResult::InProgress;

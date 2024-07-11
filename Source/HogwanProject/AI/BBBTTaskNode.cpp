@@ -173,6 +173,15 @@ bool UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector Targ
 	return false;
 }
 
+EMonster UBBBTTaskNode::GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp)
+{
+	AMonster* Monster = GetActor<AMonster>(_OwnerComp);
+
+	EMonster MonsterEnum = Monster->MonsterEnum;
+
+	return MonsterEnum;
+}
+
 AController* UBBBTTaskNode::GetController(UBehaviorTreeComponent& _OwnerComp)
 {
 	return Cast<AController>(_OwnerComp.GetOwner());

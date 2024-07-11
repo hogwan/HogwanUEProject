@@ -86,4 +86,6 @@ public:
 	bool MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange = 50.f);
 
 	bool MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange = 50.f);
+
+	EMonster GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp);
 };

@@ -22,8 +22,14 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _Own
 		return EBTNodeResult::Aborted;
 	}
 
+	if (Character->GetBBAIAnimInstance()->WalkMontage == nullptr)
+	{
+		return EBTNodeResult::Type::Failed;
+	}
+
 	Character->PatrolPoints.Add(Character->GetActorLocation());
 	Character->GetCharacterMovement()->MaxWalkSpeed = 100.f;
+
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->WalkMontage);
 
 	return EBTNodeResult::InProgress;

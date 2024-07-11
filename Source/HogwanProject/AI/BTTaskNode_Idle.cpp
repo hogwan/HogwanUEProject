@@ -23,6 +23,12 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& _Owner
 	}
 
 	ABBAIController* MonsterController = GetController<ABBAIController>(_OwnerComp);
+
+	if (Character->GetBBAIAnimInstance()->IdleMontage == nullptr)
+	{
+		return EBTNodeResult::Type::Failed;
+	}
+
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->IdleMontage);
 
 	return EBTNodeResult::InProgress;

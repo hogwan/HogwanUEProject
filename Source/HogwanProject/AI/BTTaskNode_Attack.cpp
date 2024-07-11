@@ -20,20 +20,21 @@ EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _Own
 	{
 		return EBTNodeResult::Aborted;
 	}
-	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
-	int Random = FMath::RandRange(1, 2);
-
-	switch (Random)
+	if (Character->GetBBAIAnimInstance()->AttackMontage == nullptr)
 	{
-	case 1:
-		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack1"));
+		return EBTNodeResult::Type::Failed;
+	}
+	
+	EMonster MonsterEnum = GetMonsterEnum(_OwnerComp);
+
+	switch (MonsterEnum)
+	{
+	case EMonster::EM_Zombie:
+		ExecuteZombieAttack(_OwnerComp);
 		break;
-	case 2:
-		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack2"));
-		break;
-	case 3:
-		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack3"));
+	case EMonster::EM_Parasite:
+		ExecuteParasiteAttack(_OwnerComp);
 		break;
 	default:
 		break;
@@ -57,3 +58,32 @@ void UBTTaskNode_Attack::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pN
 		}
 	}
 }
+
+void UBTTaskNode_Attack::ExecuteZombieAttack(UBehaviorTreeComponent& _OwnerComp)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
+
+	int Random = FMath::RandRange(1, 2);
+
+	switch (Random)
+	{
+	case 1:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack1"));
+		break;
+	case 2:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack2"));
+		break;
+	default:
+		break;
+	}
+}
+
+void UBTTaskNode_Attack::ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerComp)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
+
+
+}
+

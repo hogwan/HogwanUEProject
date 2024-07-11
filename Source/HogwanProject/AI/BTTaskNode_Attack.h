@@ -17,4 +17,7 @@ public:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory) override;
 
 	void TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds) override;
+
+	void ExecuteZombieAttack(UBehaviorTreeComponent& _OwnerComp);
+	void ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerComp);
 };

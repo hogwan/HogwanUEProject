@@ -23,6 +23,12 @@ EBTNodeResult::Type UBTTaskNode_Turn::ExecuteTask(UBehaviorTreeComponent& _Owner
 	{
 		return EBTNodeResult::Aborted;
 	}
+
+	if (Character->GetBBAIAnimInstance()->TurnMontage == nullptr)
+	{
+		return EBTNodeResult::Type::Failed;
+	}
+
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->TurnMontage);
 
 	if (DecideRotationDirection(_OwnerComp))
