@@ -37,12 +37,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-	if (AnimInstance && HitMontage)
-	{
-		AnimInstance->Montage_Play(HitMontage);
-	}
 }
 
 float ABaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)

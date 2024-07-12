@@ -48,12 +48,20 @@ public:
 	bool UnableEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool PerceiveEnd = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool IsGrapped = false;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	EToughness Toughness = EToughness::None;
 
 	UPROPERTY(EditInstanceOnly)
 	TArray<FVector> PatrolPoints;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float JumpDistance = 500.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float DashAttackDistance = 0.f;
 
 
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;

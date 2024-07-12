@@ -49,9 +49,9 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNode
 
 	float Range = GetDistanceToHunter(_OwnerComp);
 
-	float DashDistance = 500.f;
+	float DashDistance = Character->DashAttackDistance;
 
-	if (abs(Range - DashDistance) < 50.f)
+	if (Character->GetBBAIAnimInstance()->DashAttackMontage && abs(Range - DashDistance) < 50.f)
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_DashAttack);
 		return;

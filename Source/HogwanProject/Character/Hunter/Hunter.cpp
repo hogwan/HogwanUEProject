@@ -292,9 +292,23 @@ void AHunter::Attack(const FInputActionValue& Value)
 			SetActorRotation(TakeDownRot);
 
 			CurActionState = ECharacterActionState::ECAS_TakeDown;
-			AnimInstance->Montage_Play(MontageMap[TEXT("TakeDown")]);
+
+			switch (EquippedMeleeWeapon->Weapon)
+			{
+			case EWeapon::EW_GreatSword_Deformed:
+				AnimInstance->Montage_Play(MontageMap[TEXT("TwoHanded_GreatSword_TakeDown")]);
+				break;
+			case EWeapon::EW_Katana_Deformed:
+				AnimInstance->Montage_Play(MontageMap[TEXT("TwoHanded_Katana_TakeDown")]);
+				break;
+			default:
+				AnimInstance->Montage_Play(MontageMap[TEXT("TakeDown")]);
+				break;
+			}
 
 			ABBAICharacter* Monster = Cast<ABBAICharacter>(TakeDownTarget);
+
+			Monster->IsGrapped = true;
 
 			if (Monster)
 			{
@@ -319,13 +333,21 @@ void AHunter::Attack(const FInputActionValue& Value)
 					
 					if (DegreeAngle > 90.f)
 					{
-						MonsterAnim->Montage_Play(MonsterAnim->TakeDownFront);
-					}
-					else
-					{
-						MonsterAnim->Montage_Play(MonsterAnim->TakeDownBack);
+						Monster->AddActorWorldRotation(FRotator(0.f, 180.f, 0.f));
 					}
 
+					switch (EquippedMeleeWeapon->Weapon)
+					{
+					case EWeapon::EW_GreatSword_Deformed:
+						MonsterAnim->Montage_Play(MonsterAnim->GreatSwordTakeDown);
+						break;
+					case EWeapon::EW_Katana_Deformed:
+						MonsterAnim->Montage_Play(MonsterAnim->KatanaTakeDown);
+						break;
+					default:
+						MonsterAnim->Montage_Play(MonsterAnim->NormalTakeDown);
+						break;
+					}
 				}
 			}
 

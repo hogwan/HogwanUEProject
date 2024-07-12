@@ -26,7 +26,10 @@ public:
 	class UAnimMontage* DashAttackMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* HitMontage;
+	class UAnimMontage* FrontHitMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* BackHitMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* PerceiveMontage;
@@ -41,11 +44,22 @@ public:
 	class UAnimMontage* RunMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* StunMontage;
+	class UAnimMontage* FrontStunMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* BackStunMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* TakeDownBack;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* TakeDownFront;
+	class UAnimMontage* NormalTakeDown;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* GreatSwordTakeDown;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* KatanaTakeDown;
+
+
 };

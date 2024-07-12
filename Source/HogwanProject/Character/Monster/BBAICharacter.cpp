@@ -57,7 +57,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		{
 			if (BackHit(Hitter))
 			{
-				AnimInst->Montage_Play(AnimInst->StunMontage);
+				AnimInst->Montage_Play(AnimInst->BackStunMontage);
 				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
 				return;
 			}
@@ -67,22 +67,38 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		{
 			if (Parriable)
 			{
-				AnimInst->Montage_Play(AnimInst->StunMontage);
+				AnimInst->Montage_Play(AnimInst->FrontStunMontage);
 				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+				Parriable = false;
 				return;
 			}
 		}
 
 		if (HittypeDegree >= ToughnessDegree && HittypeDegree <= (ToughnessDegree + 1))
 		{
-			AnimInst->Montage_Play(AnimInst->HitMontage);
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_Play(AnimInst->BackHitMontage);
+			}
+			else
+			{
+				AnimInst->Montage_Play(AnimInst->FrontHitMontage);
+			}
+
 			AnimInst->Montage_JumpToSection(TEXT("Hit1"));
 			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
 			return;
 		}
 		else if (HittypeDegree >= ToughnessDegree + 2)
 		{
-			AnimInst->Montage_Play(AnimInst->HitMontage);
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_Play(AnimInst->BackHitMontage);
+			}
+			else
+			{
+				AnimInst->Montage_Play(AnimInst->FrontHitMontage);
+			}
 			AnimInst->Montage_JumpToSection(TEXT("Hit2"));
 			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
 			return;
@@ -92,7 +108,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 
 void ABBAICharacter::DeathCheck()
 {
-	if (!IsDeath && GetAttribute()->GetIsDeath())
+	if (!IsDeath && GetAttribute()->GetIsDeath() && !IsGrapped)
 	{
 		ABBAIController* Con = Cast<ABBAIController>(GetController());
 		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();

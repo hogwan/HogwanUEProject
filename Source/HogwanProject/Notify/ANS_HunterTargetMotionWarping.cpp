@@ -43,7 +43,7 @@ void UANS_HunterTargetMotionWarping::NotifyTick(USkeletalMeshComponent* MeshComp
 	FVector HunterLocation = Hunter->GetActorLocation();
 	HunterLocation.Z = 0.f;
 
-
+	
 	FVector HunterToMonsterDir = MonsterLocation - HunterLocation;
 	HunterToMonsterDir.Normalize();
 	FVector TargetLocation = Hunter->GetActorLocation() + HunterToMonsterDir * 100.f;

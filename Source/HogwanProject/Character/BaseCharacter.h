@@ -31,9 +31,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
-	UPROPERTY(EditAnywhere, Category = "Montage")
-	class UAnimMontage* HitMontage;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UMotionWarpingComponent* MotionWarping;
 

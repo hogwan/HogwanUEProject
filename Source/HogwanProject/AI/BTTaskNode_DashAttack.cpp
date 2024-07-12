@@ -23,6 +23,7 @@ EBTNodeResult::Type UBTTaskNode_DashAttack::ExecuteTask(UBehaviorTreeComponent& 
 
 	if (Character->GetBBAIAnimInstance()->DashAttackMontage == nullptr)
 	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
 		return EBTNodeResult::Type::Failed;
 	}
 
