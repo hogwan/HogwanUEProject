@@ -16,6 +16,7 @@
 #include "Character/Monster/BBAIAnimInstance.h"
 #include "Weapon/MeleeWeapon.h"
 #include "Weapon/RangedWeapon.h"
+#include "Global/BBGameInstance.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -42,6 +43,9 @@ AHunter::AHunter()
 void AHunter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	GameIns->Hunter = this;
 
 	EquipWeapon(MeleeWeaponsInPocket[0]);
 	EquipWeapon(RangedWeaponsInPocket[0]);

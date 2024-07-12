@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "ActorComponent/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
+#include "MotionWarpingComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -12,6 +13,8 @@ ABaseCharacter::ABaseCharacter()
 	
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
+	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping"));
 
 }
 

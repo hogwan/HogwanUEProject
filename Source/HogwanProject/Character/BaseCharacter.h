@@ -20,6 +20,7 @@ public:
 	float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
+	FORCEINLINE class UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
 protected:
 	virtual void BeginPlay() override;
 
@@ -32,6 +33,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* HitMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UMotionWarpingComponent* MotionWarping;
 
 private:
 
