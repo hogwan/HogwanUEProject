@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTaskNode_Attack.h"
+#include "AI/MeleeMonsterAI/BTTaskNode_Attack.h"
 
 EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {

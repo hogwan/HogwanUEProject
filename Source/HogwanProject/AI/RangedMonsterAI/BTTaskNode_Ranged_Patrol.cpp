@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTaskNode_Patrol.h"
-#include "GameFrameWork/CharacterMovementComponent.h"
+#include "AI/RangedMonsterAI/BTTaskNode_Ranged_Patrol.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
-EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTaskNode_Ranged_Patrol::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
 	Super::ExecuteTask(_OwnerComp, NodeMemory);
 
@@ -35,7 +35,7 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _Own
 	return EBTNodeResult::InProgress;
 }
 
-void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds)
+void UBTTaskNode_Ranged_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds)
 {
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 
@@ -49,26 +49,16 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pN
 	if (PatrolSize <= 1)
 	{
 		Monster->PatrolPoints.Pop();
-		ChangeState(_OwnerComp,EMonsterState::EMS_Idle);
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
 		return;
 	}
 
 	if (PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
 	{
-		if (BetweenAngleToDegree(_OwnerComp) > 90.f)
-		{
-			Monster->PatrolPoints.Pop();
-			Monster->PatrolNum = 0;
-			ChangeState(_OwnerComp, EMonsterState::EMS_Turn);
-			return;
-		}
-
-		Monster->PatrolPoints.Pop();
-		Monster->PatrolNum = 0;
-		ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
+		ChangeState(_OwnerComp,EMonsterState::EMS_Shoot);
 		return;
 	}
-	
+
 
 	if (MoveToPoint(_OwnerComp, Monster->PatrolPoints[Monster->PatrolNum % PatrolSize]))
 	{

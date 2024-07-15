@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AI/BTTaskNode_RotateToTarget.h"
+#include "AI/MeleeMonsterAI/BTTaskNode_RotateToTarget.h"
 
 EBTNodeResult::Type UBTTaskNode_RotateToTarget::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {

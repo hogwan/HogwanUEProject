@@ -17,6 +17,8 @@ enum class EMonsterState : uint8
 	EMS_Dead,
 	EMS_BackStep,
 	EMS_Lull,
+	EMS_Shoot,
+	EMS_BackWalk,
 };
 
 UENUM(BlueprintType)

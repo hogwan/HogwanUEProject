@@ -67,5 +67,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* KatanaTakeDown;
 
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* BackWalkMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* ShootMontage;
+
 
 };

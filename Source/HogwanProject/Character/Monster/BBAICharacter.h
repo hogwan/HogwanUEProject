@@ -75,6 +75,12 @@ public:
 	float DashAttackDistance = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float BackWalkDistance = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float PunchDistance = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	EDir MonsterDir = EDir::None;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
