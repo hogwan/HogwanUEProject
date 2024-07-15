@@ -50,6 +50,12 @@ public:
 	class UAnimMontage* BackStunMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* BackstepMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* LullMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* TakeDownBack;
 
 	UPROPERTY(EditAnywhere, Category = "Montage")

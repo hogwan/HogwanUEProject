@@ -200,6 +200,27 @@ EMonster UBBBTTaskNode::GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp)
 	return MonsterEnum;
 }
 
+void UBBBTTaskNode::RotateToHunter(UBehaviorTreeComponent& _OwnerComp, float DeltaTime)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	
+	FVector AIPos = Character->GetActorLocation();
+	FVector HunterPos = GetHunter()->GetActorLocation();
+
+	FVector ForwardVector = Character->GetActorForwardVector();
+	FVector TargetVector = HunterPos - AIPos;
+
+
+
+	FRotator FindRot = UKismetMathLibrary::FindLookAtRotation(AIPos, HunterPos);
+	FRotator StartRot = Character->GetActorRotation();
+	FRotator Result = UKismetMathLibrary::RInterpTo(StartRot, FindRot, DeltaTime, 5.f);
+
+	FRotator ResultRotation = FRotator(0.f, Result.Yaw, 0.f);
+
+	Character->SetActorRotation(ResultRotation);
+}
+
 AController* UBBBTTaskNode::GetController(UBehaviorTreeComponent& _OwnerComp)
 {
 	return Cast<AController>(_OwnerComp.GetOwner());

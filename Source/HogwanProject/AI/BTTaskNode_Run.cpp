@@ -28,7 +28,7 @@ EBTNodeResult::Type UBTTaskNode_Run::ExecuteTask(UBehaviorTreeComponent& _OwnerC
 		return EBTNodeResult::Type::Failed;
 	}
 
-	Character->GetCharacterMovement()->MaxWalkSpeed = 400.f;
+	Character->GetCharacterMovement()->MaxWalkSpeed = Character->RunSpeed;
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
 
 

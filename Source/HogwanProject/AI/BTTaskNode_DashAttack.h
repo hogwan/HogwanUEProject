@@ -19,4 +19,5 @@ public:
 	void TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMemory, float _DeltaSeconds) override;
 
 	void ExecuteParasiteDashAttack(UBehaviorTreeComponent& _OwnerComp);
+	void ExecuteWolfDashAttack(UBehaviorTreeComponent& _OwnerComp);
 };

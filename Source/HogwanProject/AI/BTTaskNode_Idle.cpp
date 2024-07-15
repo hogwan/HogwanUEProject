@@ -41,6 +41,14 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 	ABBAICharacter* Monster = GetActor<ABBAICharacter>(_OwnerComp);
 	if (!Monster) return;
 
+	if (Monster->CurStamina <= 0.f)
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_BackStep);
+		return;
+	}
+
+
+
 	Monster->IdleAcc -= _DeltaSeconds;
 
 	if (Monster->IdleAcc < 0.f)

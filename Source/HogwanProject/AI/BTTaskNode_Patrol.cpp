@@ -28,7 +28,7 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _Own
 	}
 
 	Character->PatrolPoints.Add(Character->GetActorLocation());
-	Character->GetCharacterMovement()->MaxWalkSpeed = 100.f;
+	Character->GetCharacterMovement()->MaxWalkSpeed = Character->WalkSpeed;
 
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->WalkMontage);
 

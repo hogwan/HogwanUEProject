@@ -26,7 +26,8 @@ EBTNodeResult::Type UBTTaskNode_Turn::ExecuteTask(UBehaviorTreeComponent& _Owner
 
 	if (Character->GetBBAIAnimInstance()->TurnMontage == nullptr)
 	{
-		return EBTNodeResult::Type::Failed;
+		Character->TurnEnd = true;
+		return EBTNodeResult::InProgress;
 	}
 
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->TurnMontage);
@@ -53,18 +54,9 @@ void UBTTaskNode_Turn::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 		if (Character->TurnEnd)
 		{
 			Character->TurnEnd = false;
-			if (Character->PerceiveHunter)
-			{
-				Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
-				ChangeState(_OwnerComp, EMonsterState::EMS_Run);
-				return;
-			}
-			else
-			{
-				ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
-				return;	
-			}
 
+			ChangeState(_OwnerComp, EMonsterState::EMS_Rotate);
+			return;
 		}
 	}
 }

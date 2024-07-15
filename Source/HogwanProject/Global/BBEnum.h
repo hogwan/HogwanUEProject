@@ -9,11 +9,14 @@ enum class EMonsterState : uint8
 	EMS_Idle,
 	EMS_Patrol,
 	EMS_Turn,
+	EMS_Rotate,
 	EMS_Perceive,
 	EMS_Run,
 	EMS_Attack, 
 	EMS_DashAttack,
 	EMS_Dead,
+	EMS_BackStep,
+	EMS_Lull,
 };
 
 UENUM(BlueprintType)
@@ -58,6 +61,9 @@ enum class EMonster : uint8
 	None,
 	EM_Zombie,
 	EM_Parasite,
+	EM_Wolf,
+	EM_InfectedSolider,
+	EM_Priest,
 };
 
 UENUM(BlueprintType)
@@ -67,4 +73,14 @@ enum class EToughness : uint8
 	ET_Low = 2,
 	ET_Medium=4,
 	ET_High=7
+};
+
+UENUM(BlueprintType)
+enum class EDir : uint8
+{
+	None,
+	Left,
+	Right,
+	Up,
+	Down,
 };

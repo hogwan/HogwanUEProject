@@ -28,7 +28,7 @@ void UANS_LeftJumpMotionWarping::NotifyTick(USkeletalMeshComponent* MeshComp, UA
 	FMotionWarpingTarget Target = {};
 	Target.Name = FName("LeftStepPosition");
 
-	FVector TargetLocation = SelfMonster->GetActorLocation() + SelfMonster->GetActorRightVector() * (-1.f) * SelfMonster->JumpDistance;
+	FVector TargetLocation = SelfMonster->GetActorLocation() + SelfMonster->GetActorRightVector() * (-1.f) * SelfMonster->BackstepDistance;
 
 	Target.Location = TargetLocation;
 

@@ -29,14 +29,66 @@ public:
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	class ABBAIController* GetBBAIController();
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float IdleTime = 3.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float IdleAcc = IdleTime;
-	float PerceiveRange = 300.f;
-	float AttackRange = 80.f;
-	float DestroyTime = 20.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float WalkSpeed = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float RunSpeed = 400.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float PerceiveRange = 300.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float AttackRange = 80.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float DestroyTime = 20.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float AttackCoolTime = 1.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float CurStamina = 100.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float MaxStamina = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float CurLullTime = 2.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float MaxLullTime = 2.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float StaminaRecoverSpeed = 20.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float BackstepDistance = 500.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float DashAttackDistance = 0.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	EDir MonsterDir = EDir::None;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	EToughness Toughness = EToughness::None;
+
+	UPROPERTY(EditInstanceOnly)
+	TArray<FVector> PatrolPoints;
+
+	UPROPERTY(BlueprintReadWrite)
 	int PatrolNum = 0;
+	UPROPERTY(BlueprintReadWrite)
 	bool PerceiveHunter = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool CanGrabType = true;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool Parriable = false;
@@ -49,20 +101,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool PerceiveEnd = false;
 	UPROPERTY(BlueprintReadWrite)
+	bool BackstepEnd = false;
+	UPROPERTY(BlueprintReadWrite)
 	bool IsGrapped = false;
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	EToughness Toughness = EToughness::None;
-
-	UPROPERTY(EditInstanceOnly)
-	TArray<FVector> PatrolPoints;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float JumpDistance = 500.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float DashAttackDistance = 0.f;
-
 
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 

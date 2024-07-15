@@ -28,7 +28,7 @@ void UANS_ForwardJumpMotionWarping::NotifyTick(USkeletalMeshComponent* MeshComp,
 	FMotionWarpingTarget Target = {};
 	Target.Name = FName("ForwardStepPosition");
 
-	FVector TargetLocation = SelfMonster->GetActorLocation() + SelfMonster->GetActorForwardVector() * SelfMonster->JumpDistance;
+	FVector TargetLocation = SelfMonster->GetActorLocation() + SelfMonster->GetActorForwardVector() * SelfMonster->BackstepDistance;
 
 	Target.Location = TargetLocation;
 

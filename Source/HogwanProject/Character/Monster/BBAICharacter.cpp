@@ -53,7 +53,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		int32 ToughnessDegree = static_cast<int32>(Toughness);
 		int32 HittypeDegree = static_cast<int32>(HitType);
 
-		if (HitType == EHitType::EHT_Charge)
+		if (HitType == EHitType::EHT_Charge && CanGrabType)
 		{
 			if (BackHit(Hitter))
 			{
@@ -63,7 +63,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 			}
 		}
 
-		if (HitType == EHitType::EHT_Bullet)
+		if (HitType == EHitType::EHT_Bullet && CanGrabType)
 		{
 			if (Parriable)
 			{

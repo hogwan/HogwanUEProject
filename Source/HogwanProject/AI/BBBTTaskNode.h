@@ -90,4 +90,7 @@ public:
 	float GetDistanceToHunter(UBehaviorTreeComponent& _OwnerComp);
 
 	EMonster GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp);
+
+	void RotateToHunter(UBehaviorTreeComponent& _OwnerComp, float DeltaTime);
+
 };

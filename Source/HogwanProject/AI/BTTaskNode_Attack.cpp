@@ -36,6 +36,9 @@ EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _Own
 	case EMonster::EM_Parasite:
 		ExecuteParasiteAttack(_OwnerComp);
 		break;
+	case EMonster::EM_Wolf:
+		ExecuteParasiteAttack(_OwnerComp);
+		break;
 	default:
 		break;
 	}
@@ -85,6 +88,7 @@ void UBTTaskNode_Attack::ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerCom
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
 	int Random = FMath::RandRange(1, 4);
+	Character->CurStamina -= 20.f;
 
 	switch (Random)
 	{
@@ -99,6 +103,30 @@ void UBTTaskNode_Attack::ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerCom
 		break;
 	case 4:
 		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack4"));
+		break;
+	default:
+		break;
+	}
+}
+
+void UBTTaskNode_Attack::ExecuteWolfAttack(UBehaviorTreeComponent& _OwnerComp)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
+
+	int Random = FMath::RandRange(1, 3);
+	Character->CurStamina -= 50.f;
+
+	switch (Random)
+	{
+	case 1:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack1"));
+		break;
+	case 2:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack2"));
+		break;
+	case 3:
+		Character->GetBBAIAnimInstance()->Montage_JumpToSection(TEXT("Attack3"));
 		break;
 	default:
 		break;

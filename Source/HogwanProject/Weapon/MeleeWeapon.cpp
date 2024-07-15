@@ -51,12 +51,13 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	FHitResult HitResult;
 
 	IgnoreArray.AddUnique(this);
+	IgnoreArray.AddUnique(GetOwner());
 
 	UKismetSystemLibrary::BoxTraceSingle(
 		this,
 		BoxTraceStart->GetComponentLocation(),
 		BoxTraceEnd->GetComponentLocation(),
-		FVector(3.f, 3.f, 3.f),
+		FVector(10.f, 10.f, 10.f),
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery3,
 		false,
@@ -69,8 +70,6 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	if (HitResult.GetActor())
 	{
-		IgnoreArray.AddUnique(HitResult.GetActor());
-
 		UGameplayStatics::ApplyDamage(
 			HitResult.GetActor(),
 			20.f,

@@ -34,6 +34,9 @@ EBTNodeResult::Type UBTTaskNode_DashAttack::ExecuteTask(UBehaviorTreeComponent& 
 	case EMonster::EM_Parasite:
 		ExecuteParasiteDashAttack(_OwnerComp);
 		break;
+	case EMonster::EM_Wolf:
+		ExecuteWolfDashAttack(_OwnerComp);
+		break;
 	default:
 		break;
 	}
@@ -61,4 +64,12 @@ void UBTTaskNode_DashAttack::ExecuteParasiteDashAttack(UBehaviorTreeComponent& _
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->DashAttackMontage);
+	Character->CurStamina -= 50.f;
+}
+
+void UBTTaskNode_DashAttack::ExecuteWolfDashAttack(UBehaviorTreeComponent& _OwnerComp)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->DashAttackMontage);
+	Character->CurStamina -= 50.f;
 }
