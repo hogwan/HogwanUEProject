@@ -44,7 +44,11 @@ void UBTTaskNode_Ranged_BackWalk::TickTask(UBehaviorTreeComponent& _OwnerComp, u
 	ABBAIController* MonsterController = GetController<ABBAIController>(_OwnerComp);
 	if (!Monster) return;
 	
-	Monster->AddMovementInput(-Monster->GetActorForwardVector());
+	FVector Dir = Monster->GetActorLocation() - GetHunter()->GetActorLocation();
+	Dir.Normalize();
+
+	Monster->AddMovementInput(Dir * Monster->WalkSpeed * _DeltaSeconds);
+
 	float Distance = (Monster->GetActorLocation() - GetHunter()->GetActorLocation()).Size();
 
 	if (Distance <= Monster->PunchDistance)

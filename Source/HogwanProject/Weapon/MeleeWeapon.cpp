@@ -6,6 +6,7 @@
 #include "Interface/HitInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Character/Monster/Monster.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -67,8 +68,9 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		true
 	);
 
+	AMonster* Monster = Cast<AMonster>(HitResult.GetActor());
 
-	if (HitResult.GetActor())
+	if (Monster)
 	{
 		UGameplayStatics::ApplyDamage(
 			HitResult.GetActor(),
@@ -77,7 +79,7 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 			this,
 			UDamageType::StaticClass());
 
-		IgnoreArray.AddUnique(HitResult.GetActor());
+		IgnoreArray.AddUnique(Monster);
 		IHitInterface* Hit = Cast<IHitInterface>(HitResult.GetActor());
 		if (Hit)
 		{

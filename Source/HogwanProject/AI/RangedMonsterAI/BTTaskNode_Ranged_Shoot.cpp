@@ -36,6 +36,8 @@ void UBTTaskNode_Ranged_Shoot::TickTask(UBehaviorTreeComponent& _OwnerComp, uint
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
+	RotateToHunter(_OwnerComp, _DeltaSeconds);
+
 	if (Character)
 	{
 		if (Character->AttackEnd)
