@@ -33,10 +33,16 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Hp;
+	float Hp = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float MaxHp;
+	float MaxHp = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Stamina = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxStamina = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsDeath;

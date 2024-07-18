@@ -2,6 +2,7 @@
 
 
 #include "AI/MeleeMonsterAI/BTTaskNode_Lull.h"
+#include "ActorComponent/AttributeComponent.h"
 
 EBTNodeResult::Type UBTTaskNode_Lull::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -55,14 +56,14 @@ void UBTTaskNode_Lull::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 
 	if (Distance < 200.f)
 	{
-		Character->CurStamina = Character->MaxStamina;
+		Character->GetAttribute()->Stamina = Character->GetAttribute()->MaxStamina;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
 		return;
 	}
 
-	if (Character->CurStamina >= Character->MaxStamina)
+	if (Character->GetAttribute()->Stamina >= Character->GetAttribute()->MaxStamina)
 	{
-		Character->CurStamina = Character->MaxStamina;
+		Character->GetAttribute()->Stamina = Character->GetAttribute()->MaxStamina;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
 		return;
 	}
@@ -79,7 +80,7 @@ void UBTTaskNode_Lull::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 	}
 
 	RotateToHunter(_OwnerComp, _DeltaSeconds);
-	Character->CurStamina += Character->StaminaRecoverSpeed * _DeltaSeconds;
+	Character->GetAttribute()->Stamina += Character->StaminaRecoverSpeed * _DeltaSeconds;
 }
 
 void UBTTaskNode_Lull::ExecuteParasiteLull(UBehaviorTreeComponent& _OwnerComp)

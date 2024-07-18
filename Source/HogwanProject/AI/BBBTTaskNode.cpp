@@ -6,6 +6,7 @@
 #include "Character/Hunter/BBPlayerController.h"
 #include "Character/Hunter/Hunter.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "AIController.h"
 
 UBBBTTaskNode::UBBBTTaskNode()
 {
@@ -52,7 +53,7 @@ void UBBBTTaskNode::ChangeState(UBehaviorTreeComponent& _OwnerComp, uint8 _State
 	FinishLatentTask(_OwnerComp, EBTNodeResult::Failed);
 }
 
-bool UBBBTTaskNode::PerceiveInRange(UBehaviorTreeComponent& _OwnerComp, float PerceiveRange)
+bool UBBBTTaskNode::TargetInRange(UBehaviorTreeComponent& _OwnerComp, float _Range)
 {
 	AHunter* Hunter = GetHunter();
 	AActor* Self = GetActor<AActor>(_OwnerComp);
@@ -67,7 +68,7 @@ bool UBBBTTaskNode::PerceiveInRange(UBehaviorTreeComponent& _OwnerComp, float Pe
 
 	float Range = (TargetPosition - CurPosition).Size();
 
-	if (Range < PerceiveRange)
+	if (Range < _Range)
 	{
 		return true;
 	}
@@ -124,53 +125,25 @@ void UBBBTTaskNode::StatusReset(UBehaviorTreeComponent& _OwnerComp)
 	}
 }
 
-bool UBBBTTaskNode::MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange)
+void UBBBTTaskNode::MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange)
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	FVector ActorPos = Character->GetActorLocation();
-	ActorPos.Z = 0.f;
+	FAIMoveRequest AIMoveRequest;
+	AIMoveRequest.SetGoalActor(GetHunter());
+	AIMoveRequest.SetAcceptanceRadius(SuccessRange);
 
-	FVector TargetPos = GetHunter()->GetActorLocation();
-	TargetPos.Z = 0.f;
-
-	FVector Dir = TargetPos - ActorPos;
-	Dir.Normalize();
-	Character->AddMovementInput(Dir);
-
-	float Distance = (ActorPos - TargetPos).Size();
-
-	if (Distance < SuccessRange)
-	{
-		return true;
-	}
-
-	return false;
-
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->MoveToActor(GetHunter(), SuccessRange);
 }
 
-bool UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange)
+void UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, AActor* TargetLocation, float SuccessRange)
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	FVector ActorPos = Character->GetActorLocation();
-	ActorPos.Z = 0.f;
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->MoveToActor(TargetLocation, SuccessRange);
 
-	TargetLocation.Z = 0.f;
-
-	FVector Dir = TargetLocation - ActorPos;
-	Dir.Normalize();
-	Character->AddMovementInput(Dir);
-
-	float Distance = (ActorPos - TargetLocation).Size();
-
-	if (Distance < SuccessRange)
-	{
-		return true;
-	}
-
-
-	return false;
 }
 
 float UBBBTTaskNode::GetDistanceToHunter(UBehaviorTreeComponent& _OwnerComp)

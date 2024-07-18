@@ -52,12 +52,6 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float AttackCoolTime = 1.f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
-	float CurStamina = 100.f;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
-	float MaxStamina = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float CurLullTime = 2.f;
@@ -87,7 +81,7 @@ public:
 	EToughness Toughness = EToughness::None;
 
 	UPROPERTY(EditInstanceOnly)
-	TArray<FVector> PatrolPoints;
+	TArray<AActor*> PatrolPoints;
 
 	UPROPERTY(BlueprintReadWrite)
 	int PatrolNum = 0;
@@ -126,6 +120,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* BackTakeDownBox;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UPawnSensingComponent* PawnSensing;
+
+	UFUNCTION()
+	void OnSeePawn(APawn* Pawn);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

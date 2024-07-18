@@ -62,9 +62,8 @@ void UBTTaskNode_Ranged_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8
 		return;
 	}
 
-	if (Monster->PerceiveHunter || PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
+	if (Monster->PerceiveHunter)
 	{
-		Monster->PerceiveHunter = true;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Shoot);
 		return;
 	}

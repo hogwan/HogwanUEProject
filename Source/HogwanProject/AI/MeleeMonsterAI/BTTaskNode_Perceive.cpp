@@ -22,14 +22,21 @@ EBTNodeResult::Type UBTTaskNode_Perceive::ExecuteTask(UBehaviorTreeComponent& _O
 	{
 		return EBTNodeResult::Aborted;
 	}
-	Character->PerceiveHunter = true;
 
-	if (Character->GetBBAIAnimInstance()->PerceiveMontage == nullptr)
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->StopMovement();
+
+
+	if (Character->GetBBAIAnimInstance()->PerceiveMontage != nullptr)
 	{
-		return EBTNodeResult::Type::Failed;
+		Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->PerceiveMontage);
+	}
+	else
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Run);
+		return EBTNodeResult::Failed;
 	}
 
-	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->PerceiveMontage);
 
 	return EBTNodeResult::InProgress;
 }

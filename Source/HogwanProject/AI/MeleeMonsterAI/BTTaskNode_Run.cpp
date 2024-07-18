@@ -31,6 +31,7 @@ EBTNodeResult::Type UBTTaskNode_Run::ExecuteTask(UBehaviorTreeComponent& _OwnerC
 	Character->GetCharacterMovement()->MaxWalkSpeed = Character->RunSpeed;
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->RunMontage);
 
+	MoveToHunter(_OwnerComp, 10.f);
 
 	return EBTNodeResult::InProgress;
 }
@@ -41,7 +42,7 @@ void UBTTaskNode_Run::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNode
 
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	if (MoveToHunter(_OwnerComp, 80.f))
+	if (TargetInRange(_OwnerComp, 120.f))
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_Attack);
 		return;

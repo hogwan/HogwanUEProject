@@ -64,12 +64,12 @@ void UBTTaskNode_DashAttack::ExecuteParasiteDashAttack(UBehaviorTreeComponent& _
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->DashAttackMontage);
-	Character->CurStamina -= 50.f;
+	Character->GetAttribute()->Stamina -= 50.f;
 }
 
 void UBTTaskNode_DashAttack::ExecuteWolfDashAttack(UBehaviorTreeComponent& _OwnerComp)
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->DashAttackMontage);
-	Character->CurStamina -= 50.f;
+	Character->GetAttribute()->Stamina -= 50.f;
 }

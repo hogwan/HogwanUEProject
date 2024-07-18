@@ -21,6 +21,9 @@ EBTNodeResult::Type UBTTaskNode_Unable::ExecuteTask(UBehaviorTreeComponent& _Own
 		return EBTNodeResult::Aborted;
 	}
 
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->StopMovement();
+
 	return EBTNodeResult::InProgress;
 }
 

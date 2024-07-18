@@ -25,6 +25,9 @@ EBTNodeResult::Type UBTTaskNode_Attack::ExecuteTask(UBehaviorTreeComponent& _Own
 	{
 		return EBTNodeResult::Type::Failed;
 	}
+
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->StopMovement();
 	
 	EMonster MonsterEnum = GetMonsterEnum(_OwnerComp);
 
@@ -88,7 +91,7 @@ void UBTTaskNode_Attack::ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerCom
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
 	int Random = FMath::RandRange(1, 4);
-	Character->CurStamina -= 20.f;
+	Character->GetAttribute()->Stamina -= 20.f;
 
 	switch (Random)
 	{
@@ -115,7 +118,7 @@ void UBTTaskNode_Attack::ExecuteWolfAttack(UBehaviorTreeComponent& _OwnerComp)
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->AttackMontage);
 
 	int Random = FMath::RandRange(1, 3);
-	Character->CurStamina -= 50.f;
+	Character->GetAttribute()->Stamina -= 50.f;
 
 	switch (Random)
 	{

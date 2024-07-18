@@ -29,6 +29,9 @@ EBTNodeResult::Type UBTTaskNode_Idle::ExecuteTask(UBehaviorTreeComponent& _Owner
 		return EBTNodeResult::Type::Failed;
 	}
 
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->StopMovement();
+
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->IdleMontage);
 
 	return EBTNodeResult::InProgress;
@@ -41,23 +44,13 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 	ABBAICharacter* Monster = GetActor<ABBAICharacter>(_OwnerComp);
 	if (!Monster) return;
 
-	if (Monster->CurStamina <= 0.f)
+	if (Monster->GetAttribute()->Stamina <= 0.f)
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_BackStep);
 		return;
 	}
 
-
-
-	Monster->IdleAcc -= _DeltaSeconds;
-
-	if (Monster->IdleAcc < 0.f)
-	{
-		ChangeState(_OwnerComp,EMonsterState::EMS_Patrol);
-		return;
-	}
-
-	if (Monster->PerceiveHunter || PerceiveInRange(_OwnerComp, Monster->PerceiveRange))
+	if (Monster->PerceiveHunter)
 	{
 		if (BetweenAngleToDegree(_OwnerComp) > 90.f)
 		{
@@ -76,5 +69,13 @@ void UBTTaskNode_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 			return;
 		}
 
+	}
+
+	Monster->IdleAcc -= _DeltaSeconds;
+
+	if (Monster->IdleAcc < 0.f)
+	{
+		ChangeState(_OwnerComp,EMonsterState::EMS_Patrol);
+		return;
 	}
 }

@@ -10,6 +10,7 @@
 #include "Character/Hunter/Hunter.h"
 #include "Character/Monster/Monster.h"
 #include "AI/BBAIController.h"
+#include "ActorComponent/AttributeComponent.h"
 #include "BBBTTaskNode.generated.h"
 
 /**
@@ -75,7 +76,7 @@ public:
 		_OwnerComp.GetBlackboardComponent()->SetValueAsObject(_Name, _Value);
 	}
 
-	bool PerceiveInRange(UBehaviorTreeComponent& _OwnerComp, float PerceiveRange);
+	bool TargetInRange(UBehaviorTreeComponent& _OwnerComp, float PerceiveRange);
 
 	float BetweenAngleToDegree(UBehaviorTreeComponent& _OwnerComp);
 
@@ -83,9 +84,9 @@ public:
 
 	void StatusReset(UBehaviorTreeComponent& _OwnerComp);
 
-	bool MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange = 50.f);
+	void MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange = 50.f);
 
-	bool MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange = 50.f);
+	void MoveToPoint(UBehaviorTreeComponent& _OwnerComp, AActor* TargetLocation, float SuccessRange = 50.f);
 
 	float GetDistanceToHunter(UBehaviorTreeComponent& _OwnerComp);
 

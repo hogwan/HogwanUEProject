@@ -23,6 +23,8 @@ EBTNodeResult::Type UBTTaskNode_Turn::ExecuteTask(UBehaviorTreeComponent& _Owner
 	{
 		return EBTNodeResult::Aborted;
 	}
+	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
+	Controller->StopMovement();
 
 	if (Character->GetBBAIAnimInstance()->TurnMontage == nullptr)
 	{

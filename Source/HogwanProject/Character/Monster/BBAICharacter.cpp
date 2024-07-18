@@ -12,6 +12,7 @@
 #include "Components/BoxComponent.h"
 #include "Character/Hunter/Hunter.h"
 #include "Components/CapsuleComponent.h"
+#include "Perception/PawnSensingComponent.h"
 
 ABBAICharacter::ABBAICharacter()
 {
@@ -20,6 +21,8 @@ ABBAICharacter::ABBAICharacter()
 
 	BackTakeDownBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BackTakeDownBox"));
 	BackTakeDownBox->SetupAttachment(GetRootComponent());
+
+	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
 }
 
 void ABBAICharacter::Tick(float DeltaTime)
@@ -41,6 +44,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 	Super::GetHit(ImpactPoint, Hitter, HitType);
 
 	ABBAIController* Con = Cast<ABBAIController>(GetController());
+	PerceiveHunter = true;
 	
 	if (Con && AnimInst)
 	{
@@ -141,6 +145,8 @@ void ABBAICharacter::BeginPlay()
 
 	FrontTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BackTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	PawnSensing->OnSeePawn.AddDynamic(this, &ABBAICharacter::OnSeePawn);
 }
 
 bool ABBAICharacter::BackHit(AActor* Hitter)
@@ -166,6 +172,15 @@ bool ABBAICharacter::BackHit(AActor* Hitter)
 	}
 
 	return false;
+}
+
+void ABBAICharacter::OnSeePawn(APawn* Pawn)
+{
+	AHunter* Hunter = Cast<AHunter>(Pawn);
+	if (Hunter)
+	{
+		PerceiveHunter = true;
+	}
 }
 
 void ABBAICharacter::FrontTakeDownBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
