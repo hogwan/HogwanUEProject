@@ -39,9 +39,9 @@ ABBAIController* ABBAICharacter::GetBBAIController()
 	return Cast<ABBAIController>(GetController());
 }
 
-void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
+void ABBAICharacter::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitType _HitType)
 {
-	Super::GetHit(ImpactPoint, Hitter, HitType);
+	Super::GetHit(_ImpactPoint, _Hitter, _HitType);
 
 	ABBAIController* Con = Cast<ABBAIController>(GetController());
 	PerceiveHunter = true;
@@ -55,11 +55,11 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		}
 
 		int32 ToughnessDegree = static_cast<int32>(Toughness);
-		int32 HittypeDegree = static_cast<int32>(HitType);
+		int32 HittypeDegree = static_cast<int32>(_HitType);
 
-		if (HitType == EHitType::EHT_Charge && CanGrabType)
+		if (_HitType == EHitType::EHT_Charge && CanGrabType)
 		{
-			if (BackHit(Hitter))
+			if (BackHit(_Hitter))
 			{
 				AnimInst->Montage_Play(AnimInst->BackStunMontage);
 				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
@@ -67,7 +67,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 			}
 		}
 
-		if (HitType == EHitType::EHT_Bullet && CanGrabType)
+		if (_HitType == EHitType::EHT_Bullet && CanGrabType)
 		{
 			if (Parriable)
 			{
@@ -80,7 +80,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 
 		if (HittypeDegree >= ToughnessDegree && HittypeDegree <= (ToughnessDegree + 1))
 		{
-			if (BackHit(Hitter))
+			if (BackHit(_Hitter))
 			{
 				AnimInst->Montage_Play(AnimInst->BackHitMontage);
 			}
@@ -95,7 +95,7 @@ void ABBAICharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		}
 		else if (HittypeDegree >= ToughnessDegree + 2)
 		{
-			if (BackHit(Hitter))
+			if (BackHit(_Hitter))
 			{
 				AnimInst->Montage_Play(AnimInst->BackHitMontage);
 			}
@@ -147,31 +147,6 @@ void ABBAICharacter::BeginPlay()
 	BackTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	PawnSensing->OnSeePawn.AddDynamic(this, &ABBAICharacter::OnSeePawn);
-}
-
-bool ABBAICharacter::BackHit(AActor* Hitter)
-{
-	FVector Forward = GetActorForwardVector();
-	Forward.Z = 0.f;
-
-	FVector Target = Hitter->GetActorLocation() - GetActorLocation();
-	Target.Z = 0.f;
-
-	Forward.Normalize();
-	Target.Normalize();
-
-	float DotScala = UKismetMathLibrary::Dot_VectorVector(Forward, Target);
-
-	float RadianAngle = UKismetMathLibrary::Acos(DotScala);
-
-	float DegreeAngle = FMath::RadiansToDegrees(RadianAngle);
-
-	if (DegreeAngle > 120.f)
-	{
-		return true;
-	}
-
-	return false;
 }
 
 void ABBAICharacter::OnSeePawn(APawn* Pawn)

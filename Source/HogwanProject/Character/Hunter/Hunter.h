@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "Character/BaseCharacter.h"
 #include "InputActionValue.h"
 #include "CharacterEnumType.h"
 #include "Animation/AnimMontage.h"
@@ -11,7 +11,7 @@
 
 
 UCLASS()
-class HOGWANPROJECT_API AHunter : public ACharacter
+class HOGWANPROJECT_API AHunter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -20,6 +20,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
+
+	void Reset() override;
 
 	//Input
 #pragma region Input
@@ -136,6 +140,8 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 
+
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TakeDown", meta = (AllowPrivateAccess = "true"))
 	class AActor* TakeDownTarget;
 
@@ -153,9 +159,6 @@ public:
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
 
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
-
-	UFUNCTION(BlueprintCallable)
-	void Reset();
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(EWeapon Weapon);

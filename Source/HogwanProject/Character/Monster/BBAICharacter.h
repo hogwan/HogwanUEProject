@@ -28,6 +28,9 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	class ABBAIController* GetBBAIController();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EHitType HitType = EHitType::EHT_Light;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float IdleTime = 3.f;
@@ -75,6 +78,12 @@ public:
 	float PunchDistance = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float BasicDamage = 10.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float Damage = BasicDamage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	EDir MonsterDir = EDir::None;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
@@ -112,8 +121,6 @@ public:
 
 protected:
 	void BeginPlay() override;
-
-	bool BackHit(AActor* Hitter);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* FrontTakeDownBox;

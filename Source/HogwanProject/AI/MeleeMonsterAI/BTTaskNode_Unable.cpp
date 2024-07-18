@@ -2,6 +2,7 @@
 
 
 #include "AI/MeleeMonsterAI/BTTaskNode_Unable.h"
+#include "Character/Monster/UnEquippedMonster.h"
 
 EBTNodeResult::Type UBTTaskNode_Unable::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -20,6 +21,8 @@ EBTNodeResult::Type UBTTaskNode_Unable::ExecuteTask(UBehaviorTreeComponent& _Own
 	{
 		return EBTNodeResult::Aborted;
 	}
+
+	Character->Reset();
 
 	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
 	Controller->StopMovement();

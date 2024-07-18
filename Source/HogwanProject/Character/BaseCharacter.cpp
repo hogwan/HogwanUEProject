@@ -5,6 +5,7 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
 #include "MotionWarpingComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -48,5 +49,34 @@ float ABaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, 
 	HealthBarWidget->SetHealthPercent(Attribute->GetHealthPercent());
 
 	return Damage;
+}
+
+bool ABaseCharacter::BackHit(AActor* Hitter)
+{
+	FVector Forward = GetActorForwardVector();
+	Forward.Z = 0.f;
+
+	FVector Target = Hitter->GetActorLocation() - GetActorLocation();
+	Target.Z = 0.f;
+
+	Forward.Normalize();
+	Target.Normalize();
+
+	float DotScala = UKismetMathLibrary::Dot_VectorVector(Forward, Target);
+
+	float RadianAngle = UKismetMathLibrary::Acos(DotScala);
+
+	float DegreeAngle = FMath::RadiansToDegrees(RadianAngle);
+
+	if (DegreeAngle > 120.f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void ABaseCharacter::ResetState()
+{
 }
 

@@ -24,12 +24,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void HitBoxOff();
 
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* HitBox;
 protected:
 	void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* HitBox;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* BoxTraceStart;

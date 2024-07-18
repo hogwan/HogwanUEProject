@@ -31,6 +31,13 @@ EBTNodeResult::Type UBTTaskNode_Patrol::ExecuteTask(UBehaviorTreeComponent& _Own
 
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->WalkMontage);
 
+	if (false == Character->PatrolPoints.Num())
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
+
+		return EBTNodeResult::Type::Failed;
+	}
+
 	int PatrolSize = Character->PatrolPoints.Num();
 
 	MoveToPoint(_OwnerComp, Character->PatrolPoints[Character->PatrolNum % PatrolSize], 10.f);
@@ -57,24 +64,15 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pN
 	float Distance = (TargetLocation - MonsterLocation).Size();
 
 
-	if (PatrolSize <= 1)
-	{
-		Monster->PatrolPoints.Pop();
-		ChangeState(_OwnerComp,EMonsterState::EMS_Idle);
-		return;
-	}
-
 	if (Monster->PerceiveHunter)
 	{
 		if (BetweenAngleToDegree(_OwnerComp) > 90.f)
 		{
-			Monster->PatrolPoints.Pop();
 			Monster->PatrolNum = 0;
 			ChangeState(_OwnerComp, EMonsterState::EMS_Turn);
 			return;
 		}
 
-		Monster->PatrolPoints.Pop();
 		Monster->PatrolNum = 0;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Perceive);
 		return;

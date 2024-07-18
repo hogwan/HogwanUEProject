@@ -85,6 +85,68 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AHunter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
+{
+	Super::GetHit(ImpactPoint, Hitter, HitType);
+
+	CurActionState = ECharacterActionState::ECAS_Hit;
+
+	UBBAnimInstance* AnimInst = Cast<UBBAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (AnimInst)
+	{
+		if (BackHit(Hitter))
+		{
+			AnimInst->Montage_Play(MontageMap[TEXT("BackHit")]);
+		}
+		else
+		{
+			AnimInst->Montage_Play(MontageMap[TEXT("FrontHit")]);
+		}
+
+		switch (HitType)
+		{
+		case EHitType::EHT_Light:
+		{
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_JumpToSection(TEXT("BackHit1"));
+			}
+			else
+			{
+				AnimInst->Montage_JumpToSection(TEXT("FrontHit1"));
+			}
+		}
+			break;
+		case EHitType::EHT_Heavy:
+		{
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_JumpToSection(TEXT("BackHit2"));
+			}
+			else
+			{
+				AnimInst->Montage_JumpToSection(TEXT("FrontHit2"));
+			}
+		}
+			break;
+		case EHitType::EHT_Charge:
+		{
+			if (BackHit(Hitter))
+			{
+				AnimInst->Montage_JumpToSection(TEXT("BackHit2"));
+			}
+			else
+			{
+				AnimInst->Montage_JumpToSection(TEXT("FrontHit3"));
+			}
+		}
+			break;
+		}
+	}
+
+}
+
 void AHunter::Move(const FInputActionValue& Value)
 {
 	InputVector = FVector(Value.Get<FVector2D>().X, Value.Get<FVector2D>().Y, 0.f);
@@ -646,6 +708,8 @@ void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator
 
 void AHunter::Reset()
 {
+	CurActionState = ECharacterActionState::ECAS_Unoccupied;
+
 	bIsRun = false;
 	bCanTakeDown = false;
 

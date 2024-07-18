@@ -68,9 +68,9 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		true
 	);
 
-	AMonster* Monster = Cast<AMonster>(HitResult.GetActor());
+	ABaseCharacter* Character = Cast<ABaseCharacter>(HitResult.GetActor());
 
-	if (Monster)
+	if (Character)
 	{
 		UGameplayStatics::ApplyDamage(
 			HitResult.GetActor(),
@@ -79,7 +79,7 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 			this,
 			UDamageType::StaticClass());
 
-		IgnoreArray.AddUnique(Monster);
+		IgnoreArray.AddUnique(Character);
 		IHitInterface* Hit = Cast<IHitInterface>(HitResult.GetActor());
 		if (Hit)
 		{
