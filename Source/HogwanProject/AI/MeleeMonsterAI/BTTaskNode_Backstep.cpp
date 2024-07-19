@@ -39,6 +39,13 @@ void UBTTaskNode_Backstep::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _
 
 	RotateToHunter(_OwnerComp, _DeltaSeconds);
 
+	EMonster MonsterEnum = GetMonsterEnum(_OwnerComp);
+	if (MonsterEnum == EMonster::EM_Mutant)
+	{
+		Character->AddActorWorldOffset(-Character->GetActorForwardVector() * Character->WalkSpeed * _DeltaSeconds);
+	}
+
+
 	if (Character)
 	{
 		if (Character->BackstepEnd)

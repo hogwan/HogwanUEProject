@@ -37,6 +37,9 @@ EBTNodeResult::Type UBTTaskNode_Lull::ExecuteTask(UBehaviorTreeComponent& _Owner
 	case EMonster::EM_Wolf:
 		ExecuteWolfLull(_OwnerComp);
 		break;
+	case EMonster::EM_Mutant:
+		ExecuteMutantLull(_OwnerComp);
+		break;
 	default:
 		break;
 	}
@@ -74,6 +77,9 @@ void UBTTaskNode_Lull::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 	{
 	case EMonster::EM_Parasite:
 		UpdateParasiteLull(_OwnerComp, _DeltaSeconds);
+		break;
+	case EMonster::EM_Mutant:
+		UpdateMutantLull(_OwnerComp, _DeltaSeconds);
 		break;
 	default:
 		break;
@@ -118,6 +124,12 @@ void UBTTaskNode_Lull::UpdateParasiteLull(UBehaviorTreeComponent& _OwnerComp, fl
 	case EDir::Left:
 		Character->AddActorWorldOffset(-Character->GetActorRightVector() * Character->WalkSpeed * _DeltaSeconds);
 		break;
+	case EDir::Back:
+		Character->AddActorWorldOffset(-Character->GetActorForwardVector() * Character->WalkSpeed * _DeltaSeconds);
+		break;
+	case EDir::Forward:
+		Character->AddActorWorldOffset(Character->GetActorForwardVector() * Character->WalkSpeed * _DeltaSeconds);
+		break;
 	}
 
 
@@ -133,4 +145,17 @@ void UBTTaskNode_Lull::ExecuteWolfLull(UBehaviorTreeComponent& _OwnerComp)
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->LullMontage);
+}
+
+void UBTTaskNode_Lull::ExecuteMutantLull(UBehaviorTreeComponent& _OwnerComp)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->LullMontage);
+}
+
+void UBTTaskNode_Lull::UpdateMutantLull(UBehaviorTreeComponent& _OwnerComp, float _DeltaSeconds)
+{
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+
+	Character->AddActorWorldOffset(-Character->GetActorForwardVector() * Character->WalkSpeed * _DeltaSeconds);
 }

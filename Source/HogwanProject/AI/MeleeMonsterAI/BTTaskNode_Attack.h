@@ -21,4 +21,5 @@ public:
 	void ExecuteZombieAttack(UBehaviorTreeComponent& _OwnerComp);
 	void ExecuteParasiteAttack(UBehaviorTreeComponent& _OwnerComp);
 	void ExecuteWolfAttack(UBehaviorTreeComponent& _OwnerComp);
+	void ExecuteMutantAttack(UBehaviorTreeComponent& _OwnerComp);
 };

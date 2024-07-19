@@ -66,6 +66,7 @@ enum class EMonster : uint8
 	EM_Wolf,
 	EM_InfectedSolider,
 	EM_Priest,
+	EM_Mutant,
 };
 
 UENUM(BlueprintType)
@@ -83,6 +84,6 @@ enum class EDir : uint8
 	None,
 	Left,
 	Right,
-	Up,
-	Down,
+	Back,
+	Forward,
 };

@@ -21,4 +21,6 @@ public:
 	void ExecuteParasiteLull(UBehaviorTreeComponent& _OwnerComp);
 	void UpdateParasiteLull(UBehaviorTreeComponent& _OwnerComp, float _DeltaSeconds);
 	void ExecuteWolfLull(UBehaviorTreeComponent& _OwnerComp);
+	void ExecuteMutantLull(UBehaviorTreeComponent& _OwnerComp);
+	void UpdateMutantLull(UBehaviorTreeComponent& _OwnerComp, float _DeltaSeconds);
 };
