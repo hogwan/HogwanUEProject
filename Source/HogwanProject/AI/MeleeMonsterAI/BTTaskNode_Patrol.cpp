@@ -79,7 +79,7 @@ void UBTTaskNode_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pN
 	}
 	
 
-	if (Distance < 50.f)
+	if (Distance < 100.f)
 	{
 		Monster->PatrolNum++;
 		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);

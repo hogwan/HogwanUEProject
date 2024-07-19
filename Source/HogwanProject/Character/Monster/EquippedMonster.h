@@ -37,7 +37,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AWeapon* LeftHandWeapon;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class AMeleeWeapon> MutantRightHandWeapon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<class AMeleeWeapon> MutantLeftHandWeapon;
+
+
 	void Reset() override;
 
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
+
+	void EquipRightHandWeapon();
+	void EquipLeftHandWeapon();
+
 };
