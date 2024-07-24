@@ -44,17 +44,7 @@ void UBTTaskNode_Serpmare_GetOut::TickTask(UBehaviorTreeComponent& _OwnerComp, u
 	{
 		Character->PerceiveEnd = false;
 		
-		if (Character->AttackRange > GetDistanceToHunter(_OwnerComp))
-		{
-			ChangeState(_OwnerComp, EMonsterState::EMS_Attack);
-			return;
-		}
-		else
-		{
-			ChangeState(_OwnerComp, EMonsterState::EMS_Shoot);
-			return;
-		}
-
+		ChangeState(_OwnerComp, EMonsterState::EMS_PatternTerm);
 		return;
 	}
 }

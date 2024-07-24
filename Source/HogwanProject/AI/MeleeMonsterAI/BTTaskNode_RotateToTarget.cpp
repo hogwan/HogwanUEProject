@@ -34,7 +34,7 @@ void UBTTaskNode_RotateToTarget::TickTask(UBehaviorTreeComponent& _OwnerComp, ui
 
 	if (Character)
 	{
-		if (5.f >= BetweenAngleToDegree(_OwnerComp))
+		if (10.f >= BetweenAngleToDegree(_OwnerComp))
 		{
 			if (Character->PerceiveHunter)
 			{

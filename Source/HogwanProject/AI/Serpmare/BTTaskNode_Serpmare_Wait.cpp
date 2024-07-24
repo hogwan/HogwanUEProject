@@ -28,6 +28,28 @@ EBTNodeResult::Type UBTTaskNode_Serpmare_Wait::ExecuteTask(UBehaviorTreeComponen
 
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->IdleMontage);
 
+	int MaxIndex = 0;
+	float MaxDistance = 0.f;
+
+	for (int i = 1; i < Character->PatrolPoints.Num(); i++)
+	{
+		FVector PointLocation = Character->PatrolPoints[i]->GetActorLocation();
+		FVector HunterLocation = GetHunter()->GetActorLocation();
+		PointLocation.Z = 0.f;
+		HunterLocation.Z = 0.f;
+
+		float Distance = (PointLocation - HunterLocation).Size();
+
+		if (MaxDistance < Distance)
+		{
+			MaxIndex = i;
+			MaxDistance = Distance;
+		}
+	}
+
+	Character->SetActorLocation(Character->PatrolPoints[MaxIndex]->GetActorLocation());
+
+
 	return EBTNodeResult::InProgress;
 }
 
