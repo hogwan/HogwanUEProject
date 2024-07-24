@@ -73,5 +73,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	class UAnimMontage* ShootMontage;
 
-
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	class UAnimMontage* PatternTermMontage;
 };
