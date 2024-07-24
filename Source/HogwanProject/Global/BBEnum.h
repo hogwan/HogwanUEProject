@@ -12,7 +12,7 @@ enum class EMonsterState : uint8
 	EMS_Rotate,
 	EMS_Perceive,
 	EMS_Run,
-	EMS_Attack, 
+	EMS_Attack,
 	EMS_DashAttack,
 	EMS_Dead,
 	EMS_BackStep,
@@ -20,6 +20,7 @@ enum class EMonsterState : uint8
 	EMS_Shoot,
 	EMS_BackWalk,
 	EMS_PatternTerm,
+	EMS_Wait,
 };
 
 UENUM(BlueprintType)

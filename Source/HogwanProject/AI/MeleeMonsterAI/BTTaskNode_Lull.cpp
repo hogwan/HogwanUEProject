@@ -85,7 +85,7 @@ void UBTTaskNode_Lull::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNod
 		break;
 	}
 
-	RotateToHunter(_OwnerComp, _DeltaSeconds);
+	RotateToHunter(_OwnerComp, _DeltaSeconds, Character->RotateSpeed);
 	Character->GetAttribute()->Stamina += Character->StaminaRecoverSpeed * _DeltaSeconds;
 }
 

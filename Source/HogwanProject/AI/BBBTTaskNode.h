@@ -92,6 +92,6 @@ public:
 
 	EMonster GetMonsterEnum(UBehaviorTreeComponent& _OwnerComp);
 
-	void RotateToHunter(UBehaviorTreeComponent& _OwnerComp, float DeltaTime);
+	void RotateToHunter(UBehaviorTreeComponent& _OwnerComp, float DeltaTime, float RotateSpeed);
 
 };

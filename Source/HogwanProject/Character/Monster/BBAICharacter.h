@@ -39,6 +39,12 @@ public:
 	float IdleAcc = IdleTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float WaitTime = 3.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float WaitAcc = WaitTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float WalkSpeed = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
@@ -78,6 +84,9 @@ public:
 	float PunchDistance = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float RotateSpeed = 5.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float BasicDamage = 10.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
@@ -111,6 +120,8 @@ public:
 	bool PerceiveEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool BackstepEnd = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool LullEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsGrapped = false;
 

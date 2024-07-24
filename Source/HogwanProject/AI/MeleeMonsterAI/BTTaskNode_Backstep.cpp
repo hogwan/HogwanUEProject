@@ -37,7 +37,7 @@ void UBTTaskNode_Backstep::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	RotateToHunter(_OwnerComp, _DeltaSeconds);
+	RotateToHunter(_OwnerComp, _DeltaSeconds, Character->RotateSpeed);
 
 	EMonster MonsterEnum = GetMonsterEnum(_OwnerComp);
 	if (MonsterEnum == EMonster::EM_Mutant)

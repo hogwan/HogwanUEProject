@@ -48,6 +48,6 @@ void UBTTaskNode_RotateToTarget::TickTask(UBehaviorTreeComponent& _OwnerComp, ui
 			}
 		}
 
-		RotateToHunter(_OwnerComp, _DeltaSeconds);
+		RotateToHunter(_OwnerComp, _DeltaSeconds, Character->RotateSpeed);
 	}
 }
