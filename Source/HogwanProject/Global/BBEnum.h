@@ -21,6 +21,7 @@ enum class EMonsterState : uint8
 	EMS_BackWalk,
 	EMS_PatternTerm,
 	EMS_Wait,
+	EMS_Dodge,
 };
 
 UENUM(BlueprintType)

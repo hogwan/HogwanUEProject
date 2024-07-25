@@ -2,7 +2,7 @@
 
 
 #include "AI/MeleeMonsterAI/BTTaskNode_Unable.h"
-#include "Character/Monster/UnEquippedMonster.h"
+#include "Character/Monster/Monster.h"
 
 EBTNodeResult::Type UBTTaskNode_Unable::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {

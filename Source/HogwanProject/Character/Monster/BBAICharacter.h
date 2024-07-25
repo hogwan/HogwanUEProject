@@ -84,10 +84,14 @@ public:
 	float PunchDistance = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float CombatDistance = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float RotateSpeed = 5.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float BasicDamage = 10.f;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float Damage = BasicDamage;
@@ -124,6 +128,8 @@ public:
 	bool LullEnd = false;
 	UPROPERTY(BlueprintReadWrite)
 	bool IsGrapped = false;
+	UPROPERTY(BlueprintReadWrite)
+	bool DodgeEnd = false;
 
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 

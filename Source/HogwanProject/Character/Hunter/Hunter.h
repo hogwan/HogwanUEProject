@@ -79,6 +79,8 @@ public:
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
 	FORCEINLINE bool GetCanTakeDown() { return bCanTakeDown; }
 	FORCEINLINE void SetCanTakeDown(bool _TakeDown) { bCanTakeDown = _TakeDown; }
+
+	FORCEINLINE ECharacterActionState GetCurActionState() { return CurActionState; }
 	
 protected:
 	virtual void BeginPlay() override;
