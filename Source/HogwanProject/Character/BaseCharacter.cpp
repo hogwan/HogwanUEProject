@@ -7,6 +7,8 @@
 #include "MotionWarpingComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -17,6 +19,7 @@ ABaseCharacter::ABaseCharacter()
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
 	MotionWarping = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarping"));
+
 
 }
 
@@ -53,6 +56,15 @@ void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
 			HitParticles,
+			ImpactPoint
+		);
+	}
+
+	if (NiagaraSystem)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			this,
+			NiagaraSystem,
 			ImpactPoint
 		);
 	}

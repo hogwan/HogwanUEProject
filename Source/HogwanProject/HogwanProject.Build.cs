@@ -11,7 +11,7 @@ public class HogwanProject : ModuleRules
 
         PublicIncludePaths.Add(System.IO.Path.Combine(ModuleDirectory, ""));
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule", "MotionWarping" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "AIModule", "MotionWarping", "Niagara" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

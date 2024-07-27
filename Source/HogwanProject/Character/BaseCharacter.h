@@ -21,6 +21,9 @@ public:
 
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
 	FORCEINLINE class UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UNiagaraSystem* NiagaraSystem;
 protected:
 	virtual void BeginPlay() override;
 
@@ -39,6 +42,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UParticleSystem* HitParticles;
+
+
 
 	bool BackHit(AActor* Hitter);
 
