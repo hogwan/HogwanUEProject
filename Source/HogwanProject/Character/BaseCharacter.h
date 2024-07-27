@@ -34,6 +34,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UMotionWarpingComponent* MotionWarping;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UParticleSystem* HitParticles;
+
 	bool BackHit(AActor* Hitter);
 
 	virtual void ResetState();

@@ -6,6 +6,7 @@
 #include "HUD/HealthBarComponent.h"
 #include "MotionWarpingComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -38,7 +39,23 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
 {
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			ImpactPoint
+		);
+	}
 
+	if (HitParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint
+		);
+	}
 }
 
 float ABaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
