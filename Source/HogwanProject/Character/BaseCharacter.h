@@ -22,8 +22,6 @@ public:
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
 	FORCEINLINE class UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UNiagaraSystem* NiagaraSystem;
 protected:
 	virtual void BeginPlay() override;
 
@@ -37,13 +35,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UMotionWarpingComponent* MotionWarping;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
 	class USoundBase* HitSound;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
 	class UParticleSystem* HitParticles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
+	class UNiagaraSystem* NiagaraSystem;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
+	class UNiagaraSystem* BloodSmoke;
 
 	bool BackHit(AActor* Hitter);
 

@@ -68,6 +68,15 @@ void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType
 			ImpactPoint
 		);
 	}
+
+	if (BloodSmoke)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			this,
+			BloodSmoke,
+			ImpactPoint
+		);
+	}
 }
 
 float ABaseCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
