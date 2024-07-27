@@ -30,5 +30,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* StaminaBar;
 	
+	void SetHealthBarPercent(float Percent);
+	void SetMaxHealthBarPercent(float Percent);
+	void SetRegainHealthBarPercent(float Percent);
+
+	void SetStaminaBarPercent(float Percent);
+	void SetMaxStaminaBarPerent(float Percent);
+
 	
 };

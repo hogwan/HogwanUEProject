@@ -110,6 +110,9 @@ private:
 
 	FString GetDeformMontageName();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UBBOverlay* BBOverlay;
+
 	//  Components
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* ViewCamera;
@@ -159,6 +162,8 @@ private:
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
+	void RegainTimeUpdate(float DeltaTime);
+	void UpdateOverlay();
 
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
 

@@ -20,10 +20,26 @@ public:
 	float GetHealthPercent();
 
 	UFUNCTION(BlueprintCallable)
+	float GetHunterMaxHealthPercent();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHunterHealthPercent();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHunterRegainHealthPercent();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHunterMaxStaminaPercent();
+
+	UFUNCTION(BlueprintCallable)
+	float GetHunterStaminaPercent();
+
+	UFUNCTION(BlueprintCallable)
 	void ReceiveDamage(float DamageAmount);
 
 	UFUNCTION(BlueprintCallable)
 	bool GetIsDeath();
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,12 +55,27 @@ public:
 	float MaxHp = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RegainHp = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RegainAmount = 30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Stamina = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxStamina = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Limited = 1000.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsDeath;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RegainTimeRemain = 5.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float RegainTime = 5.f;
 		
 };

@@ -16,9 +16,36 @@ float UAttributeComponent::GetHealthPercent()
 	return Hp / MaxHp;
 }
 
+float UAttributeComponent::GetHunterMaxHealthPercent()
+{
+	return MaxHp / Limited;
+}
+
+float UAttributeComponent::GetHunterHealthPercent()
+{
+	return Hp / Limited;
+}
+
+float UAttributeComponent::GetHunterRegainHealthPercent()
+{
+	return RegainHp / Limited;
+}
+
+float UAttributeComponent::GetHunterMaxStaminaPercent()
+{
+	return MaxStamina / Limited;
+}
+
+float UAttributeComponent::GetHunterStaminaPercent()
+{
+	return Stamina/ Limited;
+}
+
 void UAttributeComponent::ReceiveDamage(float DamageAmount)
 {
 	Hp = FMath::Clamp(Hp - DamageAmount, 0.f, MaxHp);
+	RegainHp = FMath::Clamp(Hp + RegainAmount, Hp, MaxHp);
+	RegainTimeRemain = RegainTime;
 }
 
 bool UAttributeComponent::GetIsDeath()

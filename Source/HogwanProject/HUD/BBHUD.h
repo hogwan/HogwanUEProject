@@ -13,8 +13,19 @@ UCLASS()
 class HOGWANPROJECT_API ABBHUD : public AHUD
 {
 	GENERATED_BODY()
-	
-public:
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UBBOverlay> BBOverlayClass;
+
+	UPROPERTY()
+	class UBBOverlay* BBOverlay;
+
+
+public:
+	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
+
 };

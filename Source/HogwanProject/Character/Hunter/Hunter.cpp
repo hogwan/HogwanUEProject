@@ -17,6 +17,8 @@
 #include "Weapon/MeleeWeapon.h"
 #include "Weapon/RangedWeapon.h"
 #include "Global/BBGameInstance.h"
+#include "HUD/BBHUD.h"
+#include "HUD/BBOverlay.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -47,6 +49,11 @@ void AHunter::BeginPlay()
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	GameIns->Hunter = this;
 
+	APlayerController* BBPlayerController = Cast<APlayerController>(GetController());
+	GameIns->HUD = Cast<ABBHUD>(BBPlayerController->GetHUD());
+
+	BBOverlay = GameIns->HUD->GetBBOverlay();
+
 	EquipWeapon(MeleeWeaponsInPocket[0]);
 	EquipWeapon(RangedWeaponsInPocket[0]);
 
@@ -56,6 +63,8 @@ void AHunter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	TraceLockOnTarget(DeltaTime);
+	RegainTimeUpdate(DeltaTime);
+	UpdateOverlay();
 }
 
 void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -704,6 +713,24 @@ void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator
 	TakeDownTarget = Target;
 	TakeDownPos = Pos;
 	TakeDownRot = Rot;
+}
+
+void AHunter::RegainTimeUpdate(float DeltaTime)
+{
+	Attribute->RegainTimeRemain -= DeltaTime;
+	if (Attribute->RegainTimeRemain < 0.f)
+	{
+		Attribute->RegainHp = Attribute->Hp;
+	}
+}
+
+void AHunter::UpdateOverlay()
+{
+	BBOverlay->SetMaxHealthBarPercent(Attribute->GetHunterMaxHealthPercent());
+	BBOverlay->SetHealthBarPercent(Attribute->GetHunterHealthPercent());
+	BBOverlay->SetRegainHealthBarPercent(Attribute->GetHunterRegainHealthPercent());
+	BBOverlay->SetMaxStaminaBarPerent(Attribute->GetHunterMaxStaminaPercent());
+	BBOverlay->SetStaminaBarPercent(Attribute->GetHunterStaminaPercent());
 }
 
 void AHunter::Reset()

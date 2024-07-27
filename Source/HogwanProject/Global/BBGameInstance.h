@@ -21,4 +21,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class AHunter* Hunter;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ABBHUD* HUD;
+
 };
