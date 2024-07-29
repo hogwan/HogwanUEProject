@@ -111,5 +111,6 @@ void AMonster::Reset()
 void AMonster::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitType _HitType)
 {
 	Super::GetHit(_ImpactPoint, _Hitter, _HitType);
+	DisableHitBox();
 }
 

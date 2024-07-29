@@ -38,10 +38,10 @@ protected:
 	class AWeapon* LeftHandWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class AMeleeWeapon> MutantRightHandWeapon;
+	TSubclassOf<class AWeapon> MonsterRightHandWeapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<class AMeleeWeapon> MutantLeftHandWeapon;
+	TSubclassOf<class AWeapon> MonsterLeftHandWeapon;
 
 
 	void Reset() override;

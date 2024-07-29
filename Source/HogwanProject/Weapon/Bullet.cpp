@@ -6,7 +6,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Character/Monster/Monster.h"
 #include "Interface/HitInterface.h"
-
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 // Sets default values
 ABullet::ABullet()
 {
@@ -17,8 +18,8 @@ ABullet::ABullet()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Box"));
 	SetRootComponent(Sphere);
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
+	Flying = CreateDefaultSubobject<UNiagaraComponent>("Flying");
+	Flying->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +28,6 @@ void ABullet::BeginPlay()
 	Super::BeginPlay();
 	
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-	Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnCollisionBeginOverlap);
 }
@@ -37,6 +37,14 @@ void ABullet::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	IHitInterface* Hit = Cast<IHitInterface>(OtherActor);
 	if (Hit)
 	{
+		if (HitEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+				this,
+				HitEffect,
+				GetActorLocation()
+			);
+		}
 		Hit->GetHit(GetActorLocation(),this, EHitType::EHT_Bullet);
 		Destroy();
 	}
@@ -53,6 +61,6 @@ void ABullet::Tick(float DeltaTime)
 		Destroy();
 	}
 
-	AddActorWorldOffset(Dir * Speed * DeltaTime);
+	AddActorWorldOffset(GetActorForwardVector() * Speed * DeltaTime);
 }
 

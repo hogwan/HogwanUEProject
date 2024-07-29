@@ -498,7 +498,7 @@ void AHunter::Shoot(const FInputActionValue& Value)
 {
 	if (CurWeaponState == ECharacterWeaponState::ECWS_TwohandedWeapon) return;
 
-	if (EquippedRangedWeapon->WeaponType == EWeaponType::None) return;
+	if (EquippedRangedWeapon->WeaponType != EWeaponType::EWT_RangedWeapon) return;
 
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
@@ -1009,11 +1009,11 @@ void AHunter::SwapWeapon(EWeaponType WeaponType, int32 ListNum)
 
 	switch (WeaponType)
 	{
-	case EWeaponType::EWT_LeftHand:
+	case EWeaponType::EWT_RangedWeapon:
 		CurRangedListNum = ListNum;
 		EquipWeapon(RangedWeaponsInPocket[CurRangedListNum]);
 		break;
-	case EWeaponType::EWT_RightHand:
+	case EWeaponType::EWT_MeleeWeapon:
 		CurMeleeListNum = ListNum;
 		EquipWeapon(MeleeWeaponsInPocket[CurMeleeListNum]);
 		break;

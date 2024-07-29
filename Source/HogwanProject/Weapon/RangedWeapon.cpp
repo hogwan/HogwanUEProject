@@ -5,6 +5,9 @@
 #include "Weapon/Bullet.h"
 #include "Character/Hunter/Hunter.h"
 #include "Global/BBGameInstance.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ARangedWeapon::ARangedWeapon()
 {
@@ -17,7 +20,7 @@ void ARangedWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ARangedWeapon::SpawnBullet()
+void ARangedWeapon::SpawnBullet(AActor* Target)
 {
 	FTransform SpawnTrans = BulletSpawnPoint->GetComponentTransform();
 
@@ -27,21 +30,26 @@ void ARangedWeapon::SpawnBullet()
 
 	if (nullptr == NewBullet) return;
 
-	UBBGameInstance* GameInstance = Cast<UBBGameInstance>(GetGameInstance());
-	
-	if (GameInstance && GameInstance->LockOnTarget)
+	if (LaunchEffect)
 	{
-		FVector Dir = GameInstance->LockOnTarget->GetActorLocation() - SpawnTrans.GetLocation();
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			this,
+			LaunchEffect,
+			SpawnTrans.GetLocation()
+		);
+	}
 
-		Dir.Normalize();
+	if (Target)
+	{
+		FRotator FindRot = UKismetMathLibrary::FindLookAtRotation(SpawnTrans.GetLocation(), Target->GetActorLocation());
+		NewBullet->SetActorRotation(FindRot);
 
-		NewBullet->SetDir(Dir);
 	}
 	else
 	{
 		if (GetOwner())
 		{
-			NewBullet->SetDir(GetOwner()->GetActorForwardVector());
+			NewBullet->SetActorRotation(GetOwner()->GetActorRotation());
 		}
 	}
 
@@ -50,7 +58,7 @@ void ARangedWeapon::SpawnBullet()
 void ARangedWeapon::BeginPlay()
 {
 	//블루프린트의 비긴플레이가 먼저 실행되서 위로 올림
-	WeaponType = EWeaponType::EWT_LeftHand;
+	WeaponType = EWeaponType::EWT_RangedWeapon;
 	
 	Super::BeginPlay();
 }

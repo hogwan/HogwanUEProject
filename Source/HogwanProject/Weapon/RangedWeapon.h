@@ -19,7 +19,7 @@ public:
 	void Tick(float DeltaTime) override;
 	
 	UFUNCTION(BlueprintCallable)
-	void SpawnBullet();
+	void SpawnBullet(AActor* Target);
 protected:
 	void BeginPlay() override;
 
@@ -29,5 +29,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class ABullet> BP_Bullet = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UNiagaraSystem* LaunchEffect;
 
 };

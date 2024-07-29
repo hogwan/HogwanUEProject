@@ -28,7 +28,7 @@ EBTNodeResult::Type UBTTaskNode_Serpmare_RangedAttack::ExecuteTask(UBehaviorTree
 
 	Character->GetBBAIAnimInstance()->Montage_Play(Character->GetBBAIAnimInstance()->ShootMontage);
 
-	int Random = FMath::RandRange(1, 4);
+	int Random = FMath::RandRange(1, 3);
 
 	switch (Random)
 	{

@@ -44,7 +44,7 @@ void AMeleeWeapon::BeginPlay()
 	HitBox->OnComponentBeginOverlap.AddDynamic(this, &AMeleeWeapon::HitBoxBeginOverlap);
 	HitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	WeaponType = EWeaponType::EWT_RightHand;
+	WeaponType = EWeaponType::EWT_MeleeWeapon;
 }
 
 void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

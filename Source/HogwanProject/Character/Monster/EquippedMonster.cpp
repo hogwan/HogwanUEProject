@@ -56,6 +56,8 @@ void AEquippedMonster::DisableLeftHandHitBox()
 
 void AEquippedMonster::EnableRightHandHitBox()
 {
+	if (RightHandWeapon->WeaponType != EWeaponType::EWT_MeleeWeapon) return;
+
 	AMeleeWeapon* MeleeWeapon = Cast<AMeleeWeapon>(RightHandWeapon);
 
 	if (MeleeWeapon)
@@ -66,6 +68,8 @@ void AEquippedMonster::EnableRightHandHitBox()
 
 void AEquippedMonster::EnableLeftHandHitBox()
 {
+	if (LeftHandWeapon->WeaponType != EWeaponType::EWT_MeleeWeapon) return;
+
 	AMeleeWeapon* MeleeWeapon = Cast<AMeleeWeapon>(LeftHandWeapon);
 
 	if (MeleeWeapon)
@@ -84,6 +88,9 @@ void AEquippedMonster::Reset()
 void AEquippedMonster::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitType _HitType)
 {
 	Super::GetHit(_ImpactPoint, _Hitter, _HitType);
+	
+	DisableRightHandHitBox();
+	DisableLeftHandHitBox();
 }
 
 void AEquippedMonster::EquipRightHandWeapon()
@@ -91,10 +98,21 @@ void AEquippedMonster::EquipRightHandWeapon()
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(GetActorLocation() + FVector::DownVector * 10000.f);
 
-	AWeapon* SpawnWeapon = GetWorld()->SpawnActor<AWeapon>(MutantRightHandWeapon, SpawnTrans);
+	AWeapon* SpawnWeapon = GetWorld()->SpawnActor<AWeapon>(MonsterRightHandWeapon, SpawnTrans);
 	FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
 
-	RightHandWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+	switch (SpawnWeapon->WeaponType)
+	{
+	case EWeaponType::EWT_MeleeWeapon:
+		RightHandWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		break;
+	case EWeaponType::EWT_RangedWeapon:
+		RightHandWeapon = Cast<ARangedWeapon>(SpawnWeapon);
+		break;
+	default:
+		break;
+	}
+
 	RightHandWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 	RightHandWeapon->SetOwner(this);
 }
@@ -104,10 +122,21 @@ void AEquippedMonster::EquipLeftHandWeapon()
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(GetActorLocation() + FVector::DownVector * 10000.f);
 
-	AWeapon* SpawnWeapon = GetWorld()->SpawnActor<AWeapon>(MutantLeftHandWeapon, SpawnTrans);
+	AWeapon* SpawnWeapon = GetWorld()->SpawnActor<AWeapon>(MonsterLeftHandWeapon, SpawnTrans);
 	FAttachmentTransformRules AttachRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, false);
 
-	LeftHandWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+	switch (SpawnWeapon->WeaponType)
+	{
+	case EWeaponType::EWT_MeleeWeapon:
+		LeftHandWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
+		break;
+	case EWeaponType::EWT_RangedWeapon:
+		LeftHandWeapon = Cast<ARangedWeapon>(SpawnWeapon);
+		break;
+	default:
+		break;
+	}
+
 	LeftHandWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("LeftHandSocket"));
 	LeftHandWeapon->SetOwner(this);
 }

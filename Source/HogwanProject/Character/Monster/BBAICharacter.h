@@ -87,6 +87,9 @@ public:
 	float CombatDistance = 300.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	float MoveAttackDistance = 50.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float RotateSpeed = 5.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")

@@ -15,12 +15,6 @@ public:
 	ABullet();
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE FVector GetDir() { return Dir; }
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetDir(FVector _Dir) { Dir = _Dir; }
-
 protected:
 	virtual void BeginPlay() override;
 
@@ -30,11 +24,11 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class USphereComponent* Sphere;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UNiagaraComponent* Flying;
 
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	FVector Dir = FVector::Zero();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UNiagaraSystem* HitEffect;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float Speed = 1000.f;

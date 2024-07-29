@@ -18,13 +18,19 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* Sphere;
 
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
+	class UNiagaraComponent* Flying;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
+	class UNiagaraSystem* HitEffect;
 
 	UPROPERTY(EditAnywhere)
 	float LifeTime = 6.f;
 protected:
 	virtual void BeginPlay() override;
+	
+	virtual void ProjectileExplosion();
 
-
+	UFUNCTION()
+	void ProjectileCollide(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

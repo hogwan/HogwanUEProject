@@ -20,4 +20,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
+
+	void ProjectileExplosion() override;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSubclassOf<class ASerpmareSwamp> Swamp;
 };
