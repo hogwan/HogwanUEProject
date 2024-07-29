@@ -46,7 +46,7 @@ void UBTTaskNode_Serpmare_PatternTerm::TickTask(UBehaviorTreeComponent& _OwnerCo
 
 	if (Character->IdleAcc < 0.f)
 	{
-		if (Character->GetAttribute()->Stamina <= 0.f)
+		if (Character->GetAttribute()->Stamina <= 0.f && Character->PatrolPoints.Num() != 0)
 		{
 			ChangeState(_OwnerComp, EMonsterState::EMS_Lull);
 			return;
