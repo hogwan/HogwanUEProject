@@ -19,6 +19,7 @@
 #include "Global/BBGameInstance.h"
 #include "HUD/BBHUD.h"
 #include "HUD/BBOverlay.h"
+#include "ActorComponent/InventoryComponent.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -40,6 +41,8 @@ AHunter::AHunter()
 
 	ViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("ViewCamera"));
 	ViewCamera->SetupAttachment(SpringArm);
+
+	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 }
 
 void AHunter::BeginPlay()
@@ -748,6 +751,10 @@ void AHunter::Reset()
 
 void AHunter::EquipWeapon(EWeapon Weapon)
 {
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	UTexture2D* EquippedWeaponTexture = nullptr;
+	bool IsLeftChange = false;
+
 	FTransform SpawnTrans;
 	SpawnTrans.SetLocation(GetActorLocation() + FVector::DownVector * 10000.f);
 
@@ -769,6 +776,8 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 
 		EquippedRangedWeapon = Cast<ARangedWeapon>(SpawnWeapon);
 		EquippedRangedWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("LeftHandSocket"));
+
+		IsLeftChange = true;
 	}
 		break;
 	case EWeapon::EW_RightFist:
@@ -823,6 +832,8 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedMeleeWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+		
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("SawCleaver")];
 	}
 		break;
 	case EWeapon::EW_SawCleaver_Deformed:
@@ -880,6 +891,8 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedWeaponSheath = SpawnWeaponSheath;
 
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("GreatSword")];
 	}
 		break;
 	case EWeapon::EW_GreatSword_Deformed:
@@ -938,6 +951,8 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedWeaponSheath = SpawnWeaponSheath;
 
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("Katana")];
 	}
 	break;
 	case EWeapon::EW_Katana_Deformed:
@@ -983,6 +998,9 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 
 		EquippedRangedWeapon = Cast<ARangedWeapon>(SpawnWeapon);
 		EquippedRangedWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("LeftHandSocket"));
+
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("HunterPistol")];
+		IsLeftChange = true;
 	}
 		break;
 	default:
@@ -992,6 +1010,7 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 	if (EquippedRangedWeapon)
 	{
 		EquippedRangedWeapon->SetOwner(this);
+
 	}
 
 	if (EquippedMeleeWeapon)
@@ -999,6 +1018,15 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedMeleeWeapon->SetOwner(this);
 	}
 
+
+	if (IsLeftChange)
+	{
+		BBOverlay->SetRangedWeaponImage(EquippedWeaponTexture);
+	}
+	else
+	{
+		BBOverlay->SetMeleeWeaponImage(EquippedWeaponTexture);
+	}
 
 }
 

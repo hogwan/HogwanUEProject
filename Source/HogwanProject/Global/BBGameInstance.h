@@ -24,4 +24,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class ABBHUD* HUD;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, UTexture2D*> TextureMap;
+
 };

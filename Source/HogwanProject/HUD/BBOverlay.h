@@ -29,6 +29,21 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* StaminaBar;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* EquippedUseItem;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* EquippedRangedWeapon;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* EquippedMeleeWeapon;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* PotionNum;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* BulletNum;
 	
 	void SetHealthBarPercent(float Percent);
 	void SetMaxHealthBarPercent(float Percent);
@@ -36,6 +51,12 @@ public:
 
 	void SetStaminaBarPercent(float Percent);
 	void SetMaxStaminaBarPerent(float Percent);
+
+	void SetUseItemImage(UTexture2D* Tex);
+	void SetRangedWeaponImage(UTexture2D* Tex);
+	void SetMeleeWeaponImage(UTexture2D* Tex);
+	void SetPotionNum(int Num);
+	void SetBulletNum(int Num);
 
 	
 };

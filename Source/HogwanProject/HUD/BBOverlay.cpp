@@ -3,6 +3,9 @@
 
 #include "HUD/BBOverlay.h"
 #include "Components/ProgressBar.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 void UBBOverlay::SetHealthBarPercent(float Percent)
 {
@@ -42,4 +45,60 @@ void UBBOverlay::SetMaxStaminaBarPerent(float Percent)
 	{
 		MaxStaminaBar->SetPercent(Percent);
 	}
+}
+
+void UBBOverlay::SetUseItemImage(UTexture2D* Tex)
+{
+	UWidgetBlueprintLibrary::SetBrushResourceToTexture(EquippedUseItem->Brush, Tex);
+
+	if (Tex == nullptr)
+	{
+		EquippedUseItem->SetRenderOpacity(0.f);
+	}
+	else
+	{
+		EquippedUseItem->SetRenderOpacity(1.f);
+	}
+}
+
+void UBBOverlay::SetRangedWeaponImage(UTexture2D* Tex)
+{
+	UWidgetBlueprintLibrary::SetBrushResourceToTexture(EquippedRangedWeapon->Brush, Tex);
+
+	if (Tex == nullptr)
+	{
+		EquippedRangedWeapon->SetRenderOpacity(0.f);
+	}
+	else
+	{
+		EquippedRangedWeapon->SetRenderOpacity(1.f);
+	}
+}
+
+void UBBOverlay::SetMeleeWeaponImage(UTexture2D* Tex)
+{
+	UWidgetBlueprintLibrary::SetBrushResourceToTexture(EquippedMeleeWeapon->Brush, Tex);
+
+	if (Tex == nullptr)
+	{
+		EquippedMeleeWeapon->SetRenderOpacity(0.f);
+	}
+	else
+	{
+		EquippedMeleeWeapon->SetRenderOpacity(1.f);
+	}
+}
+
+void UBBOverlay::SetPotionNum(int Num)
+{
+	FText TempText;
+	TempText.FromString(FString::FromInt(Num));
+	PotionNum->Text = TempText;
+}
+
+void UBBOverlay::SetBulletNum(int Num)
+{
+	FText TempText;
+	TempText.FromString(FString::FromInt(Num));
+	BulletNum->Text = TempText;
 }
