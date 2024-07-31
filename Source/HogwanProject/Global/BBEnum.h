@@ -90,3 +90,23 @@ enum class EDir : uint8
 	Back,
 	Forward,
 };
+
+UENUM(BlueprintType)
+enum class EItem : uint8
+{
+	None,
+	Potion,
+	Bullet,
+	FireBottle,
+	SawCleaver,
+	GreatSword,
+	Katana,
+};
+
+UENUM(BlueprintType)
+enum class EItemType : uint8
+{
+	None,
+	UseItem,
+	Weapon,
+};

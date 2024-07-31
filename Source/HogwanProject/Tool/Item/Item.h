@@ -28,8 +28,20 @@ public:
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	FORCEINLINE void SetOwner(AActor* _Owner) { Owner = _Owner; }
+	FORCEINLINE EItem GetItem() { return Item; }
+	FORCEINLINE EItemType GetItemType() { return ItemType; }
+	FORCEINLINE int GetItemNum() { return ItemNum; }
+
+
 protected:
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItem Item = EItem::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemType ItemType = EItemType::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int ItemNum = 0;
+	
 };
