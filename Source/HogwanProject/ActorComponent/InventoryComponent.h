@@ -28,6 +28,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UseItem(int InventoryIndex);
 
-	UFUNCTION(BlueprintCallalbe)
+	UFUNCTION(BlueprintCallable)
 	void ItemAction(EItem _Item);
 };
