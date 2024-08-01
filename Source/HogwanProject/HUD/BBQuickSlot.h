@@ -5,40 +5,18 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Global/BBEnum.h"
-#include "BBStatusInventory.generated.h"
+#include "BBQuickSlot.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HOGWANPROJECT_API UBBStatusInventory : public UUserWidget
+class HOGWANPROJECT_API UBBQuickSlot : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* LevelStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* VitalityStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* EnduranceStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* StrengthStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* HPStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* StaminaStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* DamageStat;
-
-	UPROPERTY(meta = (BindWidget))
-	class UUniformGridPanel* InventorySlots;
+	class UUniformGridPanel* QuickSlots;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int Row;
@@ -69,15 +47,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void FocusEnd(int _Row, int _Column);
-	
+
 	UFUNCTION(BlueprintCallable)
-	void CloseStatusInventory();
+	void CloseQuickSlot();
 
 	void AddColumn();
 	void SubColumn();
 	void AddRow();
 	void SubRow();
 
-	void UpdateInventory();
+	void UpdateQuickSlot();
 	void SetItemTexture(EItem _Item, int _Index);
 };

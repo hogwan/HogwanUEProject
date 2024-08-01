@@ -22,7 +22,10 @@ public:
 	class UInputMappingContext* PlayerInputContext;
 
 	UPROPERTY(EditAnywhere, Category = Input)
-	class UInputMappingContext* UIInputContext;
+	class UInputMappingContext* UIStatusInventoryInputContext;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputMappingContext* UIQuickSlotInputContext;
 
 	UFUNCTION(BlueprintCallable)
 	void OpenStatusInventory();

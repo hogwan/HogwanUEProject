@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "HUD/BBStatusInventory.h"
+#include "HUD/BBQuickSlot.h"
 #include "Global/BBGameInstance.h"
 #include "Character/Hunter/Hunter.h"
 #include "ActorComponent/InventoryComponent.h"
@@ -12,12 +12,12 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Character/Hunter/BBPlayerController.h"
 
-void UBBStatusInventory::Init()
+void UBBQuickSlot::Init()
 {
 	Row = 0;
 	Column = 0;
 
-	for (UWidget* IvSlot : InventorySlots->GetAllChildren())
+	for (UWidget* IvSlot : QuickSlots->GetAllChildren())
 	{
 		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(IvSlot);
 
@@ -27,31 +27,31 @@ void UBBStatusInventory::Init()
 	Focus(Row, Column);
 }
 
-void UBBStatusInventory::MoveRight()
+void UBBQuickSlot::MoveRight()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
 
 	UInventoryComponent* Inven = Hunter->GetInventory();
 
-	if (11 == 4 * Row + Column) return;
+	if (11 == 3 * Row + Column) return;
 
 	FocusEnd(Row, Column);
 
 	AddColumn();
 
 	Focus(Row, Column);
-	
+
 }
 
-void UBBStatusInventory::MoveLeft()
+void UBBQuickSlot::MoveLeft()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
 
 	UInventoryComponent* Inven = Hunter->GetInventory();
 
-	if (0 == 4 * Row + Column) return;
+	if (0 == 3 * Row + Column) return;
 
 	FocusEnd(Row, Column);
 
@@ -60,7 +60,7 @@ void UBBStatusInventory::MoveLeft()
 	Focus(Row, Column);
 }
 
-void UBBStatusInventory::MoveUp()
+void UBBQuickSlot::MoveUp()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
@@ -76,7 +76,7 @@ void UBBStatusInventory::MoveUp()
 	Focus(Row, Column);
 }
 
-void UBBStatusInventory::MoveDown()
+void UBBQuickSlot::MoveDown()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
@@ -92,68 +92,69 @@ void UBBStatusInventory::MoveDown()
 	Focus(Row, Column);
 }
 
-void UBBStatusInventory::Enter()
+void UBBQuickSlot::Enter()
 {
+	
 }
 
-void UBBStatusInventory::Focus(int _Row, int _Column)
+void UBBQuickSlot::Focus(int _Row, int _Column)
 {
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(InventorySlots->GetAllChildren()[4 * _Row + _Column]);
+	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[3 * _Row + _Column]);
 	InvenSlot->Selected->SetRenderOpacity(1.f);
 }
 
-void UBBStatusInventory::FocusEnd(int _Row, int _Column)
+void UBBQuickSlot::FocusEnd(int _Row, int _Column)
 {
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(InventorySlots->GetAllChildren()[4 * _Row + _Column]);
+	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[3 * _Row + _Column]);
 	InvenSlot->Selected->SetRenderOpacity(0.f);
 }
 
-void UBBStatusInventory::AddColumn()
+void UBBQuickSlot::AddColumn()
 {
 	Column++;
-	if (Column >= 4)
+	if (Column >= 3)
 	{
 		Row++;
-		Column -= 4;
+		Column -= 3;
 	}
 }
 
-void UBBStatusInventory::SubColumn()
+void UBBQuickSlot::SubColumn()
 {
 	Column--;
 	if (Column <= -1)
 	{
 		Row--;
-		Column += 4;
+		Column += 3;
 	}
 }
 
-void UBBStatusInventory::AddRow()
+void UBBQuickSlot::AddRow()
 {
 	Row++;
 }
 
-void UBBStatusInventory::SubRow()
+void UBBQuickSlot::SubRow()
 {
 	Row--;
 }
 
-void UBBStatusInventory::UpdateInventory()
+void UBBQuickSlot::UpdateQuickSlot()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
 
 	UInventoryComponent* Inven = Hunter->GetInventory();
 
-	for (int i = 0; i < Inven->Inventory.Num(); i++)
+	for (int i = 0; i < Inven->QuickSlot.Num(); i++)
 	{
-		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(InventorySlots->GetAllChildren()[i]);
-		if (Inven->Inventory[i].IsEmpty == false)
+		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[i]);
+		if (Inven->QuickSlot[i].IsEmpty == false)
 		{
-			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->Inventory[i].Number)));
+			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->QuickSlot[i].Number)));
 
 			InvenSlot->Item->SetVisibility(ESlateVisibility::Visible);
-			SetItemTexture(Inven->Inventory[i].Item, i);
+			SetItemTexture(Inven->QuickSlot[i].Item, i);
 		}
 		else
 		{
@@ -162,16 +163,16 @@ void UBBStatusInventory::UpdateInventory()
 	}
 }
 
-void UBBStatusInventory::CloseStatusInventory()
+void UBBQuickSlot::CloseQuickSlot()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
-	PlayerController->CloseStatusInventory();
+	PlayerController->CloseQuickSlot();
 }
 
-void UBBStatusInventory::SetItemTexture(EItem _Item, int _Index)
+void UBBQuickSlot::SetItemTexture(EItem _Item, int _Index)
 {
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(InventorySlots->GetAllChildren()[_Index]);
+	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[_Index]);
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 
 	switch (_Item)
@@ -207,4 +208,3 @@ void UBBStatusInventory::SetItemTexture(EItem _Item, int _Index)
 		break;
 	}
 }
-

@@ -36,6 +36,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FInvenSlotData> Inventory;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FInvenSlotData> QuickSlot;
+
 	UFUNCTION(BlueprintCallable)
 	void PickUpItem(class AItem* _PickUpItem);
 

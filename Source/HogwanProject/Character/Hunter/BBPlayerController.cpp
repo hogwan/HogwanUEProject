@@ -8,6 +8,7 @@
 #include "Character/Hunter/Hunter.h"
 #include "HUD/BBHUD.h"
 #include "HUD/BBStatusInventory.h"
+#include "HUD/BBQuickSlot.h"
 
 void ABBPlayerController::BeginPlay()
 {
@@ -17,17 +18,14 @@ void ABBPlayerController::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (PlayerInputContext)
-			{
-				InputSystem->AddMappingContext(PlayerInputContext, 0);
-				
-			}
+			InputSystem->AddMappingContext(PlayerInputContext, 0);
 		}
 	}
 
 	UBBGameInstance* BBGameInstance = Cast<UBBGameInstance>(GetGameInstance());
 
 	BBGameInstance->Hunter = Cast<AHunter>(GetOwner());
+	BBGameInstance->BBPlayerController = this;
 }
 
 void ABBPlayerController::OpenStatusInventory()
@@ -36,16 +34,16 @@ void ABBPlayerController::OpenStatusInventory()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (UIInputContext)
-			{
-				InputSystem->RemoveMappingContext(PlayerInputContext);
-				InputSystem->AddMappingContext(UIInputContext, 0);
-			}
+			InputSystem->RemoveMappingContext(PlayerInputContext);
+			InputSystem->RemoveMappingContext(UIQuickSlotInputContext);
+			InputSystem->AddMappingContext(UIStatusInventoryInputContext, 0);
 		}
 	}
 
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	ABBHUD* BBHUD = GameIns->HUD;
+
+	BBHUD->GetBBQuickSlot()->SetVisibility(ESlateVisibility::Hidden);
 
 	BBHUD->GetBBStatusInventory()->Init();
 	BBHUD->GetBBStatusInventory()->SetVisibility(ESlateVisibility::Visible);
@@ -58,13 +56,19 @@ void ABBPlayerController::OpenQuickSlot()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (UIInputContext)
-			{
-				InputSystem->RemoveMappingContext(PlayerInputContext);
-				InputSystem->AddMappingContext(UIInputContext, 0);
-			}
+			InputSystem->RemoveMappingContext(PlayerInputContext);
+			InputSystem->RemoveMappingContext(UIStatusInventoryInputContext);
+			InputSystem->AddMappingContext(UIQuickSlotInputContext, 0);
 		}
 	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
+
+	BBHUD->GetBBStatusInventory()->SetVisibility(ESlateVisibility::Hidden);
+
+	BBHUD->GetBBQuickSlot()->Init();
+	BBHUD->GetBBQuickSlot()->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ABBPlayerController::CloseStatusInventory()
@@ -73,11 +77,9 @@ void ABBPlayerController::CloseStatusInventory()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (PlayerInputContext)
-			{
-				InputSystem->RemoveMappingContext(UIInputContext);
-				InputSystem->AddMappingContext(PlayerInputContext, 0);
-			}
+			InputSystem->RemoveMappingContext(UIStatusInventoryInputContext);
+			InputSystem->RemoveMappingContext(UIQuickSlotInputContext);
+			InputSystem->AddMappingContext(PlayerInputContext, 0);
 		}
 	}
 
@@ -94,11 +96,14 @@ void ABBPlayerController::CloseQuickSlot()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* InputSystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
-			if (PlayerInputContext)
-			{
-				InputSystem->RemoveMappingContext(UIInputContext);
-				InputSystem->AddMappingContext(PlayerInputContext, 0);
-			}
+			InputSystem->RemoveMappingContext(UIStatusInventoryInputContext);
+			InputSystem->AddMappingContext(PlayerInputContext, 0);
 		}
 	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
+
+	BBHUD->GetBBQuickSlot()->Init();
+	BBHUD->GetBBQuickSlot()->SetVisibility(ESlateVisibility::Hidden);
 }

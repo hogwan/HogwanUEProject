@@ -4,6 +4,7 @@
 #include "HUD/BBHUD.h"
 #include "HUD/BBOverlay.h"
 #include "HUD/BBStatusInventory.h"
+#include "HUD/BBQuickSlot.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void ABBHUD::BeginPlay()
@@ -28,6 +29,16 @@ void ABBHUD::BeginPlay()
 			BBStatusInventory = CreateWidget<UBBStatusInventory>(Controller, BBStatusInventoryClass);
 			BBStatusInventory->AddToViewport();
 			BBStatusInventory->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+
+	if (World)
+	{
+		if (Controller && BBQuickSlotClass)
+		{
+			BBQuickSlot = CreateWidget<UBBQuickSlot>(Controller, BBQuickSlotClass);
+			BBQuickSlot->AddToViewport();
+			BBQuickSlot->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 

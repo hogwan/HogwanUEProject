@@ -91,14 +91,10 @@ void UBBOverlay::SetMeleeWeaponImage(UTexture2D* Tex)
 
 void UBBOverlay::SetPotionNum(int Num)
 {
-	FText TempText;
-	TempText.FromString(FString::FromInt(Num));
-	PotionNum->Text = TempText;
+	PotionNum->SetText(FText::FromString(FString::FromInt(Num)));
 }
 
 void UBBOverlay::SetBulletNum(int Num)
 {
-	FText TempText;
-	TempText.FromString(FString::FromInt(Num));
-	BulletNum->Text = TempText;
+	BulletNum->SetText(FText::FromString(FString::FromInt(Num)));
 }

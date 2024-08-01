@@ -15,6 +15,7 @@ class HOGWANPROJECT_API UBBInventorySlot : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
 	UPROPERTY(meta = (BindWidget))
 	class UImage* BackGround;
 

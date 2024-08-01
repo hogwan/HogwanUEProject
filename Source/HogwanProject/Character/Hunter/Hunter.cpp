@@ -21,6 +21,8 @@
 #include "HUD/BBOverlay.h"
 #include "ActorComponent/InventoryComponent.h"
 #include "Character/Hunter/BBPlayerController.h"
+#include "Tool/Item/Item.h"
+#include "HUD/BBStatusInventory.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -498,7 +500,12 @@ void AHunter::ChargeAttack(const FInputActionValue& Value)
 
 void AHunter::Interact(const FInputActionValue& Value)
 {
-
+	if (OverlappingItem)
+	{
+		Inventory->PickUpItem(OverlappingItem);
+		OverlappingItem->Destroy();
+		OverlappingItem = nullptr;
+	}
 }
 
 void AHunter::Shoot(const FInputActionValue& Value)
@@ -578,6 +585,10 @@ void AHunter::DeformWeapon(const FInputActionValue& Value)
 void AHunter::OpenStatusInventory(const FInputActionValue& Value)
 {
 	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
+	BBHUD->GetBBStatusInventory()->UpdateInventory();
 
 	BBController->OpenStatusInventory();
 }

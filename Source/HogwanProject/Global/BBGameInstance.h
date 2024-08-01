@@ -25,6 +25,9 @@ public:
 	class ABBHUD* HUD;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ABBPlayerController* BBPlayerController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<FString, UTexture2D*> TextureMap;
 
 };
