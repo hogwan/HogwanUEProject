@@ -30,7 +30,10 @@ private:
 	UPROPERTY()
 	class UBBStatusInventory* BBStatusInventory;
 
+	bool IsQuickSlotSetting = false;
+
 public:
 	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
 	FORCEINLINE class UBBStatusInventory* GetBBStatusInventory() const { return BBStatusInventory; }
+
 };

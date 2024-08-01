@@ -62,6 +62,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* DeformWeaponAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* OpenStatusInventoryAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* OpenQuickSlotAction;
 #pragma endregion
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -81,6 +87,7 @@ public:
 	FORCEINLINE void SetCanTakeDown(bool _TakeDown) { bCanTakeDown = _TakeDown; }
 
 	FORCEINLINE ECharacterActionState GetCurActionState() { return CurActionState; }
+	FORCEINLINE class UInventoryComponent* GetInventory() { return Inventory; }
 	
 protected:
 	virtual void BeginPlay() override;
@@ -99,6 +106,8 @@ private:
 	void MeleeWeaponSwap(const FInputActionValue& Value);
 	void RangedWeaponSwap(const FInputActionValue& Value);
 	void DeformWeapon(const FInputActionValue& Value);
+	void OpenStatusInventory(const FInputActionValue& Value);
+	void OpenQuickSlot(const FInputActionValue& Value);
 
 	void TraceLockOnTarget(float DeltaTime);
 

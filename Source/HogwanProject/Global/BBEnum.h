@@ -98,9 +98,11 @@ enum class EItem : uint8
 	Potion,
 	Bullet,
 	FireBottle,
+	Stone,
 	SawCleaver,
 	GreatSword,
 	Katana,
+	HunterPistol,
 };
 
 UENUM(BlueprintType)

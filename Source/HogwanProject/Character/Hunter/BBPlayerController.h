@@ -19,5 +19,21 @@ class HOGWANPROJECT_API ABBPlayerController : public APlayerController
 
 public:
 	UPROPERTY(EditAnywhere, Category = Input)
-	class UInputMappingContext* InputContext;
+	class UInputMappingContext* PlayerInputContext;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputMappingContext* UIInputContext;
+
+	UFUNCTION(BlueprintCallable)
+	void OpenStatusInventory();
+
+	UFUNCTION(BlueprintCallable)
+	void OpenQuickSlot();
+
+	UFUNCTION(BlueprintCallable)
+	void CloseStatusInventory();
+
+	UFUNCTION(BlueprintCallable)
+	void CloseQuickSlot();
+
 };

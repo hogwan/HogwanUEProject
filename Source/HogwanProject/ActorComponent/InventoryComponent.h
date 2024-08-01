@@ -7,6 +7,19 @@
 #include "Global/BBEnum.h"
 #include "InventoryComponent.generated.h"
 
+USTRUCT(BlueprintType)
+struct FInvenSlotData
+{
+	GENERATED_BODY()
+
+	bool IsEmpty = true;
+
+	int Number = 0;
+	EItem Item = EItem::None;
+	EItemType ItemType = EItemType::None;
+};
+
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HOGWANPROJECT_API UInventoryComponent : public UActorComponent
 {
@@ -20,7 +33,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	TArray<TPair<int,TPair<EItem, EItemType>>> Inventory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FInvenSlotData> Inventory;
 
 	UFUNCTION(BlueprintCallable)
 	void PickUpItem(class AItem* _PickUpItem);
@@ -30,4 +44,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ItemAction(EItem _Item);
+
+	void SortInventory();
+
 };

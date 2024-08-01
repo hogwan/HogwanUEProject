@@ -27,9 +27,10 @@ void ABBHUD::BeginPlay()
 		{
 			BBStatusInventory = CreateWidget<UBBStatusInventory>(Controller, BBStatusInventoryClass);
 			BBStatusInventory->AddToViewport();
-			BBStatusInventory->SetFocus();
+			BBStatusInventory->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 
-	Controller->SetInputMode(FInputModeUIOnly());
+	BBStatusInventory->Init();
+
 }

@@ -20,6 +20,7 @@
 #include "HUD/BBHUD.h"
 #include "HUD/BBOverlay.h"
 #include "ActorComponent/InventoryComponent.h"
+#include "Character/Hunter/BBPlayerController.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -93,6 +94,9 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 			ETriggerEvent::Started, this, &AHunter::MeleeWeaponSwap);
 		EnhancedInputComponent->BindAction(RangedWeaponSwapAction, ETriggerEvent::Started, this, &AHunter::RangedWeaponSwap);
 		EnhancedInputComponent->BindAction(DeformWeaponAction, ETriggerEvent::Started, this, &AHunter::DeformWeapon);
+		EnhancedInputComponent->BindAction(OpenStatusInventoryAction, ETriggerEvent::Started, this, &AHunter::OpenStatusInventory);
+		EnhancedInputComponent->BindAction(OpenQuickSlotAction, ETriggerEvent::Started, this, &AHunter::OpenQuickSlot);
+		
 	}
 
 }
@@ -569,6 +573,19 @@ void AHunter::DeformWeapon(const FInputActionValue& Value)
 			AnimInstance->Montage_Play(MontageMap[MontageName]);
 		}
 	}
+}
+
+void AHunter::OpenStatusInventory(const FInputActionValue& Value)
+{
+	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
+
+	BBController->OpenStatusInventory();
+}
+
+void AHunter::OpenQuickSlot(const FInputActionValue& Value)
+{
+	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
+	BBController->OpenQuickSlot();
 }
 
 FString AHunter::GetDeformMontageName()

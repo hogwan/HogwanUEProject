@@ -17,7 +17,11 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-
+	for (int i = 0; i < 12; i++)
+	{
+		FInvenSlotData ItemSlotInfo;
+		Inventory.Add(ItemSlotInfo);
+	}
 }
 
 void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
@@ -26,39 +30,46 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 	EItem Item = _PickUpItem->GetItem();
 	EItemType ItemType = _PickUpItem->GetItemType();
 
-	for (TPair<int, TPair<EItem, EItemType>> _ItemSlotInfo : Inventory)
+	for (FInvenSlotData _ItemSlotInfo : Inventory)
 	{
-		EItem SlotItem = _ItemSlotInfo.Value.Key;
+		EItem SlotItem = _ItemSlotInfo.Item;
+		bool IsEmpty = _ItemSlotInfo.IsEmpty;
 
 		if (SlotItem == Item)
 		{
-			_ItemSlotInfo.Key += ItemNum;
+			_ItemSlotInfo.Number += ItemNum;
 			return;
 		}
+
+		if (IsEmpty)
+		{
+			FInvenSlotData TempItemSlotInfo;
+			TempItemSlotInfo.IsEmpty = false;
+			TempItemSlotInfo.Number = ItemNum;
+			TempItemSlotInfo.Item = Item;
+			TempItemSlotInfo.ItemType = ItemType;
+
+			_ItemSlotInfo = TempItemSlotInfo;
+		}
 	}
-
-	TPair<int, TPair<EItem, EItemType>> ItemSlotInfo;
-	ItemSlotInfo.Key = ItemNum;
-	ItemSlotInfo.Value.Key = Item;
-	ItemSlotInfo.Value.Value = ItemType;
-
-	Inventory.Add(ItemSlotInfo);
 }
 
 void UInventoryComponent::UseItem(int InventoryIndex)
 {
-	EItemType ItemType = Inventory[InventoryIndex].Value.Value;
+	EItemType ItemType = Inventory[InventoryIndex].ItemType;
 
 	if (ItemType == EItemType::Weapon || ItemType == EItemType::None) return;
 
-	if (Inventory[InventoryIndex].Key <= 1)
+	if (Inventory[InventoryIndex].Number <= 1)
 	{
-		Inventory.RemoveAt(InventoryIndex);
+		Inventory[InventoryIndex] = FInvenSlotData();
 	}
 	else
 	{
-		Inventory[InventoryIndex].Key--;
+		Inventory[InventoryIndex].Number--;
 	}
+
+	SortInventory();
 }
 
 void UInventoryComponent::ItemAction(EItem _Item)
@@ -71,6 +82,29 @@ void UInventoryComponent::ItemAction(EItem _Item)
 		break;
 	}
 
+}
+
+void UInventoryComponent::SortInventory()
+{
+	int Index = 0;
+	TArray<FInvenSlotData> TempArray;
+
+	for (int i = 0; i < 12; i++)
+	{
+		FInvenSlotData ItemSlotInfo;
+		TempArray.Add(ItemSlotInfo);
+	}
+
+	for (FInvenSlotData Data : Inventory)
+	{
+		if (!Data.IsEmpty)
+		{
+			TempArray[Index] = Data;
+			Index++;
+		}
+	}
+	
+	Inventory = TempArray;
 }
 
 
