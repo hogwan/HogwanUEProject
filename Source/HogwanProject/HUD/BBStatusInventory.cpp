@@ -11,6 +11,9 @@
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Character/Hunter/BBPlayerController.h"
+#include "HUD/BBHUD.h"
+#include "ActorComponent/InventoryComponent.h"
+#include "HUD/BBQuickSlot.h"
 
 void UBBStatusInventory::Init()
 {
@@ -94,6 +97,42 @@ void UBBStatusInventory::MoveDown()
 
 void UBBStatusInventory::Enter()
 {
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
+	ABBHUD* BBHUD = GameIns->HUD;
+	AHunter* Hunter = GameIns->Hunter;
+
+	FSelectedQuickSlotData QuickSlotData = BBHUD->QuickSlotData;
+
+	FInvenSlotData& InvenData = Hunter->GetInventory()->Inventory[4 * Row + Column];
+
+	if (QuickSlotData.IsQuickSlotSetting)
+	{
+		if (QuickSlotData.SelectedItemType == InvenData.ItemType)
+		{
+			for (int i = 0; i < Hunter->GetInventory()->QuickSlot.Num(); i++)
+			{
+				if (Hunter->GetInventory()->QuickSlot[i] == &InvenData)  Hunter->GetInventory()->QuickSlot[i] = nullptr;
+			}
+
+			Hunter->GetInventory()->QuickSlot[QuickSlotData.SelectedQuickSlotRow * 3 + QuickSlotData.SelectedQuickSlotColumn] = &InvenData;
+
+			PlayerController->CloseStatusInventory();
+
+			BBHUD->QuickSlotData.IsQuickSlotSetting = false;
+			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+		}
+	}
+	else
+	{
+		if (InvenData.ItemType == EItemType::UseItem)
+		{
+			Hunter->GetInventory()->UseItem(4 * Row + Column);
+		}
+
+		BBHUD->QuickSlotData.IsQuickSlotSetting = false;
+		PlayerController->CloseStatusInventory();
+	}
 }
 
 void UBBStatusInventory::Focus(int _Row, int _Column)
@@ -151,6 +190,7 @@ void UBBStatusInventory::UpdateInventory()
 		if (Inven->Inventory[i].IsEmpty == false)
 		{
 			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->Inventory[i].Number)));
+			InvenSlot->Number->SetVisibility(ESlateVisibility::Visible);
 
 			InvenSlot->Item->SetVisibility(ESlateVisibility::Visible);
 			SetItemTexture(Inven->Inventory[i].Item, i);
@@ -158,6 +198,7 @@ void UBBStatusInventory::UpdateInventory()
 		else
 		{
 			InvenSlot->Item->SetVisibility(ESlateVisibility::Hidden);
+			InvenSlot->Number->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

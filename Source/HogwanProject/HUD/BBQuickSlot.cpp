@@ -11,6 +11,7 @@
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Character/Hunter/BBPlayerController.h"
+#include "HUD/BBHUD.h"
 
 void UBBQuickSlot::Init()
 {
@@ -94,7 +95,31 @@ void UBBQuickSlot::MoveDown()
 
 void UBBQuickSlot::Enter()
 {
-	
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
+
+	BBHUD->QuickSlotData.IsQuickSlotSetting = true;
+
+	switch (Row)
+	{
+	case 0:
+		BBHUD->QuickSlotData.SelectedItemType = EItemType::Weapon;
+		break;
+	case 1:
+		BBHUD->QuickSlotData.SelectedItemType = EItemType::Weapon;
+		break;
+	case 2:
+		BBHUD->QuickSlotData.SelectedItemType = EItemType::UseItem;
+		break;
+	default:
+		break;
+	}
+
+	BBHUD->QuickSlotData.SelectedQuickSlotColumn = Column;
+	BBHUD->QuickSlotData.SelectedQuickSlotRow = Row;
+
+	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
+	PlayerController->OpenStatusInventory();
 }
 
 void UBBQuickSlot::Focus(int _Row, int _Column)
@@ -149,16 +174,18 @@ void UBBQuickSlot::UpdateQuickSlot()
 	for (int i = 0; i < Inven->QuickSlot.Num(); i++)
 	{
 		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[i]);
-		if (Inven->QuickSlot[i].IsEmpty == false)
+		if (Inven->QuickSlot[i] != nullptr)
 		{
-			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->QuickSlot[i].Number)));
+			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->QuickSlot[i]->Number)));
+			InvenSlot->Number->SetVisibility(ESlateVisibility::Visible);
 
 			InvenSlot->Item->SetVisibility(ESlateVisibility::Visible);
-			SetItemTexture(Inven->QuickSlot[i].Item, i);
+			SetItemTexture(Inven->QuickSlot[i]->Item, i);
 		}
 		else
 		{
 			InvenSlot->Item->SetVisibility(ESlateVisibility::Hidden);
+			InvenSlot->Number->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

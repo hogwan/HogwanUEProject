@@ -77,8 +77,8 @@ enum class EToughness : uint8
 {
 	None,
 	ET_Low = 2,
-	ET_Medium=4,
-	ET_High=7
+	ET_Medium = 4,
+	ET_High = 7
 };
 
 UENUM(BlueprintType)

@@ -25,6 +25,11 @@ void UInventoryComponent::BeginPlay()
 		FInvenSlotData ItemSlotInfo;
 		Inventory.Add(ItemSlotInfo);
 	}
+
+	for (int i = 0; i < 9; i++)
+	{
+		QuickSlot.Add(nullptr);
+	}
 }
 
 void UInventoryComponent::PickUpItem(AItem* _PickUpItem)

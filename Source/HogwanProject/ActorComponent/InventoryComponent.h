@@ -17,6 +17,7 @@ struct FInvenSlotData
 	int Number = 0;
 	EItem Item = EItem::None;
 	EItemType ItemType = EItemType::None;
+
 };
 
 
@@ -36,8 +37,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FInvenSlotData> Inventory;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FInvenSlotData> QuickSlot;
+	TArray<FInvenSlotData*> QuickSlot;
 
 	UFUNCTION(BlueprintCallable)
 	void PickUpItem(class AItem* _PickUpItem);

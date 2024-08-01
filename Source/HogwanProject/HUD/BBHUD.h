@@ -4,7 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "Global/BBEnum.h"
 #include "BBHUD.generated.h"
+
+
+USTRUCT(BlueprintType)
+struct FSelectedQuickSlotData
+{
+	GENERATED_BODY()
+
+	bool IsQuickSlotSetting = false;
+	int SelectedQuickSlotRow = 0;
+	int SelectedQuickSlotColumn = 0;
+	EItemType SelectedItemType = EItemType::None;
+
+};
 
 /**
  * 
@@ -36,11 +50,11 @@ private:
 	UPROPERTY()
 	class UBBQuickSlot* BBQuickSlot;
 
-	bool IsQuickSlotSetting = false;
 
 public:
 	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
 	FORCEINLINE class UBBStatusInventory* GetBBStatusInventory() const { return BBStatusInventory; }
 	FORCEINLINE class UBBQuickSlot* GetBBQuickSlot() const { return BBQuickSlot; }
 
+	FSelectedQuickSlotData QuickSlotData;
 };
