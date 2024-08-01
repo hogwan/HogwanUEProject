@@ -35,7 +35,7 @@ void UBBQuickSlot::MoveRight()
 
 	UInventoryComponent* Inven = Hunter->GetInventory();
 
-	if (11 == 3 * Row + Column) return;
+	if (8 == 3 * Row + Column) return;
 
 	FocusEnd(Row, Column);
 
