@@ -36,6 +36,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* DamageStat;
 
-	
+	UPROPERTY(meta = (BindWidget))
+	class UUniformGridPanel* InventorySlots;
+
 	
 };

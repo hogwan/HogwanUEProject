@@ -3,15 +3,17 @@
 
 #include "HUD/BBHUD.h"
 #include "HUD/BBOverlay.h"
+#include "HUD/BBStatusInventory.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 void ABBHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
 	UWorld* World = GetWorld();
+	APlayerController* Controller = World->GetFirstPlayerController();
 	if (World)
 	{
-		APlayerController* Controller = World->GetFirstPlayerController();
 		if (Controller && BBOverlayClass)
 		{
 			BBOverlay = CreateWidget<UBBOverlay>(Controller, BBOverlayClass);
@@ -19,5 +21,15 @@ void ABBHUD::BeginPlay()
 		}
 	}
 
+	if (World)
+	{
+		if (Controller && BBStatusInventoryClass)
+		{
+			BBStatusInventory = CreateWidget<UBBStatusInventory>(Controller, BBStatusInventoryClass);
+			BBStatusInventory->AddToViewport();
+			BBStatusInventory->SetFocus();
+		}
+	}
 
+	Controller->SetInputMode(FInputModeUIOnly());
 }

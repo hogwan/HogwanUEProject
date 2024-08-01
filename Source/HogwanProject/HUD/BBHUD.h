@@ -21,11 +21,16 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UBBOverlay> BBOverlayClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UBBStatusInventory> BBStatusInventoryClass;
+
 	UPROPERTY()
 	class UBBOverlay* BBOverlay;
 
+	UPROPERTY()
+	class UBBStatusInventory* BBStatusInventory;
 
 public:
 	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
-
+	FORCEINLINE class UBBStatusInventory* GetBBStatusInventory() const { return BBStatusInventory; }
 };
