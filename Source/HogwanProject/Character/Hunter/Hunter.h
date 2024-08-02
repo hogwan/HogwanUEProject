@@ -233,6 +233,9 @@ public:
 	void Throw();
 
 	UFUNCTION(BlueprintCallable)
+	void SpawnThrowObject();
+
+	UFUNCTION(BlueprintCallable)
 	void UseItem();
 
 	UFUNCTION(BlueprintCallable)

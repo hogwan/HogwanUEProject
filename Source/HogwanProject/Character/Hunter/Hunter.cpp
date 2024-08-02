@@ -24,6 +24,8 @@
 #include "Tool/Item/Item.h"
 #include "HUD/BBStatusInventory.h"
 #include "Components/TextBlock.h"
+#include "Projectile/ThrowObject.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -1279,6 +1281,7 @@ int AHunter::GetBulletNum()
 }
 void AHunter::Throw()
 {
+	if ((*UseItemSlotData[CurUseItemListNum]) == nullptr) return;
 	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
 
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -1286,6 +1289,38 @@ void AHunter::Throw()
 	{
 		CurActionState = ECharacterActionState::ECAS_Throw;
 		AnimInstance->Montage_Play(MontageMap[TEXT("Throw")]);
+	}
+}
+
+void AHunter::SpawnThrowObject()
+{
+	EItem Item = (**UseItemSlotData[CurUseItemListNum]).Item;
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	FTransform SpawnTrans;
+	SpawnTrans.SetLocation(GetActorLocation() + GetActorForwardVector() * 100.f + GetActorUpVector() * 100.f);
+
+	FRotator Rotation = GetActorRotation();
+	FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	switch (Item)
+	{
+	case EItem::FireBottle:
+	{
+		AThrowObject* Obj = GetWorld()->SpawnActor<AThrowObject>(GameIns->ThrowObjects[TEXT("FireBottle")], SpawnTrans);
+		Obj->SetActorRotation(YawRotation);
+		Obj->ProjectileMovementComponent->Velocity = GetActorForwardVector() * 400.f + GetActorUpVector() * 400.f;
+		if (LockOnTarget)
+		{
+			Obj->ProjectileMovementComponent->HomingTargetComponent = LockOnTarget->GetRootComponent();
+		}
+		UseItem();
+		break;
+	}
+	case EItem::Stone:
+		break;
+	default:
+		break;
 	}
 }
 
