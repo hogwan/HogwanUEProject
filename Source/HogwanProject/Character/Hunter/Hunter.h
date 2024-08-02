@@ -206,6 +206,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<EWeapon> RangedWeaponsInPocket;
 
+	TArray<struct FInvenSlotData**> RightHandSlotData;
+	TArray<struct FInvenSlotData**> LeftHandSlotData;
+
+	void WeaponSlotUpdate();
+
 	UPROPERTY(EditAnywhere)
 	TMap<EWeapon, TSubclassOf<class AWeapon>> WeaponList;
 

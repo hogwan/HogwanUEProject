@@ -103,10 +103,10 @@ void UBBQuickSlot::Enter()
 	switch (Row)
 	{
 	case 0:
-		BBHUD->QuickSlotData.SelectedItemType = EItemType::Weapon;
+		BBHUD->QuickSlotData.SelectedItemType = EItemType::RightHandWeapon;
 		break;
 	case 1:
-		BBHUD->QuickSlotData.SelectedItemType = EItemType::Weapon;
+		BBHUD->QuickSlotData.SelectedItemType = EItemType::LeftHandWeapon;
 		break;
 	case 2:
 		BBHUD->QuickSlotData.SelectedItemType = EItemType::UseItem;
@@ -176,6 +176,14 @@ void UBBQuickSlot::UpdateQuickSlot()
 		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[i]);
 		if (Inven->QuickSlot[i] != nullptr)
 		{
+			if (Inven->QuickSlot[i]->Number == 0)
+			{
+				Inven->QuickSlot[i] = nullptr;
+				InvenSlot->Item->SetVisibility(ESlateVisibility::Hidden);
+				InvenSlot->Number->SetVisibility(ESlateVisibility::Hidden);
+				continue;
+			}
+
 			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->QuickSlot[i]->Number)));
 			InvenSlot->Number->SetVisibility(ESlateVisibility::Visible);
 
@@ -188,6 +196,8 @@ void UBBQuickSlot::UpdateQuickSlot()
 			InvenSlot->Number->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+
+	Hunter->WeaponSlotUpdate();
 }
 
 void UBBQuickSlot::CloseQuickSlot()

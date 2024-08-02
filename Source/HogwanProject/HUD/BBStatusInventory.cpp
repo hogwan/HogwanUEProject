@@ -121,6 +121,8 @@ void UBBStatusInventory::Enter()
 
 			BBHUD->QuickSlotData.IsQuickSlotSetting = false;
 			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+			
+
 		}
 	}
 	else
@@ -128,6 +130,7 @@ void UBBStatusInventory::Enter()
 		if (InvenData.ItemType == EItemType::UseItem)
 		{
 			Hunter->GetInventory()->UseItem(4 * Row + Column);
+			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 		}
 
 		BBHUD->QuickSlotData.IsQuickSlotSetting = false;

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Global/BBEnum.h"
 #include "Item.generated.h"
 
 UCLASS()
@@ -31,6 +32,7 @@ public:
 	FORCEINLINE EItem GetItem() { return Item; }
 	FORCEINLINE EItemType GetItemType() { return ItemType; }
 	FORCEINLINE int GetItemNum() { return ItemNum; }
+	FORCEINLINE EWeapon GetWeapon() { return Weapon; }
 
 
 protected:
@@ -41,6 +43,8 @@ private:
 	EItem Item = EItem::None;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemType ItemType = EItemType::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EWeapon Weapon = EWeapon::None;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int ItemNum = 0;
 	

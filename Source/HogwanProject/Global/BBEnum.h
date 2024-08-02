@@ -110,5 +110,6 @@ enum class EItemType : uint8
 {
 	None,
 	UseItem,
-	Weapon,
+	RightHandWeapon,
+	LeftHandWeapon,
 };

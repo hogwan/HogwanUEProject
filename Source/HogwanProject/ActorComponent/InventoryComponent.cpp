@@ -6,6 +6,7 @@
 #include "Global/BBGameInstance.h"
 #include "HUD/BBStatusInventory.h"
 #include "HUD/BBHUD.h"
+#include "Character/Hunter/Hunter.h"
 
 UInventoryComponent::UInventoryComponent()
 {
@@ -30,6 +31,16 @@ void UInventoryComponent::BeginPlay()
 	{
 		QuickSlot.Add(nullptr);
 	}
+
+	AHunter* Hunter = Cast<AHunter>(GetOwner());
+	Hunter->RightHandSlotData[0] = &QuickSlot[0];
+	Hunter->RightHandSlotData[1] = &QuickSlot[1];
+	Hunter->RightHandSlotData[2] = &QuickSlot[2];
+
+	Hunter->LeftHandSlotData[0] = &QuickSlot[3];
+	Hunter->LeftHandSlotData[1] = &QuickSlot[4];
+	Hunter->LeftHandSlotData[2] = &QuickSlot[5];
+
 }
 
 void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
@@ -37,6 +48,7 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 	int ItemNum = _PickUpItem->GetItemNum();
 	EItem Item = _PickUpItem->GetItem();
 	EItemType ItemType = _PickUpItem->GetItemType();
+	EWeapon Weapon = _PickUpItem->GetWeapon();
 
 	for (FInvenSlotData& _ItemSlotInfo : Inventory)
 	{
@@ -56,6 +68,7 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 			TempItemSlotInfo.Number = ItemNum;
 			TempItemSlotInfo.Item = Item;
 			TempItemSlotInfo.ItemType = ItemType;
+			TempItemSlotInfo.Weapon = Weapon;
 
 			_ItemSlotInfo = TempItemSlotInfo;
 			break;
@@ -71,7 +84,7 @@ void UInventoryComponent::UseItem(int InventoryIndex)
 {
 	EItemType ItemType = Inventory[InventoryIndex].ItemType;
 
-	if (ItemType == EItemType::Weapon || ItemType == EItemType::None) return;
+	if (ItemType != EItemType::UseItem) return;
 
 	if (Inventory[InventoryIndex].Number <= 1)
 	{
@@ -81,8 +94,6 @@ void UInventoryComponent::UseItem(int InventoryIndex)
 	{
 		Inventory[InventoryIndex].Number--;
 	}
-
-	SortInventory();
 }
 
 void UInventoryComponent::ItemAction(EItem _Item)
@@ -95,29 +106,6 @@ void UInventoryComponent::ItemAction(EItem _Item)
 		break;
 	}
 
-}
-
-void UInventoryComponent::SortInventory()
-{
-	int Index = 0;
-	TArray<FInvenSlotData> TempArray;
-
-	for (int i = 0; i < 12; i++)
-	{
-		FInvenSlotData ItemSlotInfo;
-		TempArray.Add(ItemSlotInfo);
-	}
-
-	for (FInvenSlotData Data : Inventory)
-	{
-		if (!Data.IsEmpty)
-		{
-			TempArray[Index] = Data;
-			Index++;
-		}
-	}
-	
-	Inventory = TempArray;
 }
 
 

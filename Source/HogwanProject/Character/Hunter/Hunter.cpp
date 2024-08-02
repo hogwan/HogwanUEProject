@@ -46,6 +46,12 @@ AHunter::AHunter()
 	ViewCamera->SetupAttachment(SpringArm);
 
 	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+
+	for (int i = 0; i < 3; i++)
+	{
+		RightHandSlotData.Add(nullptr);
+		LeftHandSlotData.Add(nullptr);
+	}
 }
 
 void AHunter::BeginPlay()
@@ -1104,6 +1110,71 @@ FString AHunter::GetWeaponStateToString(ECharacterWeaponState _WeaponState)
 	}
 
 	return WeaponStateName;
+
+}
+
+void AHunter::WeaponSlotUpdate()
+{
+	for (int i = 0; i < 3; i++)
+	{
+
+		if ((*RightHandSlotData[i]) == nullptr)
+		{
+			MeleeWeaponsInPocket[i] = EWeapon::EW_RightFist;
+			continue;
+		}
+
+		EWeapon Weapon = (**RightHandSlotData[i]).Weapon;
+
+		switch (Weapon)
+		{
+		case EWeapon::EW_SawCleaver:
+			MeleeWeaponsInPocket[i] = EWeapon::EW_SawCleaver;
+			break;
+		case EWeapon::EW_GreatSword:
+			MeleeWeaponsInPocket[i] = EWeapon::EW_GreatSword;
+			break;
+		case EWeapon::EW_Katana:
+			MeleeWeaponsInPocket[i] = EWeapon::EW_Katana;
+			break;
+		}
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		if ((*LeftHandSlotData[i]) == nullptr)
+		{
+			RangedWeaponsInPocket[i] = EWeapon::EW_LeftFist;
+			continue;
+		}
+
+		EWeapon Weapon = (**LeftHandSlotData[i]).Weapon;
+
+		switch (Weapon)
+		{
+		case EWeapon::EW_HunterPistol:
+			RangedWeaponsInPocket[i] = EWeapon::EW_HunterPistol;
+			break;
+		case EWeapon::EW_GreatSword:
+			RangedWeaponsInPocket[i] = EWeapon::EW_GreatSword;
+			break;
+		case EWeapon::EW_Katana:
+			RangedWeaponsInPocket[i] = EWeapon::EW_Katana;
+			break;
+		default:
+			RangedWeaponsInPocket[i] = EWeapon::EW_LeftFist;
+		}
+	}
+
+	if (MeleeWeaponsInPocket[CurMeleeListNum] != EquippedMeleeWeapon->Weapon)
+	{
+		EquipWeapon(MeleeWeaponsInPocket[CurMeleeListNum]);
+	}
+
+	if (RangedWeaponsInPocket[CurRangedListNum] != EquippedRangedWeapon->Weapon)
+	{
+		EquipWeapon(RangedWeaponsInPocket[CurRangedListNum]);
+	}
 
 }
 

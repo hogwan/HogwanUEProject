@@ -17,6 +17,7 @@ struct FInvenSlotData
 	int Number = 0;
 	EItem Item = EItem::None;
 	EItemType ItemType = EItemType::None;
+	EWeapon Weapon = EWeapon::None;
 
 };
 
@@ -47,7 +48,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ItemAction(EItem _Item);
-
-	void SortInventory();
 
 };
