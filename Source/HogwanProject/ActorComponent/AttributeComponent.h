@@ -38,6 +38,9 @@ public:
 	void ReceiveDamage(float DamageAmount);
 
 	UFUNCTION(BlueprintCallable)
+	void Heal(float HealAmount);
+
+	UFUNCTION(BlueprintCallable)
 	bool GetIsDeath();
 
 protected:

@@ -30,4 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<FString, UTexture2D*> TextureMap;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, TSubclassOf<AActor>> ThrowObjects;
+
 };

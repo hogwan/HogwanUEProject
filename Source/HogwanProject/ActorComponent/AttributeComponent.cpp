@@ -48,6 +48,12 @@ void UAttributeComponent::ReceiveDamage(float DamageAmount)
 	RegainTimeRemain = RegainTime;
 }
 
+void UAttributeComponent::Heal(float HealAmount)
+{
+	Hp = FMath::Clamp(Hp + HealAmount, 0.f, MaxHp);
+	RegainHp = FMath::Clamp(RegainHp, Hp, MaxHp);
+}
+
 bool UAttributeComponent::GetIsDeath()
 {
 	return FMath::IsNearlyZero(Hp);

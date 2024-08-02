@@ -44,6 +44,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* BulletNum;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* ItemNum;
 	
 	void SetHealthBarPercent(float Percent);
 	void SetMaxHealthBarPercent(float Percent);

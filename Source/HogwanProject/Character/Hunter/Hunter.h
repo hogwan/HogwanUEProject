@@ -55,10 +55,19 @@ public:
 	class UInputAction* ShootAction;
 
 	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* ThrowAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* DrinkAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* MeleeWeaponSwapAction;
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* RangedWeaponSwapAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	class UInputAction* UseItemSwapAction;
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	class UInputAction* DeformWeaponAction;
@@ -105,9 +114,11 @@ private:
 	void Shoot(const FInputActionValue& Value);
 	void MeleeWeaponSwap(const FInputActionValue& Value);
 	void RangedWeaponSwap(const FInputActionValue& Value);
+	void ItemSwap(const FInputActionValue& Value);
 	void DeformWeapon(const FInputActionValue& Value);
 	void OpenStatusInventory(const FInputActionValue& Value);
 	void OpenQuickSlot(const FInputActionValue& Value);
+
 
 	void TraceLockOnTarget(float DeltaTime);
 
@@ -208,8 +219,26 @@ public:
 
 	TArray<struct FInvenSlotData**> RightHandSlotData;
 	TArray<struct FInvenSlotData**> LeftHandSlotData;
+	TArray<struct FInvenSlotData**> UseItemSlotData;
+
+	AActor* HoldObject = nullptr;
 
 	void WeaponSlotUpdate();
+	void UseItemSlotUpdate();
+	void PotionBulletUpdate();
+	int GetPotionNum();
+	int GetBulletNum();
+
+	void Drink();
+	void Throw();
+
+	UFUNCTION(BlueprintCallable)
+	void UseItem();
+
+	UFUNCTION(BlueprintCallable)
+	void Heal();
+
+	float HealAmount = 50.f;
 
 	UPROPERTY(EditAnywhere)
 	TMap<EWeapon, TSubclassOf<class AWeapon>> WeaponList;
@@ -218,6 +247,8 @@ public:
 	int32 CurMeleeListNum = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	int32 CurRangedListNum = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	int32 CurUseItemListNum = 0;
 
 	UPROPERTY()
 	int32 MaxListNum = 3;

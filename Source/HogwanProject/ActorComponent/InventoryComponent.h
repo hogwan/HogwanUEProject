@@ -15,6 +15,7 @@ struct FInvenSlotData
 	bool IsEmpty = true;
 
 	int Number = 0;
+	int Index = 0;
 	EItem Item = EItem::None;
 	EItemType ItemType = EItemType::None;
 	EWeapon Weapon = EWeapon::None;
@@ -45,8 +46,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UseItem(int InventoryIndex);
-
-	UFUNCTION(BlueprintCallable)
-	void ItemAction(EItem _Item);
 
 };

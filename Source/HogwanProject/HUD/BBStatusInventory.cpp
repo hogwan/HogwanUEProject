@@ -122,19 +122,23 @@ void UBBStatusInventory::Enter()
 			BBHUD->QuickSlotData.IsQuickSlotSetting = false;
 			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 			
-
+			Hunter->PotionBulletUpdate();
+			Hunter->UseItemSlotUpdate();
 		}
 	}
 	else
 	{
 		if (InvenData.ItemType == EItemType::UseItem)
 		{
-			Hunter->GetInventory()->UseItem(4 * Row + Column);
+			Hunter->Throw();
 			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 		}
 
 		BBHUD->QuickSlotData.IsQuickSlotSetting = false;
 		PlayerController->CloseStatusInventory();
+
+		Hunter->PotionBulletUpdate();
+		Hunter->UseItemSlotUpdate();
 	}
 }
 

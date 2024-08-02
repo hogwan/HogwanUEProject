@@ -24,6 +24,7 @@ void UInventoryComponent::BeginPlay()
 	for (int i = 0; i < 12; i++)
 	{
 		FInvenSlotData ItemSlotInfo;
+		ItemSlotInfo.Index = i;
 		Inventory.Add(ItemSlotInfo);
 	}
 
@@ -41,6 +42,10 @@ void UInventoryComponent::BeginPlay()
 	Hunter->LeftHandSlotData[1] = &QuickSlot[4];
 	Hunter->LeftHandSlotData[2] = &QuickSlot[5];
 
+	Hunter->UseItemSlotData[0] = &QuickSlot[6];
+	Hunter->UseItemSlotData[1] = &QuickSlot[7];
+	Hunter->UseItemSlotData[2] = &QuickSlot[8];
+
 }
 
 void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
@@ -50,14 +55,14 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 	EItemType ItemType = _PickUpItem->GetItemType();
 	EWeapon Weapon = _PickUpItem->GetWeapon();
 
-	for (FInvenSlotData& _ItemSlotInfo : Inventory)
+	for (int i = 0; i < Inventory.Num(); i++)
 	{
-		EItem SlotItem = _ItemSlotInfo.Item;
-		bool IsEmpty = _ItemSlotInfo.IsEmpty;
+		EItem SlotItem = Inventory[i].Item;
+		bool IsEmpty = Inventory[i].IsEmpty;
 
 		if (SlotItem == Item)
 		{
-			_ItemSlotInfo.Number += ItemNum;
+			Inventory[i].Number += ItemNum;
 			return;
 		}
 
@@ -69,8 +74,8 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 			TempItemSlotInfo.Item = Item;
 			TempItemSlotInfo.ItemType = ItemType;
 			TempItemSlotInfo.Weapon = Weapon;
-
-			_ItemSlotInfo = TempItemSlotInfo;
+			TempItemSlotInfo.Index = i;
+			Inventory[i] = TempItemSlotInfo;
 			break;
 		}
 	}
@@ -88,25 +93,22 @@ void UInventoryComponent::UseItem(int InventoryIndex)
 
 	if (Inventory[InventoryIndex].Number <= 1)
 	{
-		Inventory[InventoryIndex] = FInvenSlotData();
+		FInvenSlotData ItemSlotInfo;
+		ItemSlotInfo.Index = InventoryIndex;
+
+		Inventory[InventoryIndex] = ItemSlotInfo;
 	}
 	else
 	{
 		Inventory[InventoryIndex].Number--;
 	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetOwner()->GetGameInstance());
+	AHunter* Hunter = GameIns->Hunter;
+	Hunter->PotionBulletUpdate();
+	Hunter->UseItemSlotUpdate();
 }
 
-void UInventoryComponent::ItemAction(EItem _Item)
-{
-	switch (_Item)
-	{
-	case EItem::FireBottle:
-		break;
-	case EItem::Potion:
-		break;
-	}
-
-}
 
 
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

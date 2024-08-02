@@ -23,6 +23,7 @@
 #include "Character/Hunter/BBPlayerController.h"
 #include "Tool/Item/Item.h"
 #include "HUD/BBStatusInventory.h"
+#include "Components/TextBlock.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -51,6 +52,7 @@ AHunter::AHunter()
 	{
 		RightHandSlotData.Add(nullptr);
 		LeftHandSlotData.Add(nullptr);
+		UseItemSlotData.Add(nullptr);
 	}
 }
 
@@ -68,7 +70,7 @@ void AHunter::BeginPlay()
 
 	EquipWeapon(MeleeWeaponsInPocket[0]);
 	EquipWeapon(RangedWeaponsInPocket[0]);
-
+	UseItemSlotUpdate();
 }
 
 void AHunter::Tick(float DeltaTime)
@@ -104,6 +106,9 @@ void AHunter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(DeformWeaponAction, ETriggerEvent::Started, this, &AHunter::DeformWeapon);
 		EnhancedInputComponent->BindAction(OpenStatusInventoryAction, ETriggerEvent::Started, this, &AHunter::OpenStatusInventory);
 		EnhancedInputComponent->BindAction(OpenQuickSlotAction, ETriggerEvent::Started, this, &AHunter::OpenQuickSlot);
+		EnhancedInputComponent->BindAction(UseItemSwapAction, ETriggerEvent::Started, this, &AHunter::ItemSwap);
+		EnhancedInputComponent->BindAction(ThrowAction, ETriggerEvent::Started, this, &AHunter::Throw);
+		EnhancedInputComponent->BindAction(DrinkAction, ETriggerEvent::Started, this, &AHunter::Drink);
 		
 	}
 
@@ -511,6 +516,9 @@ void AHunter::Interact(const FInputActionValue& Value)
 		Inventory->PickUpItem(OverlappingItem);
 		OverlappingItem->Destroy();
 		OverlappingItem = nullptr;
+
+		UseItemSlotUpdate();
+		PotionBulletUpdate();
 	}
 }
 
@@ -564,8 +572,19 @@ void AHunter::RangedWeaponSwap(const FInputActionValue& Value)
 
 }
 
+void AHunter::ItemSwap(const FInputActionValue& Value)
+{
+	CurUseItemListNum++;
+
+	if (CurUseItemListNum > MaxListNum) return;
+	if (CurUseItemListNum == MaxListNum) CurUseItemListNum = 0;
+
+	UseItemSlotUpdate();
+}
+
 void AHunter::DeformWeapon(const FInputActionValue& Value)
 {
+	if (MeleeWeaponsInPocket[CurMeleeListNum] == EWeapon::EW_RightFist) return;
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -590,6 +609,8 @@ void AHunter::DeformWeapon(const FInputActionValue& Value)
 
 void AHunter::OpenStatusInventory(const FInputActionValue& Value)
 {
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
 	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
 
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
@@ -601,9 +622,12 @@ void AHunter::OpenStatusInventory(const FInputActionValue& Value)
 
 void AHunter::OpenQuickSlot(const FInputActionValue& Value)
 {
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
 	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
 	BBController->OpenQuickSlot();
 }
+
 
 FString AHunter::GetDeformMontageName()
 {
@@ -894,6 +918,7 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedMeleeWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 
 		CurWeaponState = ECharacterWeaponState::ECWS_OnehandedWeapon;
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("SawCleaver")];
 	}
 		break;
 	case EWeapon::EW_GreatSword:
@@ -954,6 +979,7 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		EquippedMeleeWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
 
 		CurWeaponState = ECharacterWeaponState::ECWS_TwohandedWeapon;
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("GreatSword")];
 	}
 	break;
 	case EWeapon::EW_Katana:
@@ -1017,6 +1043,7 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 		SpawnWeaponSheath->AttachToComponent(GetMesh(), AttachRules, TEXT("KatanaSheathSocket"));
 
 		CurWeaponState = ECharacterWeaponState::ECWS_TwohandedWeapon;
+		EquippedWeaponTexture = GameIns->TextureMap[TEXT("Katana")];
 
 	}
 		break;
@@ -1178,4 +1205,114 @@ void AHunter::WeaponSlotUpdate()
 
 }
 
+void AHunter::UseItemSlotUpdate()
+{
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	if(*UseItemSlotData[CurUseItemListNum] == nullptr)
+	{
+		BBOverlay->SetUseItemImage(nullptr);
+		BBOverlay->ItemNum->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		EItem Item = (**UseItemSlotData[CurUseItemListNum]).Item;
+
+		switch (Item)
+		{
+		case EItem::Potion:
+			BBOverlay->SetUseItemImage(GameIns->TextureMap["Potion"]);
+			break;
+		case EItem::FireBottle:
+			BBOverlay->SetUseItemImage(GameIns->TextureMap["FireBottle"]);
+			break;
+		case EItem::Stone:
+			BBOverlay->SetUseItemImage(GameIns->TextureMap["Stone"]);
+			break;
+		}
+		BBOverlay->ItemNum->SetText(FText::FromString(FString::FromInt((**UseItemSlotData[CurUseItemListNum]).Number)));
+		BBOverlay->ItemNum->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void AHunter::UseItem()
+{
+	if ((*UseItemSlotData[CurUseItemListNum]) == nullptr) return;
+	if ((**UseItemSlotData[CurUseItemListNum]).ItemType != EItemType::UseItem) return;
+
+	GetInventory()->UseItem((**UseItemSlotData[CurUseItemListNum]).Index);
+
+	UseItemSlotUpdate();
+	PotionBulletUpdate();
+}
+
+void AHunter::PotionBulletUpdate()
+{
+	BBOverlay->PotionNum->SetText(FText::FromString(FString::FromInt(GetPotionNum())));
+	BBOverlay->BulletNum->SetText(FText::FromString(FString::FromInt(GetBulletNum())));
+}
+
+int AHunter::GetPotionNum()
+{
+	for (FInvenSlotData Data : GetInventory()->Inventory)
+	{
+		if (Data.Item == EItem::Potion)
+		{
+			return Data.Number;
+		}
+	}
+	
+	return 0;
+}
+
+int AHunter::GetBulletNum()
+{
+	for (FInvenSlotData Data : GetInventory()->Inventory)
+	{
+		if (Data.Item == EItem::Bullet)
+		{
+			return Data.Number;
+		}
+	}
+
+	return 0;
+}
+void AHunter::Throw()
+{
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && MontageMap[TEXT("Throw")])
+	{
+		CurActionState = ECharacterActionState::ECAS_Throw;
+		AnimInstance->Montage_Play(MontageMap[TEXT("Throw")]);
+	}
+}
+
+void AHunter::Drink()
+{
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+	if (GetPotionNum() == 0) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && MontageMap[TEXT("Drink")])
+	{
+		CurActionState = ECharacterActionState::ECAS_Drink;
+		AnimInstance->Montage_Play(MontageMap[TEXT("Drink")]);
+	}
+}
+
+void AHunter::Heal()
+{
+	for (FInvenSlotData& Data : GetInventory()->Inventory)
+	{
+		if (Data.Item == EItem::Potion)
+		{
+			Data.Number--;
+		}
+	}
+
+	GetAttribute()->Heal(HealAmount);
+	PotionBulletUpdate();
+}
 

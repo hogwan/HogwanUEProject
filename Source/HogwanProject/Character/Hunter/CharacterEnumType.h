@@ -27,4 +27,6 @@ enum class ECharacterActionState : uint8
 	ECAS_WeaponSwaping,
 	ECAS_TakeDown,
 	ECAS_Deform,
+	ECAS_Throw,
+	ECAS_Drink,
 };
