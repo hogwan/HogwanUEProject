@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "ActorComponent/InventoryComponent.h"
 
 ARangedWeapon::ARangedWeapon()
 {
@@ -53,6 +54,17 @@ void ARangedWeapon::SpawnBullet(AActor* Target)
 		}
 	}
 
+	if (AHunter* Hunter = Cast<AHunter>(GetOwner()))
+	{
+		for (FInvenSlotData& Data : Hunter->GetInventory()->Inventory)
+		{
+			if (Data.Item == EItem::Bullet)
+			{
+				Data.Number--;
+			}
+		}
+		Hunter->PotionBulletUpdate();
+	}
 }
 
 void ARangedWeapon::BeginPlay()

@@ -47,5 +47,8 @@ private:
 	EWeapon Weapon = EWeapon::None;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int ItemNum = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString ItemExplain = "";
+
 	
 };

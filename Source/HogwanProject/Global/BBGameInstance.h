@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Global/BBEnum.h"
 #include "BBGameInstance.generated.h"
 
 /**
@@ -31,6 +32,12 @@ public:
 	TMap<FString, UTexture2D*> TextureMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<EItem, UTexture2D*> EnumTextureMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<FString, TSubclassOf<AActor>> ThrowObjects;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<EItem, FString> ItemExplain;
 
 };

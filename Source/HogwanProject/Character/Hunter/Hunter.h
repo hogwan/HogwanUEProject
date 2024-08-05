@@ -165,6 +165,9 @@ private:
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool GoNextAttack = false;
 
+	UPROPERTY()
+	bool IsOpenItemExplain = false;
+
 	UPROPERTY(VisibleInstanceOnly)
 	class AItem* OverlappingItem;
 

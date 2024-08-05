@@ -4,6 +4,10 @@
 #include "Tool/Item/Item.h"
 #include "Components/SphereComponent.h"
 #include "Character/Hunter/Hunter.h"
+#include "Global/BBGameInstance.h"
+#include "HUD/BBHUD.h"
+#include "HUD/BBOverlay.h"
+#include "Components/TextBlock.h"
 
 // Sets default values
 AItem::AItem()
@@ -47,6 +51,13 @@ void AItem::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 	if (Hunter)
 	{
 		Hunter->SetOverlappingItem(this);
+
+		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+		ABBHUD* BBHUD = GameIns->HUD;
+		UBBOverlay* BBOverlay = BBHUD->GetBBOverlay();
+
+		BBOverlay->ItemInteractText->SetVisibility(ESlateVisibility::Visible);
+
 	}
 }
 
@@ -56,5 +67,11 @@ void AItem::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	if (Hunter && Hunter->GetOverlappingItem() == this)
 	{
 		Hunter->SetOverlappingItem(nullptr);
+
+		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+		ABBHUD* BBHUD = GameIns->HUD;
+		UBBOverlay* BBOverlay = BBHUD->GetBBOverlay();
+
+		BBOverlay->ItemInteractText->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

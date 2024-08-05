@@ -47,6 +47,12 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* ItemNum;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* ItemInteractText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UItemExplain* ItemExplain;
 	
 	void SetHealthBarPercent(float Percent);
 	void SetMaxHealthBarPercent(float Percent);
