@@ -190,6 +190,7 @@ public:
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
 	void RegainTimeUpdate(float DeltaTime);
 	void UpdateOverlay();
+	class UBBOverlay* GetBBOverlay() { return BBOverlay; }
 
 	class AItem* GetOverlappingItem() { return OverlappingItem; }
 

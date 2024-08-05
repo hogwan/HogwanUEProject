@@ -240,7 +240,10 @@ void AHunter::Dodge(const FInputActionValue& Value)
 		{
 			UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 
-			if (bIsLockOn && AnimInstance)
+			if (AnimInstance == nullptr) return;
+			GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+			if (bIsLockOn)
 			{
 				FString MontageName;
 				MontageName += GetWeaponStateToString(CurWeaponState);

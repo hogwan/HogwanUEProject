@@ -2,6 +2,10 @@
 
 
 #include "AI/OldHunter/BTTaskNode_OldHunter_Idle.h"
+#include "HUD/BBOverlay.h"
+#include "Character/Hunter/Hunter.h"
+#include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
 
 EBTNodeResult::Type UBTTaskNode_OldHunter_Idle::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -41,6 +45,11 @@ void UBTTaskNode_OldHunter_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, ui
 
 	if (Character->PerceiveHunter)
 	{
+		GetHunter()->GetBBOverlay()->BossName->SetText(FText::FromString(Character->MonsterName));
+		GetHunter()->GetBBOverlay()->BossHealthBar->SetPercent(Character->GetAttribute()->GetHealthPercent());
+		GetHunter()->GetBBOverlay()->BossName->SetVisibility(ESlateVisibility::Visible);
+		GetHunter()->GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Visible);
+
 		ChangeState(_OwnerComp, EMonsterState::EMS_Run);
 		return;
 	}

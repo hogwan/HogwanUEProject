@@ -53,6 +53,12 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UItemExplain* ItemExplain;
+
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* BossHealthBar;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* BossName;
 	
 	void SetHealthBarPercent(float Percent);
 	void SetMaxHealthBarPercent(float Percent);

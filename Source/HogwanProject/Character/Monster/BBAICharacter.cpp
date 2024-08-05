@@ -13,6 +13,11 @@
 #include "Character/Hunter/Hunter.h"
 #include "Components/CapsuleComponent.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Global/BBGameInstance.h"
+#include "HUD/BBHUD.h"
+#include "Components/ProgressBar.h"
+#include "HUD/BBOverlay.h"
+#include "Components/TextBlock.h"
 
 ABBAICharacter::ABBAICharacter()
 {
@@ -45,6 +50,13 @@ void ABBAICharacter::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitTy
 
 	ABBAIController* Con = Cast<ABBAIController>(GetController());
 	PerceiveHunter = true;
+
+	if (IsBoss)
+	{
+		UBBGameInstance* BBGameIns = Cast<UBBGameInstance>(GetGameInstance());
+		ABBHUD* BBHUD = BBGameIns->HUD;
+		BBHUD->GetBBOverlay()->BossHealthBar->SetPercent(GetAttribute()->GetHealthPercent());
+	}
 	
 	if (Con && AnimInst)
 	{
@@ -128,6 +140,14 @@ void ABBAICharacter::DeathCheck()
 		GetMesh()->SetSimulatePhysics(true);
 
 		IsDeath = true;
+
+		if (IsBoss)
+		{
+			UBBGameInstance* BBGameIns = Cast<UBBGameInstance>(GetGameInstance());
+			ABBHUD* BBHUD = BBGameIns->HUD;
+			BBHUD->GetBBOverlay()->BossName->SetVisibility(ESlateVisibility::Hidden);
+			BBHUD->GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }
 

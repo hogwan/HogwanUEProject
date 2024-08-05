@@ -139,6 +139,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void DeathCheck();
 
+	UPROPERTY(EditAnywhere)
+	FString MonsterName = "";
+	UPROPERTY(EditAnywhere)
+	bool IsBoss = false;
+
 protected:
 	void BeginPlay() override;
 
