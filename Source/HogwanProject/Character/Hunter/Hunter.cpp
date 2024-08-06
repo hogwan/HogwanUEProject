@@ -29,6 +29,7 @@
 #include "Components/CanvasPanel.h"
 #include "HUD/ItemExplain.h"
 #include "Components/Image.h"
+#include "Tool/Item/InteractObject.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -537,33 +538,19 @@ void AHunter::ChargeAttack(const FInputActionValue& Value)
 
 void AHunter::Interact(const FInputActionValue& Value)
 {
-	if (OverlappingItem && !IsOpenItemExplain)
-	{
-		Inventory->PickUpItem(OverlappingItem);
-		
-		EItem Item = OverlappingItem->GetItem();
-
-		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-		
-		BBOverlay->ItemExplain->ItemExplainImage->SetBrushFromTexture(GameIns->EnumTextureMap[Item]);
-		BBOverlay->ItemExplain->ItemExplainText->SetText(FText::FromString(GameIns->ItemExplain[Item]));
-		BBOverlay->ItemExplain->ItemExplainNum->SetText(FText::FromString(FString::FromInt(OverlappingItem->GetItemNum())));
-
-		OverlappingItem->Destroy();
-		OverlappingItem = nullptr;
-
-		IsOpenItemExplain = true;
-
-		BBOverlay->ItemExplain->SetVisibility(ESlateVisibility::Visible);
-
-		UseItemSlotUpdate();
-		PotionBulletUpdate();
-	}
-	else if (IsOpenItemExplain)
+	if (IsOpenItemExplain)
 	{
 		BBOverlay->ItemExplain->SetVisibility(ESlateVisibility::Hidden);
 		IsOpenItemExplain = false;
+		return;
 	}
+
+	if (OverlappingObject)
+	{
+		OverlappingObject->Interact();
+	}
+
+	
 	
 }
 

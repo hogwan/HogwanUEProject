@@ -105,6 +105,8 @@ public:
 
 	FORCEINLINE ECharacterActionState GetCurActionState() { return CurActionState; }
 	FORCEINLINE class UInventoryComponent* GetInventory() { return Inventory; }
+	FORCEINLINE bool GetIsOpenItemExplain() { return IsOpenItemExplain; }
+	FORCEINLINE void SetIsOpenItemExplain(bool _Set){ IsOpenItemExplain = _Set; }
 	
 protected:
 	virtual void BeginPlay() override;
@@ -177,9 +179,7 @@ private:
 	bool IsOpenItemExplain = false;
 
 	UPROPERTY(VisibleInstanceOnly)
-	class AItem* OverlappingItem;
-
-
+	class AInteractObject* OverlappingObject;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "TakeDown", meta = (AllowPrivateAccess = "true"))
 	class AActor* TakeDownTarget;
@@ -194,12 +194,12 @@ private:
 	FVector InputVector = FVector::Zero();
 
 public:
-	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
+	void SetOverlappingObject(class AInteractObject* InteractObject) { OverlappingObject = InteractObject; }
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
 	void UpdateOverlay();
 	class UBBOverlay* GetBBOverlay() { return BBOverlay; }
 
-	class AItem* GetOverlappingItem() { return OverlappingItem; }
+	class AInteractObject* GetOverlappingObject() { return OverlappingObject; }
 
 	UFUNCTION(BlueprintCallable)
 	void EquipWeapon(EWeapon Weapon);

@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Tool/Item/InteractObject.h"
 #include "Global/BBEnum.h"
 #include "Item.generated.h"
 
 UCLASS()
-class HOGWANPROJECT_API AItem : public AActor
+class HOGWANPROJECT_API AItem : public AInteractObject
 {
 	GENERATED_BODY()
 	
@@ -16,22 +16,12 @@ public:
 	AItem();
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
-	class USphereComponent* Sphere;
-
-	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	FORCEINLINE void SetOwner(AActor* _Owner) { Owner = _Owner; }
 	FORCEINLINE EItem GetItem() { return Item; }
 	FORCEINLINE EItemType GetItemType() { return ItemType; }
 	FORCEINLINE int GetItemNum() { return ItemNum; }
 	FORCEINLINE EWeapon GetWeapon() { return Weapon; }
 
-
+	void Interact() override;
 protected:
 	virtual void BeginPlay() override;
 
