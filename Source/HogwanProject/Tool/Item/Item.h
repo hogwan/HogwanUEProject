@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tool/Item/InteractObject.h"
+#include "Tool/InteractObject.h"
 #include "Global/BBEnum.h"
 #include "Item.generated.h"
 

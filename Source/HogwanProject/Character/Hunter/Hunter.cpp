@@ -29,7 +29,7 @@
 #include "Components/CanvasPanel.h"
 #include "HUD/ItemExplain.h"
 #include "Components/Image.h"
-#include "Tool/Item/InteractObject.h"
+#include "Tool/InteractObject.h"
 
 // Sets default values
 AHunter::AHunter()
