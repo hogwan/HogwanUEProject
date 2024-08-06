@@ -7,6 +7,7 @@
 #include "HUD/BBStatusInventory.h"
 #include "HUD/BBHUD.h"
 #include "Character/Hunter/Hunter.h"
+#include "HUD/BBQuickSlot.h"
 
 UInventoryComponent::UInventoryComponent()
 {
@@ -55,6 +56,9 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 	EItemType ItemType = _PickUpItem->GetItemType();
 	EWeapon Weapon = _PickUpItem->GetWeapon();
 
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetOwner()->GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
+
 	for (int i = 0; i < Inventory.Num(); i++)
 	{
 		EItem SlotItem = Inventory[i].Item;
@@ -63,6 +67,8 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 		if (SlotItem == Item)
 		{
 			Inventory[i].Number += ItemNum;
+			BBHUD->GetBBStatusInventory()->UpdateInventory();
+			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 			return;
 		}
 
@@ -80,9 +86,8 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 		}
 	}
 
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetOwner()->GetGameInstance());
-	ABBHUD* BBHUD = GameIns->HUD;
 	BBHUD->GetBBStatusInventory()->UpdateInventory();
+	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 }
 
 void UInventoryComponent::UseItem(int InventoryIndex)
@@ -104,9 +109,14 @@ void UInventoryComponent::UseItem(int InventoryIndex)
 	}
 
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetOwner()->GetGameInstance());
+	ABBHUD* BBHUD = GameIns->HUD;
 	AHunter* Hunter = GameIns->Hunter;
+
 	Hunter->PotionBulletUpdate();
 	Hunter->UseItemSlotUpdate();
+
+	BBHUD->GetBBStatusInventory()->UpdateInventory();
+	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 }
 
 

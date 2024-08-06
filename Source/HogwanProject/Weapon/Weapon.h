@@ -36,6 +36,12 @@ public:
 		return WeaponName + "_";
 	}
 
+	UPROPERTY(EditAnywhere)
+	float WeaponBaseDamage = 1.f;
+
+	UPROPERTY(EditAnywhere)
+	float DamageScale = 5.f;
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -32,6 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void EnableHitBox();
 
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 protected:
 	virtual void BeginPlay() override;
 
@@ -49,7 +50,6 @@ protected:
 
 	void Reset() override;
 
-	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 private:
 	UPROPERTY(VisibleAnywhere)
 	class UWidgetComponent* LockOnTargetWidget;

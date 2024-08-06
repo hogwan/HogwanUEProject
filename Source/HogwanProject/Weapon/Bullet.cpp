@@ -8,6 +8,7 @@
 #include "Interface/HitInterface.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 ABullet::ABullet()
 {
@@ -37,6 +38,12 @@ void ABullet::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	IHitInterface* Hit = Cast<IHitInterface>(OtherActor);
 	if (Hit)
 	{
+		ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor);
+		if (Character)
+		{
+			UGameplayStatics::ApplyDamage(Character, Damage, GetOwner()->GetOwner()->GetInstigatorController(), this, UDamageType::StaticClass());
+		}
+
 		if (HitEffect)
 		{
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(
@@ -45,6 +52,7 @@ void ABullet::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 				GetActorLocation()
 			);
 		}
+
 		Hit->GetHit(GetActorLocation(),this, EHitType::EHT_Bullet);
 		Destroy();
 	}

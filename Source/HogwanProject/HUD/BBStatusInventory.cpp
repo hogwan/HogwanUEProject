@@ -14,6 +14,8 @@
 #include "HUD/BBHUD.h"
 #include "ActorComponent/InventoryComponent.h"
 #include "HUD/BBQuickSlot.h"
+#include "ActorComponent/AttributeComponent.h"
+#include "Weapon/MeleeWeapon.h"
 
 void UBBStatusInventory::Init()
 {
@@ -208,6 +210,27 @@ void UBBStatusInventory::UpdateInventory()
 			InvenSlot->Number->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+
+	LevelStat->SetText(FText::FromString(FString::FromInt(Hunter->CurStatus.Level)));
+
+	VitalityStat->SetText(FText::FromString(FString::FromInt(Hunter->CurStatus.Vitality)));
+
+	EnduranceStat->SetText(FText::FromString(FString::FromInt(Hunter->CurStatus.Endurance)));
+
+	StrengthStat->SetText(FText::FromString(FString::FromInt(Hunter->CurStatus.Strength)));
+
+	int HunterMaxHp = Hunter->GetAttribute()->MaxHp;
+	int HunterCurHp = Hunter->GetAttribute()->Hp;
+	int HunterMaxStamina = Hunter->GetAttribute()->MaxStamina;
+	int HunterCurStamina = Hunter->GetAttribute()->Stamina;
+	int HunterDamage = Hunter->GetCurDamage();
+
+	FString StrHPStat = FString::Printf(TEXT("%d / %d"), HunterCurHp, HunterMaxHp);
+	FString StrStaminaStat = FString::Printf(TEXT("%d / %d"), HunterCurStamina, HunterMaxStamina);
+
+	HPStat->SetText(FText::FromString(StrHPStat));
+	StaminaStat->SetText(FText::FromString(StrStaminaStat));
+	DamageStat->SetText(FText::FromString(FString::FromInt(HunterDamage)));
 }
 
 void UBBStatusInventory::CloseStatusInventory()

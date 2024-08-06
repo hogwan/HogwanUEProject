@@ -21,6 +21,13 @@ AThrowObject::AThrowObject()
 void AThrowObject::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AThrowObject::ColBeginOverlap);
+	
+}
+
+void AThrowObject::ColBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
 	
 }
 

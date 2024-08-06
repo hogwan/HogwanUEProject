@@ -21,6 +21,7 @@ public:
 
 	FORCEINLINE class UAttributeComponent* GetAttribute() { return Attribute; }
 	FORCEINLINE class UMotionWarpingComponent* GetMotionWarping() { return MotionWarping; }
+	FORCEINLINE class UHealthBarComponent* GetHealthBarWidget() { return HealthBarWidget; }
 
 protected:
 	virtual void BeginPlay() override;

@@ -48,6 +48,9 @@ void ABBPlayerController::OpenStatusInventory()
 	BBHUD->GetBBStatusInventory()->Init();
 	BBHUD->GetBBStatusInventory()->SetVisibility(ESlateVisibility::Visible);
 
+	BBHUD->GetBBStatusInventory()->UpdateInventory();
+	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+
 }
 
 void ABBPlayerController::OpenQuickSlot()
@@ -69,6 +72,9 @@ void ABBPlayerController::OpenQuickSlot()
 
 	BBHUD->GetBBQuickSlot()->Init();
 	BBHUD->GetBBQuickSlot()->SetVisibility(ESlateVisibility::Visible);
+
+	BBHUD->GetBBStatusInventory()->UpdateInventory();
+	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
 }
 
 void ABBPlayerController::CloseStatusInventory()

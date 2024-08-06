@@ -1384,3 +1384,8 @@ void AHunter::Heal()
 	PotionBulletUpdate();
 }
 
+int AHunter::GetCurDamage()
+{
+	return EquippedMeleeWeapon->WeaponBaseDamage + EquippedMeleeWeapon->DamageScale * CurStatus.Strength;
+}
+

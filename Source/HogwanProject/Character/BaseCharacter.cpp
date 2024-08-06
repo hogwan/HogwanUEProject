@@ -30,6 +30,7 @@ void ABaseCharacter::BeginPlay()
 	if (HealthBarWidget)
 	{
 		HealthBarWidget->SetHealthPercent(1.f);
+		HealthBarWidget->SetVisibility(false);
 	}
 	
 }

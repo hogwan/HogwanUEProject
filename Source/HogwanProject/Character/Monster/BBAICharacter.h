@@ -134,6 +134,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool DodgeEnd = false;
 
+	UPROPERTY()
+	bool IsDeath = false;
+
 	void GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType) override;
 
 	UFUNCTION(BlueprintCallable)
@@ -176,5 +179,5 @@ private:
 	void BackTakeDownBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UPROPERTY()
-	bool IsDeath = false;
+	bool IsHealthWidgetOn = false;
 };

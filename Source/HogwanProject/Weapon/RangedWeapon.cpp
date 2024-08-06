@@ -30,6 +30,8 @@ void ARangedWeapon::SpawnBullet(AActor* Target)
 	ABullet* NewBullet = World->SpawnActor<ABullet>(BP_Bullet, SpawnTrans);
 
 	if (nullptr == NewBullet) return;
+	NewBullet->SetOwner(this);
+	NewBullet->Damage = WeaponBaseDamage;
 
 	if (LaunchEffect)
 	{

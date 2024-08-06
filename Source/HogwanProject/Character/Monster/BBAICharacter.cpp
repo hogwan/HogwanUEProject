@@ -35,6 +35,12 @@ void ABBAICharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	DeathCheck();
+
+	if (PerceiveHunter && !IsHealthWidgetOn)
+	{
+		IsHealthWidgetOn = true;
+		HealthBarWidget->SetVisibility(true);
+	}
 }
 
 ABBAIController* ABBAICharacter::GetBBAIController()

@@ -4,6 +4,7 @@
 #include "AI/MeleeMonsterAI/BTTaskNode_Perceive.h"
 #include "Character/Monster/BBAIAnimInstance.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "HUD/HealthBarComponent.h"
 
 EBTNodeResult::Type UBTTaskNode_Perceive::ExecuteTask(UBehaviorTreeComponent& _OwnerComp, uint8* NodeMemory)
 {
@@ -36,7 +37,7 @@ EBTNodeResult::Type UBTTaskNode_Perceive::ExecuteTask(UBehaviorTreeComponent& _O
 		ChangeState(_OwnerComp, EMonsterState::EMS_Run);
 		return EBTNodeResult::Failed;
 	}
-
+	
 
 	return EBTNodeResult::InProgress;
 }

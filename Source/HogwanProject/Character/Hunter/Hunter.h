@@ -9,6 +9,14 @@
 #include "Animation/AnimMontage.h"
 #include "Hunter.generated.h"
 
+struct FHunterStatus
+{
+	int Level = 1;
+
+	int Vitality = 10;
+	int Endurance = 10;
+	int Strength = 10;
+};
 
 UCLASS()
 class HOGWANPROJECT_API AHunter : public ABaseCharacter
@@ -225,7 +233,7 @@ public:
 	TArray<struct FInvenSlotData**> LeftHandSlotData;
 	TArray<struct FInvenSlotData**> UseItemSlotData;
 
-	AActor* HoldObject = nullptr;
+	FHunterStatus CurStatus = FHunterStatus();
 
 	void WeaponSlotUpdate();
 	void UseItemSlotUpdate();
@@ -244,6 +252,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Heal();
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurDamage();
 
 	float HealAmount = 50.f;
 

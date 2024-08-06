@@ -15,6 +15,8 @@ public:
 	ABullet();
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	float Damage = 5.f;
 protected:
 	virtual void BeginPlay() override;
 
@@ -32,6 +34,7 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float Speed = 1000.f;
+
 
 	UPROPERTY()
 	float LifeTime = 1.f;

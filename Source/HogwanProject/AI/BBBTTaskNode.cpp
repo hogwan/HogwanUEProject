@@ -17,6 +17,14 @@ void UBBBTTaskNode::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMe
 {
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 
+	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+
+	if (Character->IsDeath)
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Dead);
+		return;
+	}
+
 	if (EMonsterState::EMS_Unable == GetCurState<EMonsterState>(_OwnerComp))
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_Unable);

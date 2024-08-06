@@ -20,8 +20,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
+	UFUNCTION()
+	virtual void ColBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+private:
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* Sphere;
 
