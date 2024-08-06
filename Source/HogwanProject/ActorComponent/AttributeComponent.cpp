@@ -43,15 +43,30 @@ float UAttributeComponent::GetHunterStaminaPercent()
 
 void UAttributeComponent::ReceiveDamage(float DamageAmount)
 {
+	RegainTimeRemain = RegainTime;
+
 	Hp = FMath::Clamp(Hp - DamageAmount, 0.f, MaxHp);
 	RegainHp = FMath::Clamp(Hp + RegainAmount, Hp, MaxHp);
-	RegainTimeRemain = RegainTime;
+}
+
+void UAttributeComponent::ConsumeStamina(float ConsumeAmount)
+{
+	Stamina = FMath::Clamp(Stamina - ConsumeAmount, 0, MaxStamina);
 }
 
 void UAttributeComponent::Heal(float HealAmount)
 {
 	Hp = FMath::Clamp(Hp + HealAmount, 0.f, MaxHp);
 	RegainHp = FMath::Clamp(RegainHp, Hp, MaxHp);
+}
+
+void UAttributeComponent::Regain()
+{
+	float Gap = RegainHp - Hp;
+	
+	if (FMath::IsNearlyZero(Gap)) return;
+
+	Hp = FMath::Clamp(Hp + MaxHp / 10.f, 0.f, RegainHp);
 }
 
 bool UAttributeComponent::GetIsDeath()
@@ -71,6 +86,13 @@ void UAttributeComponent::BeginPlay()
 void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	RegainTimeRemain -= DeltaTime;
+
+	if (RegainTime < 0.f)
+	{
+		RegainHp = Hp;
+	}
 
 }
 

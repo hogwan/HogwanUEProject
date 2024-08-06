@@ -76,13 +76,17 @@ void AHunter::BeginPlay()
 	EquipWeapon(MeleeWeaponsInPocket[0]);
 	EquipWeapon(RangedWeaponsInPocket[0]);
 	UseItemSlotUpdate();
+	
+	StatusUpdate();
+	GetAttribute()->Hp = GetAttribute()->MaxHp;
+	GetAttribute()->Stamina = GetAttribute()->MaxStamina;
 }
 
 void AHunter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	TraceLockOnTarget(DeltaTime);
-	RegainTimeUpdate(DeltaTime);
+	StaminaUpdate(DeltaTime);
 	UpdateOverlay();
 }
 
@@ -228,12 +232,18 @@ void AHunter::Look(const FInputActionValue& Value)
 
 void AHunter::Run(const FInputActionValue& Value)
 {
+	if (bExhaust) return;
+
 	bIsRun = true;
    	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
 
 void AHunter::Dodge(const FInputActionValue& Value)
 {
+	if (bExhaust) return;
+
+	ConsumeStaminaAmount = BaseConsumeStamina;
+
 	if (!bIsRun)
 	{
 		if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
@@ -380,6 +390,8 @@ void AHunter::LockOn(const FInputActionValue& Value)
 
 void AHunter::Attack(const FInputActionValue& Value)
 {
+	if (bExhaust) return;
+
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -391,6 +403,7 @@ void AHunter::Attack(const FInputActionValue& Value)
 			SetActorRotation(TakeDownRot);
 
 			CurActionState = ECharacterActionState::ECAS_TakeDown;
+			ConsumeStaminaAmount = BaseConsumeStamina * 0.5f;
 
 			switch (EquippedMeleeWeapon->Weapon)
 			{
@@ -457,10 +470,12 @@ void AHunter::Attack(const FInputActionValue& Value)
 		if (AnimInstance && EquippedMeleeWeapon)
 		{
 			EquippedMeleeWeapon->HitType = EHitType::EHT_Light;
+			ConsumeStaminaAmount = BaseConsumeStamina;
 
 			if (EquippedMeleeWeapon->Weapon == EWeapon::EW_GreatSword_Deformed)
 			{
 				EquippedMeleeWeapon->HitType = EHitType::EHT_Heavy;
+				ConsumeStaminaAmount = BaseConsumeStamina * 1.5f;
 			}
 
 			CurActionState = ECharacterActionState::ECAS_Attacking;
@@ -479,6 +494,7 @@ void AHunter::Attack(const FInputActionValue& Value)
 
 				AnimInstance->Montage_Play(MontageMap[MontageName]);
 
+
 			}
 			return;
 		}
@@ -494,6 +510,8 @@ void AHunter::Attack(const FInputActionValue& Value)
 
 void AHunter::ChargeAttack(const FInputActionValue& Value)
 {
+	if (bExhaust) return;
+
 	if (CurActionState == ECharacterActionState::ECAS_Unoccupied)
 	{
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -804,14 +822,6 @@ void AHunter::SetTakeDownInfo(AActor* Target, const FVector& Pos, const FRotator
 	TakeDownRot = Rot;
 }
 
-void AHunter::RegainTimeUpdate(float DeltaTime)
-{
-	Attribute->RegainTimeRemain -= DeltaTime;
-	if (Attribute->RegainTimeRemain < 0.f)
-	{
-		Attribute->RegainHp = Attribute->Hp;
-	}
-}
 
 void AHunter::UpdateOverlay()
 {
@@ -1387,5 +1397,53 @@ void AHunter::Heal()
 int AHunter::GetCurDamage()
 {
 	return EquippedMeleeWeapon->WeaponBaseDamage + EquippedMeleeWeapon->DamageScale * CurStatus.Strength;
+}
+
+void AHunter::StatusUpdate()
+{
+	GetAttribute()->MaxHp = BaseHp + VitalityScale * CurStatus.Vitality;
+	GetAttribute()->MaxStamina = BaseStamina + EnduranceScale * CurStatus.Endurance;
+	GetAttribute()->RegainAmount = GetAttribute()->MaxHp / 4.f;
+}
+
+void AHunter::StaminaUpdate(float DeltaTime)
+{
+	if (bExhaust)
+	{
+		AccExhaustTime -= DeltaTime;
+		
+		if (AccExhaustTime < 0.f)
+		{
+			bExhaust = false;
+			AccExhaustTime = ExhaustTime;
+
+			GetAttribute()->Stamina = 1.f;
+		}
+	}
+
+	if (FMath::IsNearlyZero(GetAttribute()->Stamina) && !bExhaust)
+	{
+		bExhaust = true;
+	}
+
+	if (CurActionState == ECharacterActionState::ECAS_Unoccupied && !bExhaust && !bIsRun)
+	{
+		GetAttribute()->Stamina = FMath::Clamp(GetAttribute()->Stamina + GetAttribute()->StaminaRecoverSpeed * DeltaTime, 0.f, GetAttribute()->MaxStamina);
+	}
+
+	if (bIsRun)
+	{
+		GetAttribute()->Stamina = FMath::Clamp(GetAttribute()->Stamina - GetAttribute()->StaminaRecoverSpeed * 0.3f * DeltaTime, 0.f, GetAttribute()->MaxStamina);
+		if (bExhaust)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 400.f;
+			bIsRun = false;
+		}
+	}
+}
+
+void AHunter::ConsumeStamina()
+{
+	GetAttribute()->ConsumeStamina(ConsumeStaminaAmount);
 }
 

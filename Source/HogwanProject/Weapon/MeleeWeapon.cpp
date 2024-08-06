@@ -7,6 +7,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Character/Monster/Monster.h"
+#include "Character/Hunter/Hunter.h"
+#include "ActorComponent/AttributeComponent.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -84,6 +86,14 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		if (Hit)
 		{
 			Hit->GetHit(HitResult.ImpactPoint, GetOwner(), HitType);
+		}
+
+		AHunter* Hunter = Cast<AHunter>(GetOwner());
+
+		if (Hunter)
+		{
+			Hunter->GetAttribute()->Regain();
+			Hunter->StatusUpdate();
 		}
 	}
 

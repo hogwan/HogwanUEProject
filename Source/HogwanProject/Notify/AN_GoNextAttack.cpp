@@ -13,6 +13,7 @@ void UAN_GoNextAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBas
 	if (Hunter)
 	{
 		if (Hunter->GetGoNextAttack() == false) return;
+		if (Hunter->bExhaust) return;
 
 		UAnimInstance* AnimInstance = MeshComp->GetAnimInstance();
 

@@ -13,9 +13,9 @@ struct FHunterStatus
 {
 	int Level = 1;
 
-	int Vitality = 10;
-	int Endurance = 10;
-	int Strength = 10;
+	int Vitality = 0;
+	int Endurance = 0;
+	int Strength = 0;
 };
 
 UCLASS()
@@ -196,7 +196,6 @@ private:
 public:
 	void SetOverlappingItem(class AItem* Item) { OverlappingItem = Item; }
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
-	void RegainTimeUpdate(float DeltaTime);
 	void UpdateOverlay();
 	class UBBOverlay* GetBBOverlay() { return BBOverlay; }
 
@@ -256,7 +255,43 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetCurDamage();
 
+	UFUNCTION(BlueprintCallable)
+	void StatusUpdate();
+
+	UPROPERTY(EditAnywhere)
+	float BaseHp = 400.f;
+
+	UPROPERTY(EditAnywhere)
+	float VitalityScale = 40.f;
+
+	UPROPERTY(EditAnywhere)
+	float BaseStamina = 250.f;
+
+	UPROPERTY(EditAnywhere)
+	float EnduranceScale = 25.f;
+
+	UPROPERTY(EditAnywhere)
 	float HealAmount = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float ExhaustTime = 2.f;
+
+	UPROPERTY()
+	float AccExhaustTime = 2.f;
+
+	UPROPERTY()
+	bool bExhaust = false;
+
+	UPROPERTY()
+	float BaseConsumeStamina = 50.f;
+
+	UPROPERTY()
+	float ConsumeStaminaAmount = 75.f;
+
+	void StaminaUpdate(float DeltaTime);
+
+	UFUNCTION(BlueprintCallable)
+	void ConsumeStamina();
 
 	UPROPERTY(EditAnywhere)
 	TMap<EWeapon, TSubclassOf<class AWeapon>> WeaponList;

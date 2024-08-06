@@ -18,6 +18,7 @@ void UANS_NextAttackCheck::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSeq
 	if (Hunter)
 	{
 		if (Hunter->GetGoNextAttack() == false) return;
+		if (Hunter->bExhaust) return;
 
 		UAnimInstance* AnimInstance = MeshComp->GetAnimInstance();
 

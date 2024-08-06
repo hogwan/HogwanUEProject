@@ -38,7 +38,13 @@ public:
 	void ReceiveDamage(float DamageAmount);
 
 	UFUNCTION(BlueprintCallable)
+	void ConsumeStamina(float ConsumeAmount);
+
+	UFUNCTION(BlueprintCallable)
 	void Heal(float HealAmount);
+
+	UFUNCTION(BlueprintCallable)
+	void Regain();
 
 	UFUNCTION(BlueprintCallable)
 	bool GetIsDeath();
@@ -80,5 +86,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RegainTime = 5.f;
+
+	UPROPERTY(EditAnywhere)
+	float StaminaRecoverSpeed = 100.f;
+
+	
 		
 };

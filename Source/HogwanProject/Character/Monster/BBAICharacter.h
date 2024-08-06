@@ -93,11 +93,7 @@ public:
 	float RotateSpeed = 5.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
-	float BasicDamage = 10.f;
-
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
-	float Damage = BasicDamage;
+	float Damage = 80.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	EDir MonsterDir = EDir::None;
