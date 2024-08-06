@@ -8,6 +8,7 @@
 #include "HUD/BBHUD.h"
 #include "HUD/BBOverlay.h"
 #include "Components/TextBlock.h"
+#include "NiagaraComponent.h"
 
 // Sets default values
 AItem::AItem()
@@ -18,8 +19,8 @@ AItem::AItem()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	SetRootComponent(Sphere);
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
-	Mesh->SetupAttachment(GetRootComponent());
+	Effect = CreateDefaultSubobject<UNiagaraComponent>("Effect");
+	Effect->SetupAttachment(GetRootComponent());
 }
 
 

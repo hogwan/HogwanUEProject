@@ -46,7 +46,7 @@ void UBTTaskNode_Serpmare_Idle::TickTask(UBehaviorTreeComponent& _OwnerComp, uin
 
 	if (Character->PerceiveHunter)
 	{
-		GetHunter()->GetBBOverlay()->BossName->SetText(FText::FromString(Character->MonsterName));
+  		GetHunter()->GetBBOverlay()->BossName->SetText(FText::FromString(Character->MonsterName));
 		GetHunter()->GetBBOverlay()->BossHealthBar->SetPercent(Character->GetAttribute()->GetHealthPercent());
 		GetHunter()->GetBBOverlay()->BossName->SetVisibility(ESlateVisibility::Visible);
 		GetHunter()->GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Visible);

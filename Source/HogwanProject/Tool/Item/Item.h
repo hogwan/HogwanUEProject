@@ -15,9 +15,6 @@ class HOGWANPROJECT_API AItem : public AActor
 public:	
 	AItem();
 	virtual void Tick(float DeltaTime) override;
-	
-	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* Sphere;
@@ -49,6 +46,9 @@ private:
 	int ItemNum = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FString ItemExplain = "";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UNiagaraComponent* Effect;
 
 	
 };

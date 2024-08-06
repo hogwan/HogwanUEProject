@@ -1329,11 +1329,24 @@ void AHunter::SpawnThrowObject()
 	FRotator Rotation = GetActorRotation();
 	FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
+	AThrowObject* Obj = nullptr;
+
 	switch (Item)
 	{
 	case EItem::FireBottle:
 	{
-		AThrowObject* Obj = GetWorld()->SpawnActor<AThrowObject>(GameIns->ThrowObjects[TEXT("FireBottle")], SpawnTrans);
+		Obj = GetWorld()->SpawnActor<AThrowObject>(GameIns->ThrowObjects[TEXT("FireBottle")], SpawnTrans);
+		break;
+	}
+	case EItem::Stone:
+		Obj = GetWorld()->SpawnActor<AThrowObject>(GameIns->ThrowObjects[TEXT("Stone")], SpawnTrans);
+		break;
+	default:
+		break;
+	}
+
+	if (Obj != nullptr)
+	{
 		Obj->SetActorRotation(YawRotation);
 		Obj->ProjectileMovementComponent->Velocity = GetActorForwardVector() * 400.f + GetActorUpVector() * 400.f;
 		if (LockOnTarget)
@@ -1341,12 +1354,6 @@ void AHunter::SpawnThrowObject()
 			Obj->ProjectileMovementComponent->HomingTargetComponent = LockOnTarget->GetRootComponent();
 		}
 		UseItem();
-		break;
-	}
-	case EItem::Stone:
-		break;
-	default:
-		break;
 	}
 }
 

@@ -34,6 +34,12 @@ EBTNodeResult::Type UBTTaskNode_Ranged_Patrol::ExecuteTask(UBehaviorTreeComponen
 
 	int PatrolSize = Character->PatrolPoints.Num();
 
+	if (PatrolSize == 0)
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
+		return EBTNodeResult::Type::Failed;
+	}
+
 	MoveToPoint(_OwnerComp, Character->PatrolPoints[Character->PatrolNum % PatrolSize]);
 
 	return EBTNodeResult::InProgress;
