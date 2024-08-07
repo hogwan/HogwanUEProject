@@ -60,7 +60,7 @@ void UBBQuickSlot::WidgetUpdate()
 
 	for (int i = 0; i < Inven->QuickSlot.Num(); i++)
 	{
-		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(GreedSlots->GetAllChildren()[i]);
+		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(GridSlots->GetAllChildren()[i]);
 		if (Inven->QuickSlot[i] != nullptr)
 		{
 			if (Inven->QuickSlot[i]->Number == 0)

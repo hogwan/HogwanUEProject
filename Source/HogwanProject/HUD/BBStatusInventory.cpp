@@ -80,7 +80,7 @@ void UBBStatusInventory::WidgetUpdate()
 
 	for (int i = 0; i < Inven->Inventory.Num(); i++)
 	{
-		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(GreedSlots->GetAllChildren()[i]);
+		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(GridSlots->GetAllChildren()[i]);
 		if (Inven->Inventory[i].IsEmpty == false)
 		{
 			InvenSlot->Number->SetText(FText::FromString(FString::FromInt(Inven->Inventory[i].Number)));

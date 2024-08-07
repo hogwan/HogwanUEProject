@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HUD/InputWidget.h"
+#include "HUD/GridInputWidget.h"
 #include "Global/BBEnum.h"
 #include "BBQuickSlot.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class HOGWANPROJECT_API UBBQuickSlot : public UInputWidget
+class HOGWANPROJECT_API UBBQuickSlot : public UGridInputWidget
 {
 	GENERATED_BODY()
 public:
