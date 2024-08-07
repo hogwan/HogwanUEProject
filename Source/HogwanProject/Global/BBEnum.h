@@ -113,3 +113,12 @@ enum class EItemType : uint8
 	RightHandWeapon,
 	LeftHandWeapon,
 };
+
+UENUM(BlueprintType)
+enum class EInputMode : uint8
+{
+	Play,
+	QuickSlot,
+	StatusInventory,
+	LevelUp,
+};

@@ -15,82 +15,10 @@
 
 void UBBQuickSlot::Init()
 {
-	Row = 0;
-	Column = 0;
+	RowSize = 3;
+	ColumnSize = 3;
 
-	for (UWidget* IvSlot : QuickSlots->GetAllChildren())
-	{
-		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(IvSlot);
-
-		InvenSlot->Selected->SetRenderOpacity(0.f);
-	}
-
-	Focus(Row, Column);
-}
-
-void UBBQuickSlot::MoveRight()
-{
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	AHunter* Hunter = GameIns->Hunter;
-
-	UInventoryComponent* Inven = Hunter->GetInventory();
-
-	if (8 == 3 * Row + Column) return;
-
-	FocusEnd(Row, Column);
-
-	AddColumn();
-
-	Focus(Row, Column);
-
-}
-
-void UBBQuickSlot::MoveLeft()
-{
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	AHunter* Hunter = GameIns->Hunter;
-
-	UInventoryComponent* Inven = Hunter->GetInventory();
-
-	if (0 == 3 * Row + Column) return;
-
-	FocusEnd(Row, Column);
-
-	SubColumn();
-
-	Focus(Row, Column);
-}
-
-void UBBQuickSlot::MoveUp()
-{
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	AHunter* Hunter = GameIns->Hunter;
-
-	UInventoryComponent* Inven = Hunter->GetInventory();
-
-	if (0 == Row) return;
-
-	FocusEnd(Row, Column);
-
-	SubRow();
-
-	Focus(Row, Column);
-}
-
-void UBBQuickSlot::MoveDown()
-{
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	AHunter* Hunter = GameIns->Hunter;
-
-	UInventoryComponent* Inven = Hunter->GetInventory();
-
-	if (2 == Row) return;
-
-	FocusEnd(Row, Column);
-
-	AddRow();
-
-	Focus(Row, Column);
+	Super::Init();
 }
 
 void UBBQuickSlot::Enter()
@@ -119,52 +47,11 @@ void UBBQuickSlot::Enter()
 	BBHUD->QuickSlotData.SelectedQuickSlotRow = Row;
 
 	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
-	PlayerController->OpenStatusInventory();
+	PlayerController->OpenWidget(EInputMode::StatusInventory);
 }
 
-void UBBQuickSlot::Focus(int _Row, int _Column)
-{
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[3 * _Row + _Column]);
-	InvenSlot->Selected->SetRenderOpacity(1.f);
-}
 
-void UBBQuickSlot::FocusEnd(int _Row, int _Column)
-{
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[3 * _Row + _Column]);
-	InvenSlot->Selected->SetRenderOpacity(0.f);
-}
-
-void UBBQuickSlot::AddColumn()
-{
-	Column++;
-	if (Column >= 3)
-	{
-		Row++;
-		Column -= 3;
-	}
-}
-
-void UBBQuickSlot::SubColumn()
-{
-	Column--;
-	if (Column <= -1)
-	{
-		Row--;
-		Column += 3;
-	}
-}
-
-void UBBQuickSlot::AddRow()
-{
-	Row++;
-}
-
-void UBBQuickSlot::SubRow()
-{
-	Row--;
-}
-
-void UBBQuickSlot::UpdateQuickSlot()
+void UBBQuickSlot::WidgetUpdate()
 {
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
@@ -173,7 +60,7 @@ void UBBQuickSlot::UpdateQuickSlot()
 
 	for (int i = 0; i < Inven->QuickSlot.Num(); i++)
 	{
-		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[i]);
+		UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(GreedSlots->GetAllChildren()[i]);
 		if (Inven->QuickSlot[i] != nullptr)
 		{
 			if (Inven->QuickSlot[i]->Number == 0)
@@ -198,50 +85,4 @@ void UBBQuickSlot::UpdateQuickSlot()
 	}
 
 	Hunter->WeaponSlotUpdate();
-}
-
-void UBBQuickSlot::CloseQuickSlot()
-{
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
-	PlayerController->CloseQuickSlot();
-}
-
-void UBBQuickSlot::SetItemTexture(EItem _Item, int _Index)
-{
-	UBBInventorySlot* InvenSlot = Cast<UBBInventorySlot>(QuickSlots->GetAllChildren()[_Index]);
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-
-	switch (_Item)
-	{
-	case EItem::None:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, nullptr);
-		break;
-	case EItem::GreatSword:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["GreatSword"]);
-		break;
-	case EItem::Katana:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["Katana"]);
-		break;
-	case EItem::SawCleaver:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["SawCleaver"]);
-		break;
-	case EItem::HunterPistol:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["HunterPistol"]);
-		break;
-	case EItem::Bullet:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["Bullet"]);
-		break;
-	case EItem::FireBottle:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["FireBottle"]);
-		break;
-	case EItem::Potion:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["Potion"]);
-		break;
-	case EItem::Stone:
-		UWidgetBlueprintLibrary::SetBrushResourceToTexture(InvenSlot->Item->Brush, GameIns->TextureMap["Stone"]);
-		break;
-	default:
-		break;
-	}
 }

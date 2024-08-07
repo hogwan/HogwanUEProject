@@ -52,6 +52,8 @@ private:
 
 
 public:
+	TArray<UUserWidget*> AllInputTypeUI;
+
 	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
 	FORCEINLINE class UBBStatusInventory* GetBBStatusInventory() const { return BBStatusInventory; }
 	FORCEINLINE class UBBQuickSlot* GetBBQuickSlot() const { return BBQuickSlot; }

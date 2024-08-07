@@ -108,6 +108,7 @@ public:
 	FORCEINLINE bool GetIsOpenItemExplain() { return IsOpenItemExplain; }
 	FORCEINLINE void SetIsOpenItemExplain(bool _Set){ IsOpenItemExplain = _Set; }
 	
+	void PushDoor();
 protected:
 	virtual void BeginPlay() override;
 

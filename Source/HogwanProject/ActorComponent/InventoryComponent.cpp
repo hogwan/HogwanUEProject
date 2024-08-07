@@ -67,8 +67,8 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 		if (SlotItem == Item)
 		{
 			Inventory[i].Number += ItemNum;
-			BBHUD->GetBBStatusInventory()->UpdateInventory();
-			BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+			BBHUD->GetBBStatusInventory()->WidgetUpdate();
+			BBHUD->GetBBQuickSlot()->WidgetUpdate();
 			return;
 		}
 
@@ -86,8 +86,8 @@ void UInventoryComponent::PickUpItem(AItem* _PickUpItem)
 		}
 	}
 
-	BBHUD->GetBBStatusInventory()->UpdateInventory();
-	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+	BBHUD->GetBBStatusInventory()->WidgetUpdate();
+	BBHUD->GetBBQuickSlot()->WidgetUpdate();
 }
 
 void UInventoryComponent::UseItem(int InventoryIndex)
@@ -115,8 +115,8 @@ void UInventoryComponent::UseItem(int InventoryIndex)
 	Hunter->PotionBulletUpdate();
 	Hunter->UseItemSlotUpdate();
 
-	BBHUD->GetBBStatusInventory()->UpdateInventory();
-	BBHUD->GetBBQuickSlot()->UpdateQuickSlot();
+	BBHUD->GetBBStatusInventory()->WidgetUpdate();
+	BBHUD->GetBBQuickSlot()->WidgetUpdate();
 }
 
 

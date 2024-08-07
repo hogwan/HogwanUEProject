@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Global/BBEnum.h"
 #include "BBPlayerController.generated.h"
 
 /**
@@ -18,25 +19,22 @@ class HOGWANPROJECT_API ABBPlayerController : public APlayerController
 	
 
 public:
-	UPROPERTY(EditAnywhere, Category = Input)
-	class UInputMappingContext* PlayerInputContext;
+	UPROPERTY(EditAnywhere)
+	TMap<EInputMode, class UInputWidget*> AllInputTypeUI;
 
 	UPROPERTY(EditAnywhere, Category = Input)
-	class UInputMappingContext* UIStatusInventoryInputContext;
-
-	UPROPERTY(EditAnywhere, Category = Input)
-	class UInputMappingContext* UIQuickSlotInputContext;
+	TMap<EInputMode,class UInputMappingContext*> InputMappingContextArrays;
 
 	UFUNCTION(BlueprintCallable)
-	void OpenStatusInventory();
+	void SetInputMode(EInputMode _InputMode);
 
 	UFUNCTION(BlueprintCallable)
-	void OpenQuickSlot();
+	void OpenWidget(EInputMode _InputMode);
 
 	UFUNCTION(BlueprintCallable)
-	void CloseStatusInventory();
+	void CloseWidget();
 
-	UFUNCTION(BlueprintCallable)
-	void CloseQuickSlot();
+	UPROPERTY(VisibleAnywhere)
+	EInputMode CurInputMode = EInputMode::Play;
 
 };

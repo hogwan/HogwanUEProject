@@ -8,6 +8,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/SphereComponent.h"
 #include "ActorComponent/InventoryComponent.h"
 
 ARangedWeapon::ARangedWeapon()
@@ -30,6 +31,7 @@ void ARangedWeapon::SpawnBullet(AActor* Target)
 	ABullet* NewBullet = World->SpawnActor<ABullet>(BP_Bullet, SpawnTrans);
 
 	if (nullptr == NewBullet) return;
+
 	NewBullet->SetOwner(this);
 	NewBullet->Damage = WeaponBaseDamage;
 
@@ -67,6 +69,8 @@ void ARangedWeapon::SpawnBullet(AActor* Target)
 		}
 		Hunter->PotionBulletUpdate();
 	}
+
+	NewBullet->Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 void ARangedWeapon::BeginPlay()

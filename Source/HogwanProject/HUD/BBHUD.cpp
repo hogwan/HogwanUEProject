@@ -5,6 +5,7 @@
 #include "HUD/BBOverlay.h"
 #include "HUD/BBStatusInventory.h"
 #include "HUD/BBQuickSlot.h"
+#include "Character/Hunter/BBPlayerController.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
 void ABBHUD::BeginPlay()
@@ -29,6 +30,9 @@ void ABBHUD::BeginPlay()
 			BBStatusInventory = CreateWidget<UBBStatusInventory>(Controller, BBStatusInventoryClass);
 			BBStatusInventory->AddToViewport();
 			BBStatusInventory->SetVisibility(ESlateVisibility::Hidden);
+
+			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
+			BBController->AllInputTypeUI.Add(TPair<EInputMode,UInputWidget*>(EInputMode::StatusInventory, BBStatusInventory));
 		}
 	}
 
@@ -39,9 +43,9 @@ void ABBHUD::BeginPlay()
 			BBQuickSlot = CreateWidget<UBBQuickSlot>(Controller, BBQuickSlotClass);
 			BBQuickSlot->AddToViewport();
 			BBQuickSlot->SetVisibility(ESlateVisibility::Hidden);
+
+			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
+			BBController->AllInputTypeUI.Add(TPair<EInputMode, UInputWidget*>(EInputMode::QuickSlot, BBQuickSlot));
 		}
 	}
-
-	BBStatusInventory->Init();
-
 }

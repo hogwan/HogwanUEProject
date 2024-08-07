@@ -648,9 +648,9 @@ void AHunter::OpenStatusInventory(const FInputActionValue& Value)
 
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	ABBHUD* BBHUD = GameIns->HUD;
-	BBHUD->GetBBStatusInventory()->UpdateInventory();
+	BBHUD->GetBBStatusInventory()->WidgetUpdate();
 
-	BBController->OpenStatusInventory();
+	BBController->OpenWidget(EInputMode::StatusInventory);
 }
 
 void AHunter::OpenQuickSlot(const FInputActionValue& Value)
@@ -658,7 +658,19 @@ void AHunter::OpenQuickSlot(const FInputActionValue& Value)
 	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
 
 	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
-	BBController->OpenQuickSlot();
+	BBController->OpenWidget(EInputMode::QuickSlot);
+}
+
+void AHunter::PushDoor()
+{
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("PushDoor")]);
+		CurActionState = ECharacterActionState::ECAS_PushDoor;
+	}
 }
 
 
@@ -1029,7 +1041,7 @@ void AHunter::EquipWeapon(EWeapon Weapon)
 
 		EquippedMeleeWeapon = Cast<AMeleeWeapon>(SpawnWeapon);
 		EquippedMeleeWeapon->AttachToComponent(GetMesh(), AttachRules, TEXT("RightHandSocket"));
-
+		
 		SpawnWeaponSheath = GetWorld()->SpawnActor<AWeapon>(WeaponList[EWeapon::EW_Katana_Sheath], SpawnTrans);
 		SpawnWeaponSheath->AttachToComponent(GetMesh(), AttachRules, TEXT("KatanaSheathSocket"));
 

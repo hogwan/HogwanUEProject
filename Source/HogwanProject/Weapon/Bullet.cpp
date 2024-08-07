@@ -19,6 +19,8 @@ ABullet::ABullet()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Box"));
 	SetRootComponent(Sphere);
 
+	Sphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	Flying = CreateDefaultSubobject<UNiagaraComponent>("Flying");
 	Flying->SetupAttachment(GetRootComponent());
 }
@@ -41,6 +43,7 @@ void ABullet::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		ABaseCharacter* Character = Cast<ABaseCharacter>(OtherActor);
 		if (Character)
 		{
+			AActor* Actor = GetOwner()->GetOwner();
 			UGameplayStatics::ApplyDamage(Character, Damage, GetOwner()->GetOwner()->GetInstigatorController(), this, UDamageType::StaticClass());
 		}
 

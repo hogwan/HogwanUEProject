@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "HUD/InputWidget.h"
 #include "Global/BBEnum.h"
 #include "BBStatusInventory.generated.h"
 
@@ -11,11 +11,13 @@
  * 
  */
 UCLASS()
-class HOGWANPROJECT_API UBBStatusInventory : public UUserWidget
+class HOGWANPROJECT_API UBBStatusInventory : public UInputWidget
 {
 	GENERATED_BODY()
 
 public:
+	UBBStatusInventory();
+
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* LevelStat;
 
@@ -37,47 +39,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* DamageStat;
 
-	UPROPERTY(meta = (BindWidget))
-	class UUniformGridPanel* InventorySlots;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int Row;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int Column;
-
-	UFUNCTION(BlueprintCallable)
-	void Init();
-
-	UFUNCTION(BlueprintCallable)
-	void MoveRight();
-
-	UFUNCTION(BlueprintCallable)
-	void MoveLeft();
-
-	UFUNCTION(BlueprintCallable)
-	void MoveUp();
-
-	UFUNCTION(BlueprintCallable)
-	void MoveDown();
-
-	UFUNCTION(BlueprintCallable)
-	void Enter();
-
-	UFUNCTION(BlueprintCallable)
-	void Focus(int _Row, int _Column);
-
-	UFUNCTION(BlueprintCallable)
-	void FocusEnd(int _Row, int _Column);
-	
-	UFUNCTION(BlueprintCallable)
-	void CloseStatusInventory();
-
-	void AddColumn();
-	void SubColumn();
-	void AddRow();
-	void SubRow();
-
-	void UpdateInventory();
-	void SetItemTexture(EItem _Item, int _Index);
+	void Init() override;
+	void Enter() override;
+	void WidgetUpdate() override;
+	void CloseWidget() override;
 };
