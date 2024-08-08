@@ -12,6 +12,7 @@
 struct FHunterStatus
 {
 	int Level = 1;
+	int Gold = 0;
 
 	int Vitality = 0;
 	int Endurance = 0;
@@ -254,7 +255,7 @@ public:
 	void Heal();
 
 	UFUNCTION(BlueprintCallable)
-	int GetCurDamage();
+	int GetCurDamage(int _Strength);
 
 	UFUNCTION(BlueprintCallable)
 	void StatusUpdate();
