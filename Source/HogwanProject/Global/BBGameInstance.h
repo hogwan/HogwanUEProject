@@ -7,6 +7,24 @@
 #include "Global/BBEnum.h"
 #include "BBGameInstance.generated.h"
 
+USTRUCT(BlueprintType)
+struct FSpawnInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	FVector SpawnPos;
+
+	UPROPERTY(EditAnywhere)
+	FRotator SpawnRot;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABBAICharacter> SpawnClass;
+
+	UPROPERTY(EditAnywhere)
+	TArray<FVector> PatrolPoints;
+};
+
 /**
  * 
  */
@@ -39,5 +57,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TMap<EItem, FString> ItemExplain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FSpawnInfo> AllSpawnInfo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class ABBAICharacter*> AllMonsters;
+
+	UFUNCTION(BlueprintCallable)
+	void ResetAllMonster();
 
 };

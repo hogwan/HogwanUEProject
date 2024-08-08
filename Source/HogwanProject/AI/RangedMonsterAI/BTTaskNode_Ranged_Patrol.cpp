@@ -55,7 +55,7 @@ void UBTTaskNode_Ranged_Patrol::TickTask(UBehaviorTreeComponent& _OwnerComp, uin
 	if (!Monster || !MonsterController) return;
 
 	int PatrolSize = Monster->PatrolPoints.Num();
-	FVector TargetLocation = Monster->PatrolPoints[Monster->PatrolNum % PatrolSize]->GetActorLocation();
+	FVector TargetLocation = Monster->PatrolPoints[Monster->PatrolNum % PatrolSize];
 	TargetLocation.Z = 0.f;
 
 	FVector MonsterLocation = Monster->GetActorLocation();

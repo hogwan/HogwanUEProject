@@ -108,7 +108,7 @@ void UBBStatusInventory::WidgetUpdate()
 	int HunterCurHp = Hunter->GetAttribute()->Hp;
 	int HunterMaxStamina = Hunter->GetAttribute()->MaxStamina;
 	int HunterCurStamina = Hunter->GetAttribute()->Stamina;
-	int HunterDamage = Hunter->GetCurDamage();
+	int HunterDamage = Hunter->GetCurDamage(Hunter->CurStatus.Strength);
 
 	FString StrHPStat = FString::Printf(TEXT("%d / %d"), HunterCurHp, HunterMaxHp);
 	FString StrStaminaStat = FString::Printf(TEXT("%d / %d"), HunterCurStamina, HunterMaxStamina);

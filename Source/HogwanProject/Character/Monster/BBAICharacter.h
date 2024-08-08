@@ -31,6 +31,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	EHitType HitType = EHitType::EHT_Light;
+
+	UPROPERTY(EditAnywhere)
+	bool EditMode = true;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	float IdleTime = 3.f;
@@ -102,7 +105,7 @@ public:
 	EToughness Toughness = EToughness::None;
 
 	UPROPERTY(EditInstanceOnly)
-	TArray<AActor*> PatrolPoints;
+	TArray<FVector> PatrolPoints;
 
 	UPROPERTY(BlueprintReadWrite)
 	int PatrolNum = 0;

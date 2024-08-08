@@ -30,4 +30,6 @@ enum class ECharacterActionState : uint8
 	ECAS_Throw,
 	ECAS_Drink,
 	ECAS_PushDoor,
+	ECAS_TurnOn,
+	ECAS_Sit,
 };

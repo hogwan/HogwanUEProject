@@ -109,7 +109,18 @@ public:
 	FORCEINLINE bool GetIsOpenItemExplain() { return IsOpenItemExplain; }
 	FORCEINLINE void SetIsOpenItemExplain(bool _Set){ IsOpenItemExplain = _Set; }
 	
+	UFUNCTION(BlueprintCallable)
 	void PushDoor();
+	UFUNCTION(BlueprintCallable)
+	void TurnOnLantern();
+	UFUNCTION(BlueprintCallable)
+	void LanternOn();
+	UFUNCTION(BlueprintCallable)
+	void SitComplete();
+	UFUNCTION(BlueprintCallable)
+	void SitDown();
+	UFUNCTION(BlueprintCallable)
+	void StandUp();
 protected:
 	virtual void BeginPlay() override;
 

@@ -33,7 +33,7 @@ EBTNodeResult::Type UBTTaskNode_Serpmare_Wait::ExecuteTask(UBehaviorTreeComponen
 
 	for (int i = 1; i < Character->PatrolPoints.Num(); i++)
 	{
-		FVector PointLocation = Character->PatrolPoints[i]->GetActorLocation();
+		FVector PointLocation = Character->PatrolPoints[i];
 		FVector HunterLocation = GetHunter()->GetActorLocation();
 		PointLocation.Z = 0.f;
 		HunterLocation.Z = 0.f;
@@ -47,7 +47,7 @@ EBTNodeResult::Type UBTTaskNode_Serpmare_Wait::ExecuteTask(UBehaviorTreeComponen
 		}
 	}
 
-	Character->SetActorLocation(Character->PatrolPoints[MaxIndex]->GetActorLocation());
+	Character->SetActorLocation(Character->PatrolPoints[MaxIndex]);
 
 
 	return EBTNodeResult::InProgress;

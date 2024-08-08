@@ -30,6 +30,7 @@
 #include "HUD/ItemExplain.h"
 #include "Components/Image.h"
 #include "Tool/InteractObject.h"
+#include "Tool/Lantern/Lantern.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -670,6 +671,67 @@ void AHunter::PushDoor()
 	{
 		AnimInstance->Montage_Play(MontageMap[TEXT("PushDoor")]);
 		CurActionState = ECharacterActionState::ECAS_PushDoor;
+	}
+}
+
+void AHunter::TurnOnLantern()
+{
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+	
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("TurnOnLantern")]);
+		CurActionState = ECharacterActionState::ECAS_TurnOn;
+	}
+}
+
+void AHunter::LanternOn()
+{
+	ALantern* Lantern = Cast<ALantern>(OverlappingObject);
+
+	if (Lantern)
+	{
+		Lantern->TurnOn();
+	}
+}
+
+void AHunter::SitComplete()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("Sitting")]);
+	}
+
+	ABBPlayerController* PlayerController = Cast<ABBPlayerController>(GetController());
+	if (PlayerController)
+	{
+		PlayerController->OpenWidget(EInputMode::LevelUp);
+	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	GameIns->ResetAllMonster();
+}
+
+void AHunter::SitDown()
+{
+	if (CurActionState != ECharacterActionState::ECAS_Unoccupied) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("StandToSit")]);
+		CurActionState = ECharacterActionState::ECAS_Sit;
+	}
+}
+
+void AHunter::StandUp()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("SitToStand")]);
 	}
 }
 

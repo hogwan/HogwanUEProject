@@ -145,12 +145,12 @@ void UBBBTTaskNode::MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float Succe
 	Controller->MoveToActor(GetHunter(), SuccessRange);
 }
 
-void UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, AActor* TargetLocation, float SuccessRange)
+void UBBBTTaskNode::MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange)
 {
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
 	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
-	Controller->MoveToActor(TargetLocation, SuccessRange);
+	Controller->MoveToLocation(TargetLocation, SuccessRange);
 
 }
 

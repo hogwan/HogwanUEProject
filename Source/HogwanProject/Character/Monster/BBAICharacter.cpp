@@ -34,6 +34,8 @@ void ABBAICharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (EditMode) Destroy();
+
 	DeathCheck();
 
 	if (PerceiveHunter && !IsHealthWidgetOn)

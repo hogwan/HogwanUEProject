@@ -8,6 +8,7 @@
 #include "Character/Hunter/Hunter.h"
 #include "Global/BBGameInstance.h"
 #include "ActorComponent/AttributeComponent.h"
+#include "Character/Hunter/BBPlayerController.h"
 
 void UBBLevelUpUI::Init()
 {
@@ -27,6 +28,12 @@ void UBBLevelUpUI::Init()
 	ExpectStrengthData = Hunter->CurStatus.Strength;
 	ExpectGoldData = Hunter->CurStatus.Gold;
 
+	CurIndex = 0;
+	Focus(CurIndex);
+	FocusEnd(1);
+	FocusEnd(2);
+
+	StatusDataUpdate();
 	WidgetUpdate();
 }
 
@@ -34,8 +41,8 @@ void UBBLevelUpUI::WidgetUpdate()
 {
 	ExpectLevel->SetText(FText::FromString(FString::FromInt(ExpectLevelData)));
 	ExpectGold->SetText(FText::FromString(FString::FromInt(ExpectGoldData)));
-	ExpectHP->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"),Hunter->GetAttribute()->Hp, ExpectHPData)));
-	ExpectStamina->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"), Hunter->GetAttribute()->Stamina,ExpectStaminaData)));
+	ExpectHP->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"),static_cast<int>(Hunter->GetAttribute()->Hp), ExpectHPData)));
+	ExpectStamina->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"), static_cast<int>(Hunter->GetAttribute()->Stamina),ExpectStaminaData)));
 	ExpectDamage->SetText(FText::FromString(FString::FromInt(ExpectDamageData)));
 	Vitality->ExpectStat->SetText(FText::FromString(FString::FromInt(ExpectVitalityData)));
 	Endurance->ExpectStat->SetText(FText::FromString(FString::FromInt(ExpectEnduranceData)));
@@ -55,37 +62,98 @@ void UBBLevelUpUI::Enter()
 	Hunter->CurStatus.Gold = ExpectGoldData;
 	Hunter->CurStatus.Vitality = ExpectVitalityData;
 	Hunter->CurStatus.Endurance = ExpectEnduranceData;
-	Hunter->CurStatus.Strength = ExpectStaminaData;
+	Hunter->CurStatus.Strength = ExpectStrengthData;
+	Hunter->StatusUpdate();
+
+	CloseWidget();
+}
+
+void UBBLevelUpUI::CloseWidget()
+{
+	Super::CloseWidget();
+
+	Hunter->StandUp();
 }
 
 void UBBLevelUpUI::MoveRight()
 {
+	if (ExpectGoldData < Cost) return;
+	ExpectGoldData -= Cost;
+
 	switch (CurIndex)
 	{
 	case 0:
-
-
-
+		ExpectVitalityData++;
+		break;
 	case 1:
+		ExpectEnduranceData++;
+		break;
 	case 2:
-
+		ExpectStrengthData++;
+		break;
 	}
 
-
+	ExpectLevelData++;
 	StatusDataUpdate();
 	WidgetUpdate();
 }
 
 void UBBLevelUpUI::MoveLeft()
 {
+	switch (CurIndex)
+	{
+	case 0:
+	{
+		if (ExpectVitalityData == 0 || ExpectVitalityData == Hunter->CurStatus.Vitality)
+		{
+			return;
+		}
+
+		ExpectVitalityData--;
+		break;
+	}
+	case 1:
+		if (ExpectEnduranceData == 0 || ExpectEnduranceData == Hunter->CurStatus.Endurance)
+		{
+			return;
+		}
+		ExpectEnduranceData--;
+		break;
+	case 2:
+		if (ExpectStrengthData == 0 || ExpectStrengthData == Hunter->CurStatus.Strength)
+		{
+			return;
+		}
+		ExpectStrengthData--;
+		break;
+	}
+
+	ExpectGoldData += Cost;
+	ExpectLevelData--;
+	StatusDataUpdate();
+	WidgetUpdate();
 }
 
 void UBBLevelUpUI::MoveUp()
 {
+	if (CurIndex == 0) return;
+
+	FocusEnd(CurIndex);
+
+	CurIndex--;
+
+	Focus(CurIndex);
 }
 
 void UBBLevelUpUI::MoveDown()
 {
+	if (CurIndex == 2) return;
+
+	FocusEnd(CurIndex);
+
+	CurIndex++;
+
+	Focus(CurIndex);
 }
 
 void UBBLevelUpUI::Focus(int Index)

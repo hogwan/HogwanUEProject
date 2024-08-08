@@ -41,6 +41,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UBBQuickSlot> BBQuickSlotClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UBBLevelUpUI> BBLevelUpUIClass;
+
 	UPROPERTY()
 	class UBBOverlay* BBOverlay;
 
@@ -49,6 +52,9 @@ private:
 
 	UPROPERTY()
 	class UBBQuickSlot* BBQuickSlot;
+
+	UPROPERTY()
+	class UBBLevelUpUI* BBLevelUpUI;
 
 
 public:

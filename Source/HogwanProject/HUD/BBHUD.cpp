@@ -5,6 +5,7 @@
 #include "HUD/BBOverlay.h"
 #include "HUD/BBStatusInventory.h"
 #include "HUD/BBQuickSlot.h"
+#include "HUD/BBLevelUpUI.h"
 #include "Character/Hunter/BBPlayerController.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 
@@ -46,6 +47,19 @@ void ABBHUD::BeginPlay()
 
 			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
 			BBController->AllInputTypeUI.Add(TPair<EInputMode, UInputWidget*>(EInputMode::QuickSlot, BBQuickSlot));
+		}
+	}
+
+	if (World)
+	{
+		if (Controller && BBLevelUpUIClass)
+		{
+			BBLevelUpUI = CreateWidget<UBBLevelUpUI>(Controller, BBLevelUpUIClass);
+			BBLevelUpUI->AddToViewport();
+			BBLevelUpUI->SetVisibility(ESlateVisibility::Hidden);
+
+			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
+			BBController->AllInputTypeUI.Add(TPair<EInputMode, UInputWidget*>(EInputMode::LevelUp, BBLevelUpUI));
 		}
 	}
 }

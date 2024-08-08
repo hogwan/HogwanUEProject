@@ -86,7 +86,7 @@ public:
 
 	void MoveToHunter(UBehaviorTreeComponent& _OwnerComp, float SuccessRange = 50.f);
 
-	void MoveToPoint(UBehaviorTreeComponent& _OwnerComp, AActor* TargetLocation, float SuccessRange = 50.f);
+	void MoveToPoint(UBehaviorTreeComponent& _OwnerComp, FVector TargetLocation, float SuccessRange = 50.f);
 
 	float GetDistanceToHunter(UBehaviorTreeComponent& _OwnerComp);
 

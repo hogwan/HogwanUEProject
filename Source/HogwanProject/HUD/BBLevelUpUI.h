@@ -53,16 +53,17 @@ public:
 	int ExpectStrengthData = 0;
 
 
-	virtual void Init();
-	virtual void WidgetUpdate();
+	void Init() override;
+	void WidgetUpdate() override;
 	void StatusDataUpdate();
 
-	virtual void Enter();
+	void Enter() override;
+	void CloseWidget() override;
 
-	virtual void MoveRight();
-	virtual void MoveLeft();
-	virtual void MoveUp();
-	virtual void MoveDown();
+	void MoveRight() override;
+	void MoveLeft() override;
+	void MoveUp() override;
+	void MoveDown() override;
 
 	void Focus(int Index);
 	void FocusEnd(int Index);
@@ -71,4 +72,7 @@ public:
 	class AHunter* Hunter = nullptr;
 
 	int CurIndex = 0;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int Cost = 100;
 };
