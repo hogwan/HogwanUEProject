@@ -89,7 +89,7 @@ void UAttributeComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	
 	RegainTimeRemain -= DeltaTime;
 
-	if (RegainTime < 0.f)
+	if (RegainTimeRemain < 0.f)
 	{
 		RegainHp = Hp;
 	}

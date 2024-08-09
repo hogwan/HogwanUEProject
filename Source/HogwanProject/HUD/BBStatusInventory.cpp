@@ -16,6 +16,7 @@
 #include "HUD/BBQuickSlot.h"
 #include "ActorComponent/AttributeComponent.h"
 #include "Weapon/MeleeWeapon.h"
+#include "Kismet/GameplayStatics.h"
 
 UBBStatusInventory::UBBStatusInventory()
 {
@@ -32,6 +33,8 @@ void UBBStatusInventory::Init()
 
 void UBBStatusInventory::Enter()
 {
+	Super::Enter();
+
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
 	ABBHUD* BBHUD = GameIns->HUD;
@@ -59,6 +62,14 @@ void UBBStatusInventory::Enter()
 			
 			Hunter->PotionBulletUpdate();
 			Hunter->UseItemSlotUpdate();
+
+			if (GameIns->SoundMap[TEXT("UIEnter")])
+			{
+				UGameplayStatics::PlaySound2D(
+					this,
+					GameIns->SoundMap[TEXT("UIEnter")]
+				);
+			}
 		}
 	}
 	else
@@ -68,11 +79,21 @@ void UBBStatusInventory::Enter()
 
 		Hunter->PotionBulletUpdate();
 		Hunter->UseItemSlotUpdate();
+
+		if (GameIns->SoundMap[TEXT("UIEnter")])
+		{
+			UGameplayStatics::PlaySound2D(
+				this,
+				GameIns->SoundMap[TEXT("UIEnter")]
+			);
+		}
 	}
 }
 
 void UBBStatusInventory::WidgetUpdate()
 {
+	Super::WidgetUpdate();
+
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
 
@@ -129,6 +150,12 @@ void UBBStatusInventory::CloseWidget()
 	if (QuickSlotData.IsQuickSlotSetting)
 	{
 		PlayerController->OpenWidget(EInputMode::QuickSlot);
+		QuickSlotData.IsQuickSlotSetting = false;
+
+		UGameplayStatics::PlaySound2D(
+			this,
+			GameIns->SoundMap["UIMenuClose"]
+		);
 	}
 	else
 	{

@@ -37,9 +37,6 @@ protected:
 	class UMotionWarpingComponent* MotionWarping;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
-	class USoundBase* HitSound;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
 	class UParticleSystem* HitParticles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")

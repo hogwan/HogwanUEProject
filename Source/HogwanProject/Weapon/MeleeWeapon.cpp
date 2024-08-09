@@ -9,6 +9,7 @@
 #include "Character/Monster/Monster.h"
 #include "Character/Hunter/Hunter.h"
 #include "ActorComponent/AttributeComponent.h"
+#include "Global/BBGameInstance.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -89,10 +90,18 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		}
 
 		AHunter* Hunter = Cast<AHunter>(GetOwner());
+		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 
 		if (Hunter)
 		{
 			Hunter->GetAttribute()->Regain();
+
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				GameIns->SoundMap[TEXT("Regain")],
+				Hunter->GetActorLocation()
+				);
+
 			Hunter->StatusUpdate();
 		}
 	}

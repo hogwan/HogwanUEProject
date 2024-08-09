@@ -10,6 +10,7 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 #include "HUD/ItemExplain.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AItem::AItem()
@@ -44,6 +45,14 @@ void AItem::Interact()
 		Hunter->UseItemSlotUpdate();
 		Hunter->PotionBulletUpdate();
 		Hunter->GetBBOverlay()->ItemExplain->SetVisibility(ESlateVisibility::Visible);
+
+		if (GameIns->SoundMap[TEXT("UIItemGet")])
+		{
+			UGameplayStatics::PlaySound2D(
+				this,
+				GameIns->SoundMap[TEXT("UIItemGet")]
+			);
+		}
 
 		Destroy();
 	}

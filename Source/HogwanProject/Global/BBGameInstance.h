@@ -59,6 +59,9 @@ public:
 	TMap<EItem, FString> ItemExplain;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, class USoundBase*> SoundMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FSpawnInfo> AllSpawnInfo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

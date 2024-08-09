@@ -18,6 +18,8 @@
 #include "Components/ProgressBar.h"
 #include "HUD/BBOverlay.h"
 #include "Components/TextBlock.h"
+#include "Global/BBGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 ABBAICharacter::ABBAICharacter()
 {
@@ -83,6 +85,15 @@ void ABBAICharacter::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitTy
 			{
 				AnimInst->Montage_Play(AnimInst->BackStunMontage);
 				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
+
+				UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+				
+				UGameplayStatics::PlaySoundAtLocation(
+					this,
+					GameIns->SoundMap[TEXT("Parry")],
+					GetActorLocation()
+				);
+
 				return;
 			}
 		}
@@ -94,6 +105,14 @@ void ABBAICharacter::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitTy
 				AnimInst->Montage_Play(AnimInst->FrontStunMontage);
 				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Unable));
 				Parriable = false;
+
+				UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+				UGameplayStatics::PlaySoundAtLocation(
+					this,
+					GameIns->SoundMap[TEXT("Parry")],
+					GetActorLocation()
+				);
+
 				return;
 			}
 		}
@@ -156,6 +175,9 @@ void ABBAICharacter::DeathCheck()
 			BBHUD->GetBBOverlay()->BossName->SetVisibility(ESlateVisibility::Hidden);
 			BBHUD->GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Hidden);
 		}
+
+		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+		GameIns->Hunter->CurStatus.Gold += DropGold;
 	}
 }
 

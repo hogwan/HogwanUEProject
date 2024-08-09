@@ -31,6 +31,7 @@
 #include "Components/Image.h"
 #include "Tool/InteractObject.h"
 #include "Tool/Lantern/Lantern.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -81,6 +82,7 @@ void AHunter::BeginPlay()
 	
 	StatusUpdate();
 	GetAttribute()->Hp = GetAttribute()->MaxHp;
+	GetAttribute()->RegainHp = GetAttribute()->MaxHp;
 	GetAttribute()->Stamina = GetAttribute()->MaxStamina;
 }
 
@@ -89,6 +91,7 @@ void AHunter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	TraceLockOnTarget(DeltaTime);
 	StaminaUpdate(DeltaTime);
+	DisplayGoldUpdate(DeltaTime);
 	UpdateOverlay();
 }
 
@@ -652,6 +655,11 @@ void AHunter::OpenStatusInventory(const FInputActionValue& Value)
 	BBHUD->GetBBStatusInventory()->WidgetUpdate();
 
 	BBController->OpenWidget(EInputMode::StatusInventory);
+
+	UGameplayStatics::PlaySound2D(
+		this,
+		GameIns->SoundMap["UIMenuOpen"]
+	);
 }
 
 void AHunter::OpenQuickSlot(const FInputActionValue& Value)
@@ -660,6 +668,12 @@ void AHunter::OpenQuickSlot(const FInputActionValue& Value)
 
 	ABBPlayerController* BBController = Cast<ABBPlayerController>(GetController());
 	BBController->OpenWidget(EInputMode::QuickSlot);
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	UGameplayStatics::PlaySound2D(
+		this,
+		GameIns->SoundMap["UIMenuOpen"]
+	);
 }
 
 void AHunter::PushDoor()
@@ -693,6 +707,17 @@ void AHunter::LanternOn()
 	if (Lantern)
 	{
 		Lantern->TurnOn();
+	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	if (GameIns->SoundMap["LanternOn"])
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			GameIns->SoundMap["LanternOn"],
+			Lantern->GetActorLocation()
+		);
 	}
 }
 
@@ -891,6 +916,7 @@ void AHunter::UpdateOverlay()
 	BBOverlay->SetRegainHealthBarPercent(Attribute->GetHunterRegainHealthPercent());
 	BBOverlay->SetMaxStaminaBarPerent(Attribute->GetHunterMaxStaminaPercent());
 	BBOverlay->SetStaminaBarPercent(Attribute->GetHunterStaminaPercent());
+	BBOverlay->Gold->SetText(FText::FromString(FString::FromInt(CurStatus.DisplayGold)));
 }
 
 void AHunter::Reset()
@@ -1349,6 +1375,22 @@ void AHunter::PotionBulletUpdate()
 {
 	BBOverlay->PotionNum->SetText(FText::FromString(FString::FromInt(GetPotionNum())));
 	BBOverlay->BulletNum->SetText(FText::FromString(FString::FromInt(GetBulletNum())));
+}
+
+void AHunter::DisplayGoldUpdate(float _DeltaTime)
+{
+	float Gap = static_cast<float>(abs(CurStatus.DisplayGold - CurStatus.Gold));
+
+	if (FMath::IsNearlyZero(Gap)) return;
+
+	if (CurStatus.DisplayGold > CurStatus.Gold)
+	{
+		CurStatus.DisplayGold -= 200.f * _DeltaTime;
+	}
+	else
+	{
+		CurStatus.DisplayGold += 200.f * _DeltaTime;
+	}
 }
 
 int AHunter::GetPotionNum()

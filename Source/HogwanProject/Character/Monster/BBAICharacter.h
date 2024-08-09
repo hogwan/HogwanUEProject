@@ -99,6 +99,9 @@ public:
 	float Damage = 80.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
+	int DropGold = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")
 	EDir MonsterDir = EDir::None;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterStatus")

@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Global/BBGameInstance.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -43,11 +44,13 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 void ABaseCharacter::GetHit(const FVector& ImpactPoint, AActor* Hitter, EHitType HitType)
 {
-	if (HitSound)
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	if (GameIns->SoundMap["HitSound"])
 	{
 		UGameplayStatics::PlaySoundAtLocation(
 			this,
-			HitSound,
+			GameIns->SoundMap["HitSound"],
 			ImpactPoint
 		);
 	}

@@ -12,6 +12,7 @@
 
 void UGridInputWidget::Init()
 {
+	Super::Init();
 	Row = 0;
 	Column = 0;
 
@@ -27,14 +28,17 @@ void UGridInputWidget::Init()
 
 void UGridInputWidget::Enter()
 {
+	Super::Enter();
 }
 
 void UGridInputWidget::WidgetUpdate()
 {
+	Super::WidgetUpdate();
 }
 
 void UGridInputWidget::MoveRight()
 {
+	Super::MoveRight();
 
 	if ((ColumnSize * RowSize - 1) == ColumnSize * Row + Column) return;
 
@@ -47,6 +51,8 @@ void UGridInputWidget::MoveRight()
 
 void UGridInputWidget::MoveLeft()
 {
+	Super::MoveLeft();
+
 	if (0 == ColumnSize * Row + Column) return;
 
 	FocusEnd(Row, Column);
@@ -58,6 +64,8 @@ void UGridInputWidget::MoveLeft()
 
 void UGridInputWidget::MoveUp()
 {
+	Super::MoveUp();
+
 	if (0 == Row) return;
 
 	FocusEnd(Row, Column);
@@ -69,6 +77,8 @@ void UGridInputWidget::MoveUp()
 
 void UGridInputWidget::MoveDown()
 {
+	Super::MoveDown();
+
 	if (RowSize - 1 == Row) return;
 
 	FocusEnd(Row, Column);
@@ -80,10 +90,7 @@ void UGridInputWidget::MoveDown()
 
 void UGridInputWidget::CloseWidget()
 {
-	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
-	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
-
-	PlayerController->CloseWidget();
+	Super::CloseWidget();
 }
 
 

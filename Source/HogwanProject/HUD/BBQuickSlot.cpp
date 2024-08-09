@@ -12,6 +12,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Character/Hunter/BBPlayerController.h"
 #include "HUD/BBHUD.h"
+#include "Kismet/GameplayStatics.h"
 
 void UBBQuickSlot::Init()
 {
@@ -23,6 +24,8 @@ void UBBQuickSlot::Init()
 
 void UBBQuickSlot::Enter()
 {
+	Super::Enter();
+
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	ABBHUD* BBHUD = GameIns->HUD;
 
@@ -48,11 +51,21 @@ void UBBQuickSlot::Enter()
 
 	ABBPlayerController* PlayerController = GameIns->BBPlayerController;
 	PlayerController->OpenWidget(EInputMode::StatusInventory);
+
+	if (GameIns->SoundMap[TEXT("UIEnter")])
+	{
+		UGameplayStatics::PlaySound2D(
+			this,
+			GameIns->SoundMap[TEXT("UIEnter")]
+		);
+	}
 }
 
 
 void UBBQuickSlot::WidgetUpdate()
 {
+	Super::WidgetUpdate();
+
 	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 	AHunter* Hunter = GameIns->Hunter;
 

@@ -12,6 +12,8 @@
 
 void UBBLevelUpUI::Init()
 {
+	Super::Init();
+
 	if (Hunter == nullptr)
 	{
 		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
@@ -39,6 +41,8 @@ void UBBLevelUpUI::Init()
 
 void UBBLevelUpUI::WidgetUpdate()
 {
+	Super::WidgetUpdate();
+
 	ExpectLevel->SetText(FText::FromString(FString::FromInt(ExpectLevelData)));
 	ExpectGold->SetText(FText::FromString(FString::FromInt(ExpectGoldData)));
 	ExpectHP->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"),static_cast<int>(Hunter->GetAttribute()->Hp), ExpectHPData)));
@@ -58,12 +62,17 @@ void UBBLevelUpUI::StatusDataUpdate()
 
 void UBBLevelUpUI::Enter()
 {
+	Super::Enter();
+
 	Hunter->CurStatus.Level = ExpectLevelData;
 	Hunter->CurStatus.Gold = ExpectGoldData;
 	Hunter->CurStatus.Vitality = ExpectVitalityData;
 	Hunter->CurStatus.Endurance = ExpectEnduranceData;
 	Hunter->CurStatus.Strength = ExpectStrengthData;
+	
 	Hunter->StatusUpdate();
+	Hunter->GetAttribute()->Hp = Hunter->GetAttribute()->MaxHp;
+	Hunter->GetAttribute()->Stamina = Hunter->GetAttribute()->MaxStamina;
 
 	CloseWidget();
 }
@@ -77,6 +86,8 @@ void UBBLevelUpUI::CloseWidget()
 
 void UBBLevelUpUI::MoveRight()
 {
+	Super::MoveRight();
+
 	if (ExpectGoldData < Cost) return;
 	ExpectGoldData -= Cost;
 
@@ -100,6 +111,8 @@ void UBBLevelUpUI::MoveRight()
 
 void UBBLevelUpUI::MoveLeft()
 {
+	Super::MoveLeft();
+
 	switch (CurIndex)
 	{
 	case 0:
@@ -136,6 +149,8 @@ void UBBLevelUpUI::MoveLeft()
 
 void UBBLevelUpUI::MoveUp()
 {
+	Super::MoveUp();
+
 	if (CurIndex == 0) return;
 
 	FocusEnd(CurIndex);
@@ -147,6 +162,8 @@ void UBBLevelUpUI::MoveUp()
 
 void UBBLevelUpUI::MoveDown()
 {
+	Super::MoveDown();
+
 	if (CurIndex == 2) return;
 
 	FocusEnd(CurIndex);

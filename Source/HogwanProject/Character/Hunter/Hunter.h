@@ -13,6 +13,7 @@ struct FHunterStatus
 {
 	int Level = 1;
 	int Gold = 0;
+	int DisplayGold = 0;
 
 	int Vitality = 0;
 	int Endurance = 0;
@@ -98,7 +99,7 @@ public:
 	FORCEINLINE void SetIsLockOn(bool LockOn) { bIsLockOn = LockOn; }
 
 	FORCEINLINE int GetAttackCount() { return AttackCount; }
-	FORCEINLINE void SetAttackCount(int num) { AttackCount = num; }
+	FORCEINLINE void SetAttackCount(int _Count) { AttackCount = _Count; }
 	FORCEINLINE bool GetGoNextAttack() { return GoNextAttack; }
 	FORCEINLINE void SetGoNextAttack(bool NextAttack) { GoNextAttack = NextAttack; }
 	FORCEINLINE bool GetCanTakeDown() { return bCanTakeDown; }
@@ -250,6 +251,7 @@ public:
 	void WeaponSlotUpdate();
 	void UseItemSlotUpdate();
 	void PotionBulletUpdate();
+	void DisplayGoldUpdate(float _DeltaTime);
 	int GetPotionNum();
 	int GetBulletNum();
 

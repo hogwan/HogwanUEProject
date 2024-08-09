@@ -59,6 +59,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* BossName;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Gold;
 	
 	void SetHealthBarPercent(float Percent);
 	void SetMaxHealthBarPercent(float Percent);

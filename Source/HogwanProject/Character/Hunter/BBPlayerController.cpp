@@ -9,6 +9,7 @@
 #include "HUD/BBHUD.h"
 #include "HUD/BBStatusInventory.h"
 #include "HUD/BBQuickSlot.h"
+#include "Kismet/GameplayStatics.h"
 
 void ABBPlayerController::BeginPlay()
 {
@@ -60,6 +61,7 @@ void ABBPlayerController::OpenWidget(EInputMode _InputMode)
 
 	AllInputTypeUI[_InputMode]->Init();
 	AllInputTypeUI[_InputMode]->WidgetUpdate();
+
 }
 
 void ABBPlayerController::CloseWidget()
@@ -68,6 +70,13 @@ void ABBPlayerController::CloseWidget()
 	{
 		pair.Value->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	UGameplayStatics::PlaySound2D(
+		this,
+		GameIns->SoundMap["UIMenuClose"]
+	);
 
 	SetInputMode(EInputMode::Play);
 }
