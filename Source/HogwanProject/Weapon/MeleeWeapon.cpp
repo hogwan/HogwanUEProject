@@ -96,12 +96,6 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		{
 			Hunter->GetAttribute()->Regain();
 
-			UGameplayStatics::PlaySoundAtLocation(
-				this,
-				GameIns->SoundMap[TEXT("Regain")],
-				Hunter->GetActorLocation()
-				);
-
 			Hunter->StatusUpdate();
 		}
 	}

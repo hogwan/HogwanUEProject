@@ -46,6 +46,12 @@ protected:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* BoxTraceEnd;
 
+	UPROPERTY(EditAnywhere)
+	FVector BoxTraceSize = FVector(10.f, 10.f, 10.f);
+
+	UPROPERTY(EditAnywhere)
+	bool bIsHitBoxAttachedBody = false;
+
 	UFUNCTION()
 	void HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 

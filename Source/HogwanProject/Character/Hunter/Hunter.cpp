@@ -1385,11 +1385,11 @@ void AHunter::DisplayGoldUpdate(float _DeltaTime)
 
 	if (CurStatus.DisplayGold > CurStatus.Gold)
 	{
-		CurStatus.DisplayGold -= 200.f * _DeltaTime;
+		CurStatus.DisplayGold = FMath::Clamp(CurStatus.DisplayGold - 200.f * _DeltaTime, CurStatus.Gold, INT_MAX);
 	}
 	else
 	{
-		CurStatus.DisplayGold += 200.f * _DeltaTime;
+		CurStatus.DisplayGold = FMath::Clamp(CurStatus.DisplayGold + 200.f * _DeltaTime, 0, CurStatus.Gold);
 	}
 }
 

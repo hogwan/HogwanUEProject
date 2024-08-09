@@ -13,10 +13,10 @@ struct FSpawnInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	FVector SpawnPos;
+	FVector SpawnPos = FVector::Zero();
 
 	UPROPERTY(EditAnywhere)
-	FRotator SpawnRot;
+	FRotator SpawnRot = FRotator::ZeroRotator;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABBAICharacter> SpawnClass;

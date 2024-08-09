@@ -20,6 +20,7 @@ AMonster::AMonster()
 	MonsterHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
 	MonsterHitBox->SetupAttachment(GetRootComponent());
 
+
 	BoxTraceStart = CreateDefaultSubobject<USceneComponent>(TEXT("TraceStart"));
 	BoxTraceStart->SetupAttachment(MonsterHitBox);
 
@@ -69,7 +70,7 @@ void AMonster::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		this,
 		BoxTraceStart->GetComponentLocation(),
 		BoxTraceEnd->GetComponentLocation(),
-		FVector(10.f, 10.f, 10.f),
+		BoxTraceSize,
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery3,
 		false,

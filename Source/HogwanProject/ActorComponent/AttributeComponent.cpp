@@ -2,6 +2,8 @@
 
 
 #include "ActorComponent/AttributeComponent.h"
+#include "Global/BBGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 UAttributeComponent::UAttributeComponent()
 {
@@ -67,6 +69,15 @@ void UAttributeComponent::Regain()
 	if (FMath::IsNearlyZero(Gap)) return;
 
 	Hp = FMath::Clamp(Hp + MaxHp / 10.f, 0.f, RegainHp);
+
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetOwner()->GetGameInstance());
+
+	UGameplayStatics::PlaySoundAtLocation(
+		this,
+		GameIns->SoundMap[TEXT("Regain")],
+		GetOwner()->GetActorLocation()
+	);
 }
 
 bool UAttributeComponent::GetIsDeath()
