@@ -813,9 +813,14 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 		FRotator StartRotation = GetController()->GetControlRotation();
 		FRotator Result = UKismetMathLibrary::RInterpTo(StartRotation, TargetRotation, DeltaTime, 5.f);
 
-		FRotator CameraRotation = FRotator(-25.f, Result.Yaw, 0.f);
+		FRotator SpringArmRotation = FRotator(-20.f, Result.Yaw, 0.f);
 
-		GetController()->SetControlRotation(CameraRotation);
+		GetController()->SetControlRotation(SpringArmRotation);
+
+		FRotator CameraTarget = UKismetMathLibrary::FindLookAtRotation(ViewCamera->GetComponentLocation(), Target);
+		FRotator CameraResult = UKismetMathLibrary::RInterpTo(ViewCamera->GetComponentRotation(), CameraTarget, DeltaTime, 5.f);
+
+		ViewCamera->SetWorldRotation(CameraResult);
 		
 		if (!bIsRun)
 		{

@@ -77,29 +77,41 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	if (Character)
 	{
-		UGameplayStatics::ApplyDamage(
-			HitResult.GetActor(),
-			20.f,
-			GetOwner()->GetInstigatorController(),
-			this,
-			UDamageType::StaticClass());
-
-		IgnoreArray.AddUnique(Character);
 		IHitInterface* Hit = Cast<IHitInterface>(HitResult.GetActor());
 		if (Hit)
 		{
 			Hit->GetHit(HitResult.ImpactPoint, GetOwner(), HitType);
 		}
 
+		IgnoreArray.AddUnique(Character);
+
 		AHunter* Hunter = Cast<AHunter>(GetOwner());
-		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 
 		if (Hunter)
 		{
 			Hunter->GetAttribute()->Regain();
 
 			Hunter->StatusUpdate();
+
+			UGameplayStatics::ApplyDamage(
+				HitResult.GetActor(),
+				Hunter->GetCurDamage(Hunter->CurStatus.Strength),
+				GetOwner()->GetInstigatorController(),
+				this,
+				UDamageType::StaticClass());
 		}
+
+		ABBAICharacter* Monster = Cast<ABBAICharacter>(GetOwner());
+		if (Monster)
+		{
+			UGameplayStatics::ApplyDamage(
+				HitResult.GetActor(),
+				Monster->Damage,
+				GetOwner()->GetInstigatorController(),
+				this,
+				UDamageType::StaticClass());
+		}
+
 	}
 
 }
