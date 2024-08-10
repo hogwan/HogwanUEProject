@@ -14,9 +14,6 @@ AMonster::AMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	LockOnTargetWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnTarget"));
-	LockOnTargetWidget->SetupAttachment(GetRootComponent());
-
 	MonsterHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
 	MonsterHitBox->SetupAttachment(GetRootComponent());
 
@@ -32,11 +29,6 @@ AMonster::AMonster()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (LockOnTargetWidget)
-	{
-		LockOnTargetWidget->SetVisibility(false);
-	}
 
 	MonsterHitBox->OnComponentBeginOverlap.AddDynamic(this, &AMonster::HitBoxBeginOverlap);
 	MonsterHitBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);

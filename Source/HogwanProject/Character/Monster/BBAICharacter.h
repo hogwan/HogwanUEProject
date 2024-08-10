@@ -26,6 +26,11 @@ public:
 		return AnimInst;
 	}
 
+	FORCEINLINE class UWidgetComponent* GetLockOnWidget() { return LockOnTargetWidget; }
+
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* LockOnTargetWidget;
+
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	class ABBAIController* GetBBAIController();
 

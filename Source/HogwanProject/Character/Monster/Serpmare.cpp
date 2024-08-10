@@ -14,21 +14,13 @@ ASerpmare::ASerpmare()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	LockOnTargetWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnTarget"));
-	LockOnTargetWidget->SetupAttachment(GetRootComponent());
-	
 	BoxCol = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCol"));
 	BoxCol->SetupAttachment(GetMesh(), FName(TEXT("HitBoxSocket")));
 }
 
 void ASerpmare::BeginPlay()
 {
-	Super::BeginPlay();
-
-	if (LockOnTargetWidget)
-	{
-		LockOnTargetWidget->SetVisibility(false);
-	}	
+	Super::BeginPlay();	
 
 	BoxCol->OnComponentBeginOverlap.AddDynamic(this, &ASerpmare::HitBoxBeginOverlap);
 }

@@ -359,9 +359,9 @@ void AHunter::LockOn(const FInputActionValue& Value)
 	TArray<AActor*, FDefaultAllocator> IgnoredActors;
 	IgnoredActors.Emplace(this);
 
-	FHitResult OutHit;
+	TArray<FHitResult> OutHits;
 
-	bool bhit = UKismetSystemLibrary::SphereTraceSingleForObjects(
+	bool bhit = UKismetSystemLibrary::SphereTraceMultiForObjects(
 		GetWorld(),
 		CurPos,
 		TargetPos,
@@ -369,8 +369,8 @@ void AHunter::LockOn(const FInputActionValue& Value)
 		ObjectTypesArray,
 		false,
 		IgnoredActors,
-		EDrawDebugTrace::ForDuration,
-		OutHit,
+		EDrawDebugTrace::None,
+		OutHits,
 		true
 	);
 
@@ -379,18 +379,22 @@ void AHunter::LockOn(const FInputActionValue& Value)
 		return;
 	}
 
-	AMonster* Monster = Cast<AMonster>(OutHit.GetActor());
-	if (Monster)
+	for (const FHitResult& Result : OutHits)
 	{
-		if (Monster->GetAttribute()->GetIsDeath())
+		ABBAICharacter* Monster = Cast<ABBAICharacter>(Result.GetActor());
+
+		if (Monster)
 		{
+			if (Monster->GetAttribute()->GetIsDeath())
+			{
+				continue;
+			}
+
+
+			SetLockOn(Monster);
 			return;
 		}
-
-
-		SetLockOn(Monster);
 	}
-
 }
 
 void AHunter::Attack(const FInputActionValue& Value)
@@ -799,7 +803,7 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 {
 	if (LockOnTarget)
 	{
-		AMonster* Monster = Cast<AMonster>(LockOnTarget);
+		ABBAICharacter* Monster = Cast<ABBAICharacter>(LockOnTarget);
 		if (Monster->GetAttribute()->GetIsDeath())
 		{
 			ReleaseLockOn();
@@ -850,7 +854,7 @@ void AHunter::ReleaseLockOn()
 
 	if (GameInstance && GameInstance->LockOnTarget)
 	{
-		AMonster* Monster = Cast<AMonster>(GameInstance->LockOnTarget);
+		ABBAICharacter* Monster = Cast<ABBAICharacter>(GameInstance->LockOnTarget);
 
 		if (Monster)
 		{
@@ -861,7 +865,7 @@ void AHunter::ReleaseLockOn()
 	}
 }
 
-void AHunter::SetLockOn(AMonster* Target)
+void AHunter::SetLockOn(ABBAICharacter* Target)
 {
 	bIsLockOn = true;
 	LockOnTarget = Target;

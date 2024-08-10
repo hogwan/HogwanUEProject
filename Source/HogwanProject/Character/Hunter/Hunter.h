@@ -147,7 +147,7 @@ private:
 	void TraceLockOnTarget(float DeltaTime);
 
 	void ReleaseLockOn();
-	void SetLockOn(class AMonster* Target);
+	void SetLockOn(class ABBAICharacter* Target);
 
 	UFUNCTION(BlueprintCallable)
 	void Deform();

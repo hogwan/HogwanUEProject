@@ -29,6 +29,9 @@ ABBAICharacter::ABBAICharacter()
 	BackTakeDownBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BackTakeDownBox"));
 	BackTakeDownBox->SetupAttachment(GetRootComponent());
 
+	LockOnTargetWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("LockOnTarget"));
+	LockOnTargetWidget->SetupAttachment(GetRootComponent());
+
 	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
 }
 
@@ -197,6 +200,12 @@ void ABBAICharacter::BeginPlay()
 	BackTakeDownBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	PawnSensing->OnSeePawn.AddDynamic(this, &ABBAICharacter::OnSeePawn);
+
+	if (LockOnTargetWidget)
+	{
+		LockOnTargetWidget->SetVisibility(false);
+	}
+
 }
 
 void ABBAICharacter::OnSeePawn(APawn* Pawn)
