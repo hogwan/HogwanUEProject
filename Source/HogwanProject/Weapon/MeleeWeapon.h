@@ -36,6 +36,9 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	FVector BoxTraceSize = FVector::Zero();
 	
 	TArray<AActor*> IgnoreArray;
 

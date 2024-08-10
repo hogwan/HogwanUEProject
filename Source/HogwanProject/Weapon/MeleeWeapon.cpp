@@ -10,6 +10,7 @@
 #include "Character/Hunter/Hunter.h"
 #include "ActorComponent/AttributeComponent.h"
 #include "Global/BBGameInstance.h"
+#include "Particles/ParticleSystemComponent.h"
 
 AMeleeWeapon::AMeleeWeapon()
 {
@@ -21,6 +22,7 @@ AMeleeWeapon::AMeleeWeapon()
 
 	BoxTraceEnd = CreateDefaultSubobject<USceneComponent>(TEXT("BoxTraceEnd"));
 	BoxTraceEnd->SetupAttachment(HitBox);
+
 }
 
 void AMeleeWeapon::Tick(float DeltaTime)
@@ -61,12 +63,12 @@ void AMeleeWeapon::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 		this,
 		BoxTraceStart->GetComponentLocation(),
 		BoxTraceEnd->GetComponentLocation(),
-		FVector(15.f, 15.f, 15.f),
+		BoxTraceSize,
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery3,
 		false,
 		IgnoreArray,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		HitResult,
 		true
 	);
