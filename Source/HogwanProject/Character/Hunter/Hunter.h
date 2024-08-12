@@ -127,6 +127,9 @@ public:
 	void SitDown();
 	UFUNCTION(BlueprintCallable)
 	void StandUp();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
+	class UParticleSystem* RegainEffect;
 protected:
 	virtual void BeginPlay() override;
 
@@ -216,6 +219,15 @@ public:
 	void SetOverlappingObject(class AInteractObject* InteractObject) { OverlappingObject = InteractObject; }
 	void SetTakeDownInfo(class AActor* Target, const FVector& Pos, const FRotator& Rot);
 	void UpdateOverlay();
+
+	UFUNCTION(BlueprintCallable)
+	void Revive();
+	UFUNCTION(BlueprintCallable)
+	void Death();
+	void DeathCheck();
+
+	bool IsDeath = false;
+
 	class UBBOverlay* GetBBOverlay() { return BBOverlay; }
 
 	class AInteractObject* GetOverlappingObject() { return OverlappingObject; }

@@ -6,6 +6,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Character/Hunter/Hunter.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ASerpmareProjectile::ASerpmareProjectile()
@@ -50,6 +51,7 @@ void ASerpmareProjectile::ProjectileCollide(UPrimitiveComponent* OverlappedCompo
 	if (Hunter)
 	{
 		Hunter->GetHit(GetActorLocation(), GetOwner(), EHitType::EHT_Light);
+		UGameplayStatics::ApplyDamage(Hunter, Damage, nullptr, this, UDamageType::StaticClass());
 	}
 
 	ProjectileExplosion();

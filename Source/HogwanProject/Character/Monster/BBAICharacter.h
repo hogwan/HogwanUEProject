@@ -156,6 +156,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UPawnSensingComponent* PawnSensing;
+
+	UPROPERTY(EditAnywhere)
+	FTransform InitTrans = FTransform();
+
+	void BossReset();
 protected:
 	void BeginPlay() override;
 
@@ -168,6 +173,8 @@ protected:
 
 	UFUNCTION()
 	void OnSeePawn(APawn* Pawn);
+
+	
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))

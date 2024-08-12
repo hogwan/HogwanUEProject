@@ -34,3 +34,16 @@ void UBBGameInstance::ResetAllMonster()
 		AllMonsters.Add(Monster);
 	}
 }
+
+void UBBGameInstance::ResetAllBoss()
+{
+	for (ABBAICharacter* Boss : AllBoss)
+	{
+		if (Boss == nullptr)
+		{
+			continue;
+		}
+
+		Boss->BossReset();
+	}
+}

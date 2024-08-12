@@ -121,4 +121,5 @@ enum class EInputMode : uint8
 	QuickSlot,
 	StatusInventory,
 	LevelUp,
+	Death,
 };

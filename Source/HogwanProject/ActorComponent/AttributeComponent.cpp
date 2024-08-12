@@ -4,6 +4,7 @@
 #include "ActorComponent/AttributeComponent.h"
 #include "Global/BBGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Character/Hunter/Hunter.h"
 
 UAttributeComponent::UAttributeComponent()
 {
@@ -78,6 +79,17 @@ void UAttributeComponent::Regain()
 		GameIns->SoundMap[TEXT("Regain")],
 		GetOwner()->GetActorLocation()
 	);
+
+	AHunter* Hunter = Cast<AHunter>(GetOwner());
+
+	if (Hunter && Hunter->RegainEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			Hunter->RegainEffect,
+			GetOwner()->GetActorLocation()
+		);
+	}
 }
 
 bool UAttributeComponent::GetIsDeath()

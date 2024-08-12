@@ -26,6 +26,12 @@ void UBBBTTaskNode::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMe
 		return;
 	}
 
+	if (GetHunter()->IsDeath)
+	{
+		ChangeState(_OwnerComp, EMonsterState::EMS_Unable);
+		return;
+	}
+
 	if (EMonsterState::EMS_Unable == GetCurState<EMonsterState>(_OwnerComp))
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_Unable);

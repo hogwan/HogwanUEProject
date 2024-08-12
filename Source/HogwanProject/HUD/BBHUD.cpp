@@ -8,6 +8,7 @@
 #include "HUD/BBLevelUpUI.h"
 #include "Character/Hunter/BBPlayerController.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "HUD/DeathUI.h"
 
 void ABBHUD::BeginPlay()
 {
@@ -60,6 +61,19 @@ void ABBHUD::BeginPlay()
 
 			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
 			BBController->AllInputTypeUI.Add(TPair<EInputMode, UInputWidget*>(EInputMode::LevelUp, BBLevelUpUI));
+		}
+	}
+
+	if (World)
+	{
+		if (Controller && DeathUIClass)
+		{
+			DeathUI = CreateWidget<UDeathUI>(Controller, DeathUIClass);
+			DeathUI->AddToViewport();
+			DeathUI->SetVisibility(ESlateVisibility::Hidden);
+
+			ABBPlayerController* BBController = Cast<ABBPlayerController>(Controller);
+			BBController->AllInputTypeUI.Add(TPair<EInputMode, UInputWidget*>(EInputMode::Death, DeathUI));
 		}
 	}
 }

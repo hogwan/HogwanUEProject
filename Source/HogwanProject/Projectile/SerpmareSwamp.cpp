@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Character/Hunter/Hunter.h"
+#include "Kismet/GameplayStatics.h"
 
 ASerpmareSwamp::ASerpmareSwamp()
 {
@@ -43,6 +44,7 @@ void ASerpmareSwamp::SwampCollide(UPrimitiveComponent* OverlappedComponent, AAct
 	if (Hunter)
 	{
 		Hunter->GetHit(Hunter->GetActorLocation(), this, EHitType::EHT_Light);
+		UGameplayStatics::ApplyDamage(Hunter,Damage,nullptr, this, UDamageType::StaticClass());
 	}
 }
 

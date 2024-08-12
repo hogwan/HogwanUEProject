@@ -32,4 +32,5 @@ enum class ECharacterActionState : uint8
 	ECAS_PushDoor,
 	ECAS_TurnOn,
 	ECAS_Sit,
+	ECAS_Death,
 };

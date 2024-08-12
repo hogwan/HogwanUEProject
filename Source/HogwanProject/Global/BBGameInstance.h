@@ -73,7 +73,16 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class ABGMManager* BGMManager = nullptr;
 
+	UPROPERTY(VisibleAnywhere)
+	class ALantern* LeastLantern = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class ABBAICharacter*> AllBoss;
+
 	UFUNCTION(BlueprintCallable)
 	void ResetAllMonster();
+
+	UFUNCTION(BlueprintCallable)
+	void ResetAllBoss();
 
 };

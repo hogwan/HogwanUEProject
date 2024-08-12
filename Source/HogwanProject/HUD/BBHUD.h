@@ -44,6 +44,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UBBLevelUpUI> BBLevelUpUIClass;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UDeathUI> DeathUIClass;
+
 	UPROPERTY()
 	class UBBOverlay* BBOverlay;
 
@@ -56,6 +59,9 @@ private:
 	UPROPERTY()
 	class UBBLevelUpUI* BBLevelUpUI;
 
+	UPROPERTY()
+	class UDeathUI* DeathUI;
+
 
 public:
 	TArray<UUserWidget*> AllInputTypeUI;
@@ -63,6 +69,7 @@ public:
 	FORCEINLINE class UBBOverlay* GetBBOverlay() const { return BBOverlay; }
 	FORCEINLINE class UBBStatusInventory* GetBBStatusInventory() const { return BBStatusInventory; }
 	FORCEINLINE class UBBQuickSlot* GetBBQuickSlot() const { return BBQuickSlot; }
+	FORCEINLINE class UDeathUI* GetDeathUI() const { return DeathUI; }
 
 	FSelectedQuickSlotData QuickSlotData;
 };

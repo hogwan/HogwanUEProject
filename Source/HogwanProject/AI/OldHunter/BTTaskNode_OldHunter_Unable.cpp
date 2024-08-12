@@ -21,8 +21,6 @@ EBTNodeResult::Type UBTTaskNode_OldHunter_Unable::ExecuteTask(UBehaviorTreeCompo
 		return EBTNodeResult::Aborted;
 	}
 
-	Character->Reset();
-
 	ABBAIController* Controller = GetController<ABBAIController>(_OwnerComp);
 	Controller->StopMovement();
 

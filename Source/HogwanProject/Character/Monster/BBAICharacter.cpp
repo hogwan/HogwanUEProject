@@ -187,6 +187,23 @@ void ABBAICharacter::DeathCheck()
 	}
 }
 
+void ABBAICharacter::BossReset()
+{
+	GetAttribute()->Hp = GetAttribute()->MaxHp;
+	SetActorTransform(InitTrans);
+
+	ABBAIController* Con = Cast<ABBAIController>(GetController());
+	if (Con)
+	{
+		UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
+		if (BlackBoard)
+		{
+			PerceiveHunter = false;
+			BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Idle));
+		}
+	}
+}
+
 void ABBAICharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -209,6 +226,8 @@ void ABBAICharacter::BeginPlay()
 		LockOnTargetWidget->SetVisibility(false);
 	}
 
+	InitTrans.SetLocation(GetActorLocation());
+	InitTrans.SetRotation(FQuat::MakeFromRotator(GetActorRotation()));
 }
 
 void ABBAICharacter::OnSeePawn(APawn* Pawn)

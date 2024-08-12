@@ -26,6 +26,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float LifeTime = 6.f;
+
+	UPROPERTY(EditAnywhere)
+	float Damage = 100.f;
 protected:
 	virtual void BeginPlay() override;
 	

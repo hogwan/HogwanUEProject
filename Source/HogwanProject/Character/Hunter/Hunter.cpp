@@ -32,6 +32,9 @@
 #include "Tool/InteractObject.h"
 #include "Tool/Lantern/Lantern.h"
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
+#include "Components/ProgressBar.h"
+#include "Tool/BGMManager.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -89,6 +92,7 @@ void AHunter::BeginPlay()
 void AHunter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	DeathCheck();
 	TraceLockOnTarget(DeltaTime);
 	StaminaUpdate(DeltaTime);
 	DisplayGoldUpdate(DeltaTime);
@@ -726,6 +730,8 @@ void AHunter::LanternOn()
 			Lantern->GetActorLocation()
 		);
 	}
+
+	GameIns->LeastLantern = Lantern;
 }
 
 void AHunter::SitComplete()
@@ -933,6 +939,57 @@ void AHunter::UpdateOverlay()
 	BBOverlay->Gold->SetText(FText::FromString(FString::FromInt(CurStatus.DisplayGold)));
 }
 
+void AHunter::Revive()
+{
+	Reset();
+
+	GetAttribute()->Hp = GetAttribute()->MaxHp;
+
+	GetAttribute()->Stamina = GetAttribute()->MaxStamina;
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	if (GameIns)
+	{
+		GameIns->ResetAllMonster();
+		GameIns->ResetAllBoss();
+
+		GetBBOverlay()->BossName->SetVisibility(ESlateVisibility::Hidden);
+		GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Hidden);
+
+		GameIns->BGMManager->BGMChange(TEXT("Normal"));
+
+		ALantern* Lantern = GameIns->LeastLantern;
+		if (Lantern)
+		{
+			SetActorLocation(Lantern->GetActorLocation() + Lantern->GetActorForwardVector() * 100.f);
+		}
+	}
+}
+
+void AHunter::DeathCheck()
+{
+	if (GetAttribute()->Hp <= 0.f && IsDeath == false)
+	{
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		IsDeath = true;
+		ReleaseLockOn();
+
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		if (AnimInstance)
+		{
+			AnimInstance->Montage_Play(MontageMap[TEXT("Death")]);
+			CurActionState = ECharacterActionState::ECAS_Death;
+		}
+
+	}
+}
+
+void AHunter::Death()
+{
+	ABBPlayerController* PlayerController = Cast<ABBPlayerController>(GetController());
+	PlayerController->OpenWidget(EInputMode::Death);
+}
+
 void AHunter::Reset()
 {
 	CurActionState = ECharacterActionState::ECAS_Unoccupied;
@@ -944,6 +1001,10 @@ void AHunter::Reset()
 	GoNextAttack = false;
 
 	AttackCount = 0;
+
+	EquippedMeleeWeapon->HitBoxOff();
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	IsDeath = false;
 }
 
 void AHunter::EquipWeapon(EWeapon Weapon)
