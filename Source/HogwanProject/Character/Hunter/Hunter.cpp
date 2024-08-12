@@ -411,6 +411,8 @@ void AHunter::Attack(const FInputActionValue& Value)
 
 			SetActorRotation(TakeDownRot);
 
+			GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 			CurActionState = ECharacterActionState::ECAS_TakeDown;
 			ConsumeStaminaAmount = BaseConsumeStamina * 0.5f;
 
@@ -689,6 +691,7 @@ void AHunter::PushDoor()
 	{
 		AnimInstance->Montage_Play(MontageMap[TEXT("PushDoor")]);
 		CurActionState = ECharacterActionState::ECAS_PushDoor;
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -701,6 +704,7 @@ void AHunter::TurnOnLantern()
 	{
 		AnimInstance->Montage_Play(MontageMap[TEXT("TurnOnLantern")]);
 		CurActionState = ECharacterActionState::ECAS_TurnOn;
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -1509,6 +1513,11 @@ void AHunter::Heal()
 
 int AHunter::GetCurDamage(int _Strength)
 {
+	if (_Strength == 0)
+	{
+		return EquippedMeleeWeapon->WeaponBaseDamage + EquippedMeleeWeapon->DamageScale * CurStatus.Strength;
+	}
+
 	return EquippedMeleeWeapon->WeaponBaseDamage + EquippedMeleeWeapon->DamageScale * _Strength;
 }
 

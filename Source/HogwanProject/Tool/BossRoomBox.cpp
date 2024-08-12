@@ -60,6 +60,7 @@ void ABossRoomBox::HunterCol(UPrimitiveComponent* OverlappedComponent, AActor* O
 		}
 
 		Boss->PerceiveHunter = true;
+		IsHunterIn = true;
 	}
 }
 

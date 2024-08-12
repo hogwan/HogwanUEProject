@@ -9,14 +9,19 @@
 #include "Animation/AnimMontage.h"
 #include "Hunter.generated.h"
 
+USTRUCT(BlueprintType)
 struct FHunterStatus
 {
+	GENERATED_BODY()
+
 	int Level = 1;
 	int Gold = 0;
 	int DisplayGold = 0;
 
 	int Vitality = 0;
 	int Endurance = 0;
+
+	UPROPERTY(BlueprintReadWrite)
 	int Strength = 0;
 };
 
@@ -246,6 +251,7 @@ public:
 	TArray<struct FInvenSlotData**> LeftHandSlotData;
 	TArray<struct FInvenSlotData**> UseItemSlotData;
 
+	UPROPERTY(BlueprintReadWrite)
 	FHunterStatus CurStatus = FHunterStatus();
 
 	void WeaponSlotUpdate();
