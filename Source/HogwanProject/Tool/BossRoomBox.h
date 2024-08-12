@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	FString BGMName = "None";
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class AFogDoor*> FogDoors;
+
 	bool IsHunterIn = false;
 
 	void BossDeathCheck();

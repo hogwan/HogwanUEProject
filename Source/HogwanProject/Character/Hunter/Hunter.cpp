@@ -704,7 +704,6 @@ void AHunter::TurnOnLantern()
 	{
 		AnimInstance->Montage_Play(MontageMap[TEXT("TurnOnLantern")]);
 		CurActionState = ECharacterActionState::ECAS_TurnOn;
-		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 }
 
@@ -844,6 +843,7 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
+		ViewCamera->SetRelativeRotation(FRotator::ZeroRotator);
 	}
 }
 

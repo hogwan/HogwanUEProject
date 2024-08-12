@@ -8,6 +8,10 @@
 #include "Components/BoxComponent.h"
 #include "Character/Hunter/Hunter.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Tool/FogDoor.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AI/BBAIController.h"
+#include "HUD/HealthBarComponent.h"
 
 // Sets default values
 ABossRoomBox::ABossRoomBox()
@@ -54,9 +58,26 @@ void ABossRoomBox::HunterCol(UPrimitiveComponent* OverlappedComponent, AActor* O
 
 		for (ABBAICharacter* Monster : GameIns->AllMonsters)
 		{
+			if (Monster == nullptr) continue;
 			Monster->PawnSensing->SetSensingUpdatesEnabled(false);
 			Monster->PerceiveHunter = false;
 			
+
+			ABBAIController* Con = Cast<ABBAIController>(Monster->GetController());
+			if (Con)
+			{
+				UBlackboardComponent* BlackBoard = Con->GetBlackboardComponent();
+
+				BlackBoard->SetValueAsEnum(TEXT("StateValue"), static_cast<uint8>(EMonsterState::EMS_Idle));
+				
+				Monster->GetHealthBarWidget()->SetVisibility(false);
+				Con->StopMovement();
+			}
+		}
+
+		for (AFogDoor* Door : FogDoors)
+		{
+			Door->FogOn();
 		}
 
 		Boss->PerceiveHunter = true;
@@ -73,10 +94,15 @@ void ABossRoomBox::CombatEnd()
 
 		for (ABBAICharacter* Monster : GameIns->AllMonsters)
 		{
+			if (Monster == nullptr) continue;
 			Monster->PawnSensing->SetSensingUpdatesEnabled(true);
+		}
+
+		for (AFogDoor* Door : FogDoors)
+		{
+			Door->FogOff();
 		}
 
 		Destroy();
 	}
 }
-

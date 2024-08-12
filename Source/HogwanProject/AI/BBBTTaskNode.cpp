@@ -20,13 +20,6 @@ void UBBBTTaskNode::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMe
 
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
 
-	if (1 != GetCurState(_OwnerComp) && Character->PerceiveHunter == false)
-	{
-		GetCurState(_OwnerComp);
-		Character->GetHealthBarWidget()->SetVisibility(false);
-		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
-	}
-
 	if (Character->IsDeath)
 	{
 		ChangeState(_OwnerComp, EMonsterState::EMS_Dead);

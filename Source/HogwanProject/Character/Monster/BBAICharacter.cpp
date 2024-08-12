@@ -48,6 +48,13 @@ void ABBAICharacter::Tick(float DeltaTime)
 		IsHealthWidgetOn = true;
 		HealthBarWidget->SetVisibility(true);
 	}
+
+	if (IsBoss)
+	{
+		UBBGameInstance* BBGameIns = Cast<UBBGameInstance>(GetGameInstance());
+		ABBHUD* BBHUD = BBGameIns->HUD;
+		BBHUD->GetBBOverlay()->BossHealthBar->SetPercent(GetAttribute()->GetHealthPercent());
+	}
 }
 
 ABBAIController* ABBAICharacter::GetBBAIController()
@@ -63,13 +70,6 @@ void ABBAICharacter::GetHit(const FVector& _ImpactPoint, AActor* _Hitter, EHitTy
 
 	ABBAIController* Con = Cast<ABBAIController>(GetController());
 	PerceiveHunter = true;
-
-	if (IsBoss)
-	{
-		UBBGameInstance* BBGameIns = Cast<UBBGameInstance>(GetGameInstance());
-		ABBHUD* BBHUD = BBGameIns->HUD;
-		BBHUD->GetBBOverlay()->BossHealthBar->SetPercent(GetAttribute()->GetHealthPercent());
-	}
 	
 	if (Con && AnimInst)
 	{

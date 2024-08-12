@@ -49,6 +49,8 @@ EBTNodeResult::Type UBTTaskNode_Serpmare_Wait::ExecuteTask(UBehaviorTreeComponen
 
 	Character->SetActorLocation(Character->PatrolPoints[MaxIndex]);
 
+	Character->GetAttribute()->Stamina = Character->GetAttribute()->MaxStamina;
+
 
 	return EBTNodeResult::InProgress;
 }
