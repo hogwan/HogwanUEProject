@@ -5,6 +5,8 @@
 #include "Character/Hunter/Hunter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/SphereComponent.h"
+#include "Global/BBGameInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 ADoor::ADoor()
 {

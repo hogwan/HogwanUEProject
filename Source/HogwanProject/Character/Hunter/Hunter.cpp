@@ -839,6 +839,7 @@ void AHunter::TraceLockOnTarget(float DeltaTime)
 	else
 	{
 		GetCharacterMovement()->bOrientRotationToMovement = true;
+		SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
 	}
 }
 

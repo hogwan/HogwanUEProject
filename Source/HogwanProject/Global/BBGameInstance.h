@@ -62,10 +62,16 @@ public:
 	TMap<FString, class USoundBase*> SoundMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, class USoundBase*> BGMMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FSpawnInfo> AllSpawnInfo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<class ABBAICharacter*> AllMonsters;
+
+	UPROPERTY(VisibleAnywhere)
+	class ABGMManager* BGMManager = nullptr;
 
 	UFUNCTION(BlueprintCallable)
 	void ResetAllMonster();

@@ -7,6 +7,7 @@
 #include "Character/Hunter/Hunter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "AIController.h"
+#include "HUD/HealthBarComponent.h"
 
 UBBBTTaskNode::UBBBTTaskNode()
 {
@@ -18,6 +19,13 @@ void UBBBTTaskNode::TickTask(UBehaviorTreeComponent& _OwnerComp, uint8* _pNodeMe
 	Super::TickTask(_OwnerComp, _pNodeMemory, _DeltaSeconds);
 
 	ABBAICharacter* Character = GetActor<ABBAICharacter>(_OwnerComp);
+
+	if (1 != GetCurState(_OwnerComp) && Character->PerceiveHunter == false)
+	{
+		GetCurState(_OwnerComp);
+		Character->GetHealthBarWidget()->SetVisibility(false);
+		ChangeState(_OwnerComp, EMonsterState::EMS_Idle);
+	}
 
 	if (Character->IsDeath)
 	{

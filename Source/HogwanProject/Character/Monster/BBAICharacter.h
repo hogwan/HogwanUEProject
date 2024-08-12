@@ -154,6 +154,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool IsBoss = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UPawnSensingComponent* PawnSensing;
 protected:
 	void BeginPlay() override;
 
@@ -163,8 +165,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UBoxComponent* BackTakeDownBox;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	class UPawnSensingComponent* PawnSensing;
 
 	UFUNCTION()
 	void OnSeePawn(APawn* Pawn);

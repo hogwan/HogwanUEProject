@@ -179,6 +179,9 @@ void ABBAICharacter::DeathCheck()
 			BBHUD->GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Hidden);
 		}
 
+		UBBAIAnimInstance* AnimIns = Cast<UBBAIAnimInstance>(GetMesh()->GetAnimInstance());
+		AnimIns->Montage_Stop(0);
+
 		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 		GameIns->Hunter->CurStatus.Gold += DropGold;
 	}
