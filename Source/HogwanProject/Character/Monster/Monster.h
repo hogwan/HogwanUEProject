@@ -45,7 +45,7 @@ protected:
 	class USceneComponent* BoxTraceEnd;
 
 	UPROPERTY(EditAnywhere)
-	FVector BoxTraceSize = FVector(10.f, 10.f, 10.f);
+	FVector BoxTraceSize = FVector(20.f, 20.f, 20.f);
 
 	UPROPERTY(EditAnywhere)
 	bool bIsHitBoxAttachedBody = false;

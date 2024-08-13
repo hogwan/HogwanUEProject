@@ -30,6 +30,8 @@ void ALantern::Tick(float DeltaTime)
 
 void ALantern::Interact()
 {
+	Super::Interact();
+
 	APlayerController* Controller = GetWorld()->GetFirstPlayerController();
 
 	AHunter* Hunter = Cast<AHunter>(GetOwner());

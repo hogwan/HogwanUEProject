@@ -79,6 +79,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<class ABBAICharacter*> AllBoss;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AInteractObject* RecentlyInteractObject;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class ABossRoomBox* RecentlyBossRoomBox;
+
 	UFUNCTION(BlueprintCallable)
 	void ResetAllMonster();
 

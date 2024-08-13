@@ -29,6 +29,8 @@ void AInteractObject::BeginPlay()
 
 void AInteractObject::Interact()
 {
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+	GameIns->RecentlyInteractObject = this;
 }
 
 void AInteractObject::Tick(float DeltaTime)

@@ -35,6 +35,11 @@
 #include "Particles/ParticleSystem.h"
 #include "Components/ProgressBar.h"
 #include "Tool/BGMManager.h"
+#include "Components/CapsuleComponent.h"
+#include "Tool/FogDoor.h"
+#include "Components/BoxComponent.h"
+#include "Tool/BossRoomBox.h"
+#include "Tool/DoorSwitch.h"
 
 // Sets default values
 AHunter::AHunter()
@@ -773,6 +778,52 @@ void AHunter::StandUp()
 	}
 }
 
+void AHunter::PassFog()
+{
+	AFogDoor* FogDoor = Cast<AFogDoor>(OverlappingObject);
+	if (FogDoor)
+	{
+		FogDoor->BoxCol->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("PassFog")]);
+	}
+}
+
+void AHunter::PassFogEnd()
+{
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	AFogDoor* FogDoor = Cast<AFogDoor>(GameIns->RecentlyInteractObject);
+
+	if (FogDoor)
+	{
+		FogDoor->BoxCol->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	}
+}
+
+void AHunter::Kick()
+{
+	CurActionState = ECharacterActionState::ECAS_Kick;
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Play(MontageMap[TEXT("Kick")]);
+	}
+}
+
+void AHunter::DoorSwitchOn()
+{
+	ADoorSwitch* DS = Cast<ADoorSwitch>(OverlappingObject);
+	if (DS)
+	{
+		DS->OpenDoor();
+	}
+}
+
 
 FString AHunter::GetDeformMontageName()
 {
@@ -957,6 +1008,10 @@ void AHunter::Revive()
 		GetBBOverlay()->BossHealthBar->SetVisibility(ESlateVisibility::Hidden);
 
 		GameIns->BGMManager->BGMChange(TEXT("Normal"));
+		if (GameIns->RecentlyBossRoomBox)
+		{
+			GameIns->RecentlyBossRoomBox->IsHunterIn = false;
+		}
 
 		ALantern* Lantern = GameIns->LeastLantern;
 		if (Lantern)

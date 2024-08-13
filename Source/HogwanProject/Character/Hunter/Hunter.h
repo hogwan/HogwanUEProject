@@ -127,6 +127,15 @@ public:
 	void SitDown();
 	UFUNCTION(BlueprintCallable)
 	void StandUp();
+	UFUNCTION(BlueprintCallable)
+	void PassFog();
+	UFUNCTION(BlueprintCallable)
+	void PassFogEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void Kick();
+	UFUNCTION(BlueprintCallable)
+	void DoorSwitchOn();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Hit")
 	class UParticleSystem* RegainEffect;
@@ -226,6 +235,7 @@ public:
 	void Death();
 	void DeathCheck();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsDeath = false;
 
 	class UBBOverlay* GetBBOverlay() { return BBOverlay; }

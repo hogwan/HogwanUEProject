@@ -37,7 +37,8 @@ void ADoor::Tick(float DeltaTime)
 
 void ADoor::Interact()
 {
-	AActor* ttOwner = GetOwner();
+	Super::Interact();
+
 	AHunter* Hunter = Cast<AHunter>(GetOwner());
 
 	if (Hunter && !IsOpen)

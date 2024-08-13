@@ -55,6 +55,7 @@ void ABossRoomBox::HunterCol(UPrimitiveComponent* OverlappedComponent, AActor* O
 	{
 		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 		GameIns->BGMManager->BGMChange(BGMName);
+		GameIns->RecentlyBossRoomBox = this;
 
 		for (ABBAICharacter* Monster : GameIns->AllMonsters)
 		{

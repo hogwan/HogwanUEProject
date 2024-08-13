@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "Tool/InteractObject.h"
 #include "FogDoor.generated.h"
 
 UCLASS()
-class HOGWANPROJECT_API AFogDoor : public AActor
+class HOGWANPROJECT_API AFogDoor : public AInteractObject
 {
 	GENERATED_BODY()
 	
@@ -25,6 +25,14 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UNiagaraComponent* Effect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UBoxComponent* InteractCol;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USceneComponent* HunterPos;
+
+	void Interact() override;
 
 	void FogOn();
 	void FogOff();

@@ -67,7 +67,7 @@ void AMonster::HitBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		ETraceTypeQuery::TraceTypeQuery3,
 		false,
 		IgnoreArray,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		HitResult,
 		true
 	);
