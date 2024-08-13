@@ -16,7 +16,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	float Damage = 5.f;
+	float Damage = 15.f;
 	UPROPERTY(EditAnywhere)
 	class USphereComponent* Sphere;
 protected:

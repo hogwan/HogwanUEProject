@@ -65,6 +65,9 @@ public:
 	TMap<FString, class USoundBase*> BGMMap;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class USoundAttenuation* BBAttenuation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FSpawnInfo> AllSpawnInfo;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

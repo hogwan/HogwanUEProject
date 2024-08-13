@@ -7,6 +7,8 @@
 #include "NiagaraComponent.h"
 #include "Character/Hunter/Hunter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Global/BBGameInstance.h"
+#include "Sound/SoundAttenuation.h"
 
 
 ASerpmareProjectile::ASerpmareProjectile()
@@ -36,6 +38,21 @@ void ASerpmareProjectile::ProjectileExplosion()
 			this,
 			HitEffect,
 			GetActorLocation()
+		);
+	}
+
+	UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+	if (GameIns->SoundMap[TEXT("Explosion")])
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			GameIns->SoundMap[TEXT("Explosion")],
+			GetActorLocation(),
+			1.f,
+			1.f,
+			0.f,
+			GameIns->BBAttenuation
 		);
 	}
 
