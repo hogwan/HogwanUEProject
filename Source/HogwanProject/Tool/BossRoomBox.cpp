@@ -12,6 +12,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AI/BBAIController.h"
 #include "HUD/HealthBarComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABossRoomBox::ABossRoomBox()
@@ -103,6 +104,11 @@ void ABossRoomBox::CombatEnd()
 		{
 			Door->FogOff();
 		}
+
+		UGameplayStatics::PlaySound2D(
+			this,
+			GameIns->SoundMap[TEXT("YOUHUNTED")]
+		);
 
 		Destroy();
 	}

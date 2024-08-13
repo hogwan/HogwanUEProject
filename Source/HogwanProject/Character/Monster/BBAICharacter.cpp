@@ -184,6 +184,11 @@ void ABBAICharacter::DeathCheck()
 
 		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
 		GameIns->Hunter->CurStatus.Gold += DropGold;
+
+		UGameplayStatics::PlaySound2D(
+			this,
+			GameIns->SoundMap["Kill"]
+		);
 	}
 }
 

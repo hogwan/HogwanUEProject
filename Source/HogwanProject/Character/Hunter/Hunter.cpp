@@ -1036,6 +1036,12 @@ void AHunter::DeathCheck()
 			CurActionState = ECharacterActionState::ECAS_Death;
 		}
 
+		UBBGameInstance* GameIns = Cast<UBBGameInstance>(GetGameInstance());
+
+		UGameplayStatics::PlaySound2D(
+			this,
+			GameIns->SoundMap["Kill"]
+		);
 	}
 }
 
